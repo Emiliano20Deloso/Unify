@@ -53,7 +53,7 @@ const Integration = () => {
         <div className="relative flex flex-col items-center justify-center w-full py-20 scale-">
             <Container className="relative">
                 <div className="relative flex flex-col lg:hidden items-center justify-center overflow-visible">
-                    <div className="absolute top-1/2 -translate-y-1/2 right-1/4 w-3/5 h-14 lg:h-20 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full -rotate-12 blur-[6.5rem] -z-10"></div>
+                    <div className="absolute top-1/2 -translate-y-1/2 right-1/4 w-3/5 h-14 lg:h-20 bg-gradient-to-r from-[#08fefe] to-transparent rounded-full -rotate-12 blur-[6.5rem] -z-10"></div>
 
                     <div className="max-w-sm w-full h-auto mx-auto mt-8">
                         <Image
@@ -84,7 +84,7 @@ const Integration = () => {
 
             <Container delay={0.3}>
                 <div className="relative hidden lg:flex items-center justify-center overflow-visible">
-                    <div className="absolute top-1/2 -translate-y-1/2 right-1/4 w-3/5 h-14 lg:h-20 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full -rotate-12 blur-[6.5rem] -z-10"></div>
+                    <div className="absolute top-1/2 -translate-y-1/2 right-1/4 w-3/5 h-14 lg:h-20 bg-gradient-to-r from-[#08fefe] to-transparent rounded-full -rotate-12 blur-[6.5rem] -z-10"></div>
 
                     <div className="relative flex h-dvh w-full flex-col items-center justify-center overflow-visible">
                         <Ripple />

@@ -8,32 +8,30 @@ const Analysis = () => {
         <div className="relative flex flex-col items-center justify-center w-full py-20">
             <Container>
                 <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-2xl md:text-4xl lg:text-5xl font-heading font-medium !leading-snug">
-                        Intelligent marketing  <br /><span className="font-subheading italic">dashboard</span>
+                    <h2 className="text-2xl md:text-4xl lg:text-5xl font-heading font-medium !leading-snug text-foreground">
+                    Traslados premium con energía limpia <br /><span className="font-subheading italic text-[#08fefe]">Viaja con innovación y sin impacto ambiental.
+                        </span>
                     </h2>
-                    <p className="text-base md:text-lg text-accent-foreground/80 mt-4">
-                        Gain detailed insights into your marketing performance and campaign metrics with our advanced analytics tools.
-                    </p>
                 </div>
             </Container>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative w-full">
 
                 <Container delay={0.2}>
-                    <div className="rounded-2xl bg-background/40 relative border border-border/50">
+                    <div className="rounded-2xl bg-[#0A0F0F]/60 relative border border-[#08fefe]/20">
                         <MagicCard
-                            gradientFrom="#38bdf8"
-                            gradientTo="#3b82f6"
-                            gradientColor="rgba(59,130,246,0.1)"
+                            gradientFrom="#08fefe"
+                            gradientTo="#08fefe"
+                            gradientColor="rgba(8,254,254,0.08)"
                             className="p-4 lg:p-8 w-full overflow-hidden"
                         >
-                            <div className="absolute bottom-0 right-0 bg-blue-500 w-1/4 h-1/4 blur-[8rem] z-20"></div>
+                            <div className="absolute bottom-0 right-0 bg-[#08fefe] w-1/4 h-1/4 blur-[8rem] z-20 opacity-30"></div>
                             <div className="space-y-4">
                                 <h3 className="text-xl font-semibold">
-                                    Campaign Insights
+                                    +1000 de Viajes realizados sin impacto ambiental.
                                 </h3>
                                 <p className="text-sm text-muted-foreground">
-                                    Track your campaign performance with data-driven insights.
+                                    La energía que ocupamos proviene de las mejores fuentes.
                                 </p>
 
                                 <div className="space-y-4">
@@ -84,14 +82,14 @@ const Analysis = () => {
                 </Container>
 
                 <Container delay={0.2}>
-                    <div className="rounded-2xl bg-background/40 relative border border-border/50">
+                    <div className="rounded-2xl bg-[#0A0F0F]/60 relative border border-[#08fefe]/20">
                         <MagicCard
-                            gradientFrom="#38bdf8"
-                            gradientTo="#3b82f6"
-                            gradientColor="rgba(59,130,246,0.1)"
+                            gradientFrom="#08fefe"
+                            gradientTo="#08fefe"
+                            gradientColor="rgba(8,254,254,0.08)"
                             className="p-4 lg:p-8 w-full overflow-hidden"
                         >
-                            <div className="absolute bottom-0 right-0 bg-sky-500 w-1/4 h-1/4 blur-[8rem] z-20"></div>
+                            <div className="absolute bottom-0 right-0 bg-[#08fefe] w-1/4 h-1/4 blur-[8rem] z-20 opacity-30"></div>
                             <div className="space-y-4">
                                 <h3 className="text-xl font-semibold">
                                     Audience Metrics

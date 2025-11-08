@@ -26,10 +26,10 @@ const Pricing = () => {
             <div className="flex flex-col items-center justify-center max-w-2xl mx-auto">
                 <Container>
                     <div className="flex flex-col items-center text-center max-w-2xl mx-auto">
-                        <h2 className="text-2xl md:text-4xl lg:text-5xl font-heading font-medium !leading-snug mt-6">
-                            Find the right plan that suits <br className="hidden lg:block" /> <span className="font-subheading italic">your needs</span>
+                        <h2 className="text-2xl md:text-4xl lg:text-5xl font-heading font-medium !leading-snug mt-6 text-white">
+                            Find the right plan that suits <br className="hidden lg:block" /> <span className="font-subheading italic text-[#08fefe]">your needs</span>
                         </h2>
-                        <p className="text-base md:text-lg text-center text-accent-foreground/80 mt-6">
+                        <p className="text-base text-xl text-center text-neutral-700 mt-6">
                             Transform your marketing with AI-powered automation. Create campaigns faster, generate better content, and make smarter decisions in minutes.
                         </p>
                     </div>

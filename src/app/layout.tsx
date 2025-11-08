@@ -13,16 +13,16 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" suppressHydrationWarning>
+        <html lang="es" suppressHydrationWarning>
             <body
                 className={cn(
-                    "min-h-screen bg-background text-foreground antialiased font-heading overflow-x-hidden !scrollbar-hide",
+                    "min-h-screen bg-red-600 text-foreground antialiased font-heading overflow-x-hidden !scrollbar-hide",
                     base.variable,
                     heading.variable,
                     subheading.variable,
                 )}
             >
-                    <Toaster richColors theme="dark" position="top-right" />
+                    <Toaster richColors theme="light" position="top-right" />
                     {children}
             </body>
         </html>

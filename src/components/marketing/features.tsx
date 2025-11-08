@@ -9,12 +9,10 @@ const Features = () => {
         <div className="relative flex flex-col items-center justify-center w-full py-20">
             <Container>
                 <div className="flex flex-col items-center text-center max-w-2xl mx-auto">
-                    <h2 className="text-2xl md:text-4xl lg:text-5xl font-heading font-medium !leading-snug mt-6">
-                        AI-Powered marketing <br /> made <span className="font-subheading italic">simple</span>
+                    <h2 className="text-2xl lg:text-4xl lg:text-5xl font-heading font-medium !leading-snug mt-6 text-foreground">
+                    Lo que nos hace diferentes y tambíen
+                        <span className="font-subheading italic text-[#08fefe]"> insuperables</span>
                     </h2>
-                    <p className="text-base md:text-lg text-center text-accent-foreground/80 mt-6">
-                        Transform your marketing with AI-powered automation. Create campaigns faster, generate better content, and make smarter decisions in minutes.
-                    </p>
                 </div>
             </Container>
 
@@ -27,10 +25,10 @@ const Features = () => {
                         index === 2 && "md:col-span-2 lg:col-span-1",
                     )}>
                         <MagicCard
-                            gradientFrom="#38bdf8"
-                            gradientTo="#3b82f6"
+                            gradientFrom="#08fefe"
+                            gradientTo="#08fefe"
                             className="p-4 lg:p-6 lg:rounded-3xl"
-                            gradientColor="rgba(59,130,246,0.1)"
+                            gradientColor="rgba(8,254,254,0.08)"
                         >
                             <div className="flex items-center space-x-4 mb-4">
                                 <h3 className="text-xl font-semibold flex items-center gap-2">
@@ -51,6 +49,7 @@ const Features = () => {
                                     className="w-full h-full object-cover"
                                 />
                             </div>
+                            
                         </MagicCard>
                     </Container>
                 ))}

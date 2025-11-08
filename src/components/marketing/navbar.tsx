@@ -1,48 +1,65 @@
+"use client";
 import { NAV_LINKS } from "@/constants";
-import Link from "next/link";
-import Icons from "../global/icons";
-import Wrapper from "../global/wrapper";
-import { Button } from "../ui/button";
-import MobileMenu from "./mobile-menu";
+import { 
+  Navbar as ResizableNavbar, 
+  NavBody, 
+  NavItems, 
+  MobileNav, 
+  MobileNavHeader, 
+  MobileNavMenu, 
+  MobileNavToggle,
+  NavbarLogo,
+  NavbarButton
+} from "../ui/resizable-navbar";
+import { useState } from "react";
 
 const Navbar = () => {
-    return (
-        <header className="sticky top-0 w-full h-16 bg-background/80 backdrop-blur-sm z-50">
-            <Wrapper className="h-full">
-                <div className="flex items-center justify-between h-full">
-                    <div className="flex items-center">
-                        <Link href="/" className="flex items-center gap-2">
-                            <Icons.icon className="w-6" />
-                            <span className="text-xl font-semibold hidden lg:block">
-                                Vetra
-                            </span>
-                        </Link>
-                    </div>
+  const [isOpen, setIsOpen] = useState(false);
 
-                    <div className="hidden lg:flex items-center gap-4">
-                        <ul className="flex items-center gap-8">
-                            {NAV_LINKS.map((link, index) => (
-                                <li key={index} className="text-sm font-medium -1 link">
-                                    <Link href={link.href}>
-                                        {link.name}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+  // Transform NAV_LINKS to match the new navbar structure
+  const navItems = NAV_LINKS.map(link => ({
+    name: link.name,
+    link: link.href
+  }));
 
-                    <div className="flex items-center gap-4">
-                        <Link href="#" className="hidden lg:block">
-                            <Button variant="blue">
-                                Get Started
-                            </Button>
-                        </Link>
-                        <MobileMenu />
-                    </div>
-                </div>
-            </Wrapper>
-        </header>
-    )
+  return (
+    <ResizableNavbar>
+      {/* Desktop Navigation */}
+      <NavBody>
+        <NavbarLogo />
+        <NavItems items={navItems} />
+        <NavbarButton href="" variant="primary">
+          Reservar ahora
+        </NavbarButton>
+      </NavBody>
+
+      {/* Mobile Navigation */}
+      <MobileNav>
+        <MobileNavHeader>
+          <NavbarLogo />
+          <MobileNavToggle 
+            isOpen={isOpen} 
+            onClick={() => setIsOpen(!isOpen)} 
+          />
+        </MobileNavHeader>
+        <MobileNavMenu isOpen={isOpen} onClose={() => setIsOpen(false)}>
+          {navItems.map((item, index) => (
+            <a
+              key={index}
+              href={item.link}
+              className="text-red-500 hover:text-[#ff3131] text-lg font-medium"
+              onClick={() => setIsOpen(false)}
+            >
+              {item.name}
+            </a>
+          ))}
+          <NavbarButton href="#" variant="primary" className="mt-4">
+            Reservar ahora
+          </NavbarButton>
+        </MobileNavMenu>
+      </MobileNav>
+    </ResizableNavbar>
+  );
 };
 
-export default Navbar
+export default Navbar;

@@ -1,40 +1,41 @@
 import {
-    ChartColumnBigIcon,
-    DatabaseIcon,
-    TrendingUpIcon,
-    WandSparklesIcon,
-    ZapIcon
+    GemIcon,
+    HandCoinsIcon,
+    BriefcaseBusiness,
+    ShieldPlus,
+    HandshakeIcon,
+
 } from "lucide-react";
 
 export const FEATURES = [
     {
-        title: "Enhance User Experience",
-        description: "Efficiently manage user data and interactions with advanced AI tools",
-        icon: WandSparklesIcon,
-        image: "/images/feature-two.svg",
+        title: "Confort de lujo",
+        description: "Vehículos Tesla equipados para que disfrutes cada minuto del trayecto: silencio, espacio y tecnología a tu alcance.",
+        icon: GemIcon,
+        image: "/images/interior.jpg",
     },
     {
-        title: "Comprehensive Insights",
-        description: "Gain deep insights into your audience and campaign performance",
-        icon: ChartColumnBigIcon,
-        image: "/images/feature-one.svg",
+        title: "Seguridad garantizada",
+        description: "Conductores certificados, monitoreo de viaje en tiempo real, todo para tu total tranquilidad",
+        icon: ShieldPlus,
+        image: "/images/infoenter.jpg",
     },
     {
-        title: "Data Management",
-        description: "Manage your data with ease and efficiency",
-        icon: DatabaseIcon,
-        image: "/images/feature-three.svg",
+        title: "Reservas simples",
+        description: "Agenda tu viaje fácil y rápido. Te confirmamos en minutos vía WhatsApp o correo",
+        icon: HandshakeIcon,
+        image: "/images/facile.jpg",
     },
     {
-        title: "Real-Time Analytics",
-        description: "Track and analyze your marketing performance in real-time",
-        icon: TrendingUpIcon,
+        title: "Tarifa justa, sin sorpresas",
+        description: "Conoce el costo antes de viajar. Cotización clara según distancia y tiempo",
+        icon: HandCoinsIcon,
         image: "/images/feature-four.svg",
     },
     {
-        title: "Dynamic Optimization",
-        description: "AI-powered optimization for smarter marketing",
-        icon: ZapIcon,
-        image: "/images/feature-five.svg",
-    }
+        title: "Viajes para negocios",
+        description: "Ideal para reuniones, traslados corporativos o eventos. Puntualidad y discreción absoluta",
+        icon: BriefcaseBusiness,
+        image: "/images/Viajesyneg.jpg",
+    },
 ]
