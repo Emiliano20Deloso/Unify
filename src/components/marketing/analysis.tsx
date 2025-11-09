@@ -1,4 +1,4 @@
-import { DownloadIcon, FilterIcon, TrendingUpIcon } from "lucide-react";
+import { DownloadIcon, FilterIcon, TrendingUpIcon, BatteryCharging, CarFront } from "lucide-react";
 import Container from "../global/container";
 import { Button } from "../ui/button";
 import { MagicCard } from "../ui/magic-card";
@@ -28,7 +28,7 @@ const Analysis = () => {
                             <div className="absolute bottom-0 right-0 bg-[#08fefe] w-1/4 h-1/4 blur-[8rem] z-20 opacity-30"></div>
                             <div className="space-y-4">
                                 <h3 className="text-xl font-semibold">
-                                    +1000 de Viajes realizados sin impacto ambiental.
+                                    Rendimiento Ecológico
                                 </h3>
                                 <p className="text-sm text-muted-foreground">
                                     La energía que ocupamos proviene de las mejores fuentes.
@@ -38,27 +38,24 @@ const Analysis = () => {
                                     <div className="flex justify-between items-baseline">
                                         <div>
                                             <div className="text-3xl font-semibold">
-                                                $12,834
+                                                +42,400 km recorridos
                                             </div>
                                             <div className="text-sm text-green-500 flex items-center gap-1 mt-2">
                                                 <TrendingUpIcon className="w-4 h-4" />
-                                                +25% from last month
+                                                +3.2T de CO₂ ahorrado
                                             </div>
                                         </div>
                                         <div className="flex gap-2">
                                             <Button size="icon" variant="ghost">
-                                                <FilterIcon className="w-5 h-5" />
-                                            </Button>
-                                            <Button size="icon" variant="ghost">
-                                                <DownloadIcon className="w-5 h-5" />
+                                                <BatteryCharging className="w-5 h-5" />
                                             </Button>
                                         </div>
                                     </div>
 
                                     <div className="space-y-2">
                                         <div className="grid grid-cols-4 text-sm text-muted-foreground py-2">
-                                            <div>Campaign</div>
-                                            <div>Status</div>
+                                            <div>Rubro</div>
+                                            <div>Métrica</div>
                                             <div>Reach</div>
                                             <div>ROI</div>
                                         </div>

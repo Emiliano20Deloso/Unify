@@ -16,26 +16,26 @@ export const FEATURES = [
     },
     {
         title: "Seguridad garantizada",
-        description: "Conductores certificados, monitoreo de viaje en tiempo real, todo para tu total tranquilidad",
+        description: "Conductores certificados, monitoreo de viaje en tiempo real; todo para tu total tranquilidad.",
         icon: ShieldPlus,
-        image: "/images/infoenter.jpg",
+        image: "/images/sentinel.jpg",
     },
     {
         title: "Reservas simples",
-        description: "Agenda tu viaje fácil y rápido. Te confirmamos en minutos vía WhatsApp o correo",
+        description: "Agenda tu viaje fácil y rápido. Te confirmamos en minutos vía WhatsApp o correo.",
         icon: HandshakeIcon,
-        image: "/images/facile.jpg",
+        image: "/images/infoenter.jpg",
     },
     {
         title: "Tarifa justa, sin sorpresas",
-        description: "Conoce el costo antes de viajar. Cotización clara según distancia y tiempo",
+        description: "Conoce el costo antes de viajar. Cotización clara según distancia y tiempo.",
         icon: HandCoinsIcon,
         image: "/images/feature-four.svg",
     },
     {
         title: "Viajes para negocios",
-        description: "Ideal para reuniones, traslados corporativos o eventos. Puntualidad y discreción absoluta",
+        description: "Ideal para reuniones, traslados corporativos o eventos. Puntualidad y discreción absoluta.",
         icon: BriefcaseBusiness,
-        image: "/images/Viajesyneg.jpg",
+        image: "/images/priv2.jpg",
     },
 ]
