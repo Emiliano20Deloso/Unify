@@ -38,10 +38,12 @@ const Navbar = () => {
       <MobileNav>
         <MobileNavHeader>
           <NavbarLogo />
-          <MobileNavToggle 
-            isOpen={isOpen} 
-            onClick={() => setIsOpen(!isOpen)} 
-          />
+          <div className="-mr-2">
+            <MobileNavToggle 
+              isOpen={isOpen} 
+              onClick={() => setIsOpen(!isOpen)} 
+            />
+          </div>
         </MobileNavHeader>
         <MobileNavMenu isOpen={isOpen} onClose={() => setIsOpen(false)}>
           <button
