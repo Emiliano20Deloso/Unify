@@ -11,6 +11,7 @@ import {
   NavbarLogo,
   NavbarButton
 } from "../ui/resizable-navbar";
+import { IconArrowLeft } from "@tabler/icons-react";
 import { useState } from "react";
 
 const Navbar = () => {
@@ -43,6 +44,13 @@ const Navbar = () => {
           />
         </MobileNavHeader>
         <MobileNavMenu isOpen={isOpen} onClose={() => setIsOpen(false)}>
+          <button
+            onClick={() => setIsOpen(false)}
+            className="flex items-center gap-2 text-white hover:text-[#ff3131] text-lg font-medium mb-2 transition-colors"
+          >
+            <IconArrowLeft className="w-5 h-5" />
+            <span>Volver</span>
+          </button>
           {navItems.map((item, index) => (
             <a
               key={index}
