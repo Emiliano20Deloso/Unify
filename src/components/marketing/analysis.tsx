@@ -1,4 +1,4 @@
-import { DownloadIcon, FilterIcon, TrendingUpIcon, BatteryCharging, CarFront } from "lucide-react";
+import {Sparkles, CupSoda, BatteryCharging, CarFront, SmilePlus } from "lucide-react";
 import Container from "../global/container";
 import { Button } from "../ui/button";
 import { MagicCard } from "../ui/magic-card";
@@ -9,7 +9,7 @@ const Analysis = () => {
             <Container>
                 <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16">
                     <h2 className="text-2xl md:text-4xl lg:text-5xl font-heading font-medium !leading-snug text-foreground">
-                    Traslados premium con energía limpia <br /><span className="font-subheading italic text-[#08fefe]">Viaja con innovación y sin impacto ambiental.
+                        Más Que Traslados<br/><span className="font-subheading italic text-[#08fefe]"> Servicios diseñados para elevar tu camino.
                         </span>
                     </h2>
                 </div>
@@ -28,47 +28,47 @@ const Analysis = () => {
                             <div className="absolute bottom-0 right-0 bg-[#08fefe] w-1/4 h-1/4 blur-[8rem] z-20 opacity-30"></div>
                             <div className="space-y-4">
                                 <h3 className="text-xl font-semibold">
-                                    Rendimiento Ecológico
+                                Excelencia que Acompaña Cada Trayecto
                                 </h3>
                                 <p className="text-sm text-muted-foreground">
-                                    La energía que ocupamos proviene de las mejores fuentes.
+                                Un servicio diseñado para los más altos estándares: puntual, seguro y cuidadosamente administrado para asegurar tranquilidad en cada viaje.
                                 </p>
 
                                 <div className="space-y-4">
                                     <div className="flex justify-between items-baseline">
                                         <div>
                                             <div className="text-3xl font-semibold">
-                                                +42,400 km recorridos
+                                            +1,500 viajes ejecutivos
                                             </div>
                                             <div className="text-sm text-green-500 flex items-center gap-1 mt-2">
-                                                <TrendingUpIcon className="w-4 h-4" />
-                                                +3.2T de CO₂ ahorrado
+                                                <SmilePlus className="w-4 h-4" />
+                                                98% satisfacción
                                             </div>
                                         </div>
                                         <div className="flex gap-2">
                                             <Button size="icon" variant="ghost">
-                                                <BatteryCharging className="w-5 h-5" />
+                                                <CarFront className="w-5 h-5" />
                                             </Button>
                                         </div>
                                     </div>
 
                                     <div className="space-y-2">
-                                        <div className="grid grid-cols-4 text-sm text-muted-foreground py-2">
-                                            <div>Rubro</div>
-                                            <div>Métrica</div>
-                                            <div>Reach</div>
-                                            <div>ROI</div>
+                                        <div className="grid grid-cols-4 text-sm text-center text-muted-foreground py-2">
+                                            <div>Confort</div>
+                                            <div>Seguridad</div>
+                                            <div>Atención</div>
+                                            <div>Confiabilidad</div>
                                         </div>
                                         {[
-                                            { name: "Sales", status: "Active", reach: "45K", roi: "+32%" },
-                                            { name: "Emails", status: "Done", reach: "28K", roi: "+18%" },
-                                            { name: "Ads", status: "Active", reach: "62K", roi: "+45%" },
+                                            { name: "Asientos Premium", Confort: "Estructura 5★", Seguridad: "Soporte 24/7", Confiabilidad: "Alta Disponibilidad"},
+                                            { name: "Streaming sin límites", Confort: "Tracking tiempo real", Seguridad: "White-glove service", Confiabilidad: "Puntualidad garantizada" },
+                                            { name: "Silencio Total", Confort: "Frenado autómatico", Seguridad: "Personal VIP", Confiabilidad: "0 accidentes reportados" },
                                         ].map((campaign) => (
                                             <div key={campaign.name} className="grid grid-cols-4 text-sm py-2 border-t border-border/50">
-                                                <div>{campaign.name}</div>
-                                                <div>{campaign.status}</div>
-                                                <div>{campaign.reach}</div>
-                                                <div className="font-semibold">{campaign.roi}</div>
+                                                <div className="font-semibold">{campaign.name}</div>
+                                                <div className="font-semibold">{campaign.Confort}</div>
+                                                <div className="font-semibold">{campaign.Seguridad}</div>
+                                                <div className="font-semibold">{campaign.Confiabilidad}</div>
                                             </div>
                                         ))}
                                     </div>
@@ -89,27 +89,24 @@ const Analysis = () => {
                             <div className="absolute bottom-0 right-0 bg-[#08fefe] w-1/4 h-1/4 blur-[8rem] z-20 opacity-30"></div>
                             <div className="space-y-4">
                                 <h3 className="text-xl font-semibold">
-                                    Audience Metrics
+                                Disfruta el Camino
                                 </h3>
                                 <p className="text-sm text-muted-foreground">
-                                    Understand your audience behavior and engagement patterns.
+                                Haz más placenteros tus traslados con una selección ligera de bebidas y snacks, pensados para cualquier ocasión.
                                 </p>
 
                                 <div className="space-y-4">
                                     <div className="flex justify-between items-baseline">
                                         <div>
-                                            <div className="text-3xl font-semibold">84,392</div>
+                                            <div className="text-3xl font-semibold">Máxima comodidad a bordo</div>
                                             <div className="text-sm text-green-500 flex items-center gap-1 mt-2">
-                                                <TrendingUpIcon className="w-4 h-4" />
-                                                +12% engagement rate
+                                                <CupSoda className="w-4 h-4" />
+                                                Selección adaptable a tus gustos
                                             </div>
                                         </div>
                                         <div className="flex gap-2">
                                             <Button size="icon" variant="ghost">
-                                                <FilterIcon className="w-5 h-5" />
-                                            </Button>
-                                            <Button size="icon" variant="ghost">
-                                                <DownloadIcon className="w-5 h-5" />
+                                                <Sparkles className="w-5 h-5" />
                                             </Button>
                                         </div>
                                     </div>
@@ -117,23 +114,26 @@ const Analysis = () => {
                                     {/* Audience Table */}
                                     <div className="space-y-2">
                                         <div className="grid grid-cols-4 text-sm text-muted-foreground py-2">
-                                            <div>Channel</div>
-                                            <div>Users</div>
-                                            <div>Sessions</div>
-                                            <div>Conv. Rate</div>
+                                            <div>Plan</div>
+                                            <div>Bebida</div>
+                                            <div>Snack Dulce</div>
+                                            <div>Snack Salado</div>
                                         </div>
                                         {[
-                                            { channel: "Social", users: "32K", sessions: "45K", rate: "3.2%" },
-                                            { channel: "Email", users: "28K", sessions: "36K", rate: "4.5%" },
-                                            { channel: "Direct", users: "15K", sessions: "22K", rate: "5.1%" },
+                                            { Plan: "Práctico", Bebida: "Agua natural", Snack: "—", Snack2: "Mix nueces " },
+                                            { Plan: "Select", Bebida: "Agua mineral", Snack: "Galletas", Snack2: "Frutos secos / Chips" },
+                                            { Plan: "Premium", Bebida: "Bebidas premium", Snack: "Alta confitería", Snack2: "Frutos secos selectos / Chips" },
                                         ].map((metric) => (
-                                            <div key={metric.channel} className="grid grid-cols-4 text-sm py-2 border-t border-border/50">
-                                                <div>{metric.channel}</div>
-                                                <div>{metric.users}</div>
-                                                <div>{metric.sessions}</div>
-                                                <div className="font-semibold">{metric.rate}</div>
+                                            <div key={metric.Plan} className="grid grid-cols-4 text-sm py-2 border-t border-border/50">
+                                                <div className="font-semibold">{metric.Plan}</div>
+                                                <div className="font-semibold">{metric.Bebida}</div>
+                                                <div className="font-semibold">{metric.Snack}</div>
+                                                <div className="font-semibold">{metric.Snack2}</div>
                                             </div>
                                         ))}
+                                        <p className="text-xs text-muted-foreground">
+                                            *Variedades sujetas a disponibilidad.
+                                        </p>
                                     </div>
                                 </div>
                             </div>
