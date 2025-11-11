@@ -16,8 +16,8 @@ interface MetadataProps {
 }
 
 export const generateMetadata = ({
-    title = `Vetra - AI-Powered Project Management & Team Collaboration`,
-    description = `Vetra is an intelligent project management platform that transforms how teams work together. Leverage AI to automate workflows, enhance collaboration, and boost productivity. Experience smarter project management today.`,
+    title = `Unify - Unify your journey`,
+    description = `Traslados ejecutivos en Tesla con atención personalizada, puntualidad, seguridad y snacks a bordo. Movilidad premium, cómoda y sustentable.`,
     icons = [
         {
             rel: "icon",
@@ -32,21 +32,26 @@ export const generateMetadata = ({
     ],
     noIndex = false,
     keywords = [
-        "AI marketing automation",
-        "social media marketing",
-        "content generation",
-        "marketing analytics",
-        "campaign management",
-        "multilingual marketing",
-        "AI copywriting",
-        "marketing workflow",
-        "performance tracking",
-        "digital marketing tools"
+        "traslados ejecutivos",
+        "transporte ejecutivo",
+        "traslados en Tesla",
+        "movilidad premium",
+        "servicio de transporte ejecutivo",
+        "traslados corporativos",
+        "transporte de lujo",
+        "movilidad sustentable",
+        "traslados con snacks",
+        "servicio de chofer ejecutivo",
+        "transporte empresarial",
+        "traslados puntuales",
+        "transporte seguro",
+        "movilidad ejecutiva",
+        "servicio de transporte personalizado"
     ],
     author = process.env.NEXT_PUBLIC_AUTHOR_NAME,
     type = "website",
 }: MetadataProps = {}): Metadata => {
-    const metadataBase = new URL(process.env.NEXT_PUBLIC_APP_URL || "https://unify.app");
+    const metadataBase = new URL(process.env.NEXT_PUBLIC_APP_URL || "https://unify-eight.vercel.app");
 
     return {
         metadataBase,

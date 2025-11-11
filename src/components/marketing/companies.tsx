@@ -7,7 +7,7 @@ const Companies = () => {
             <Container>
                 <div className="flex flex-col items-center justify-center">
                     <h4 className="text-2xl lg:text-4xl font-medium text-white">
-                        Trusted by <span className="font-subheading italic text-[#08fefe]">leading</span> brands
+                    Conectados con <span className="font-subheading italic text-[#08fefe]">Líderes</span> en Movilidad
                     </h4>
                 </div>
             </Container>
