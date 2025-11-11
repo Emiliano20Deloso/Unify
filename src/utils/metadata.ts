@@ -46,7 +46,7 @@ export const generateMetadata = ({
     author = process.env.NEXT_PUBLIC_AUTHOR_NAME,
     type = "website",
 }: MetadataProps = {}): Metadata => {
-    const metadataBase = new URL(process.env.NEXT_PUBLIC_APP_URL || "https://vertra-ai.vercel.app");
+    const metadataBase = new URL(process.env.NEXT_PUBLIC_APP_URL || "https://unify.app");
 
     return {
         metadataBase,
