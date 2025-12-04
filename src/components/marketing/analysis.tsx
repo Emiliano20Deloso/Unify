@@ -9,7 +9,7 @@ const Analysis = () => {
             <Container>
                 <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16">
                     <h2 className="text-2xl md:text-4xl lg:text-5xl font-heading font-medium !leading-snug text-foreground">
-                        Más Que Traslados<br/><span className="font-subheading italic text-[#08fefe]"> Servicios diseñados para elevar tu camino.
+                    Expertos en crear viajes impecables…<br/><span className="font-subheading italic text-[#08fefe]"> y en redefinir lo que significa viajar bien.
                         </span>
                     </h2>
                 </div>

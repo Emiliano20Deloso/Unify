@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import Container from "../global/container";
 import Icons from "../global/icons";
 
@@ -6,16 +7,22 @@ const Footer = () => {
     return (
         <footer className="flex flex-col relative items-center justify-center border-t border-foreground/5 pt-16 pb-8 px-6 lg:px-8 w-full max-w-6xl mx-auto lg:pt-32 bg-[#0a0f0fb3] text-white">
             <div className="grid gap-8 xl:grid-cols-3 xl:gap-8 w-full">
-                <Container className="bg-[#0a0f0fb3] text-white">
+                <Container className="bg-[#0a0f0fb3] text-white"> 
                     <div className="flex flex-col items-start justify-start md:max-w-[200px]">
                         <div className="flex items-center gap-2">
-                            <Icons.icon className="w-auto h-5" />
+                            <Image 
+                                src="/icons/iconouni.png" 
+                                alt="UNIFY Logo" 
+                                width={20} 
+                                height={20} 
+                                className="w-auto h-5"
+                            />
                             <span className="text-base md:text-lg font-medium text-white">
                                 UNIFY
                             </span>
                         </div>
                         <p className="text-muted-foreground mt-4 text-sm text-start">
-                            AI-powered platform that transforms your marketing workflow in seconds.
+                            Transporte de ultra lujo donde redefinimos lo que es viajar con seguridad y confort al nivel más alto.
                         </p>
                     </div>
                 </Container>

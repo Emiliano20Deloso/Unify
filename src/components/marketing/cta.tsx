@@ -40,15 +40,12 @@ const CTA = () => {
                             ease: "linear"
                         }}
                     />
-                    <h2 className="text-3xl md:text-5xl lg:text-6xl font-heading font-medium !leading-snug text-foreground">
-                    Experience Comfort, Powered by <br /> <span className="font-subheading italic text-[#08fefe]">Innovation</span> 
+                    <h2 className="text-xl md:text-5xl lg:text-6xl font-heading font-medium !leading-snug text-foreground">
+                    Tus mañanas pueden empezar mejor…<br /> <span className="font-subheading italic text-[#08fefe]">solo necesitas un viaje que esté a tu altura .</span>
                     </h2>
-                    <p className="text-sm md:text-lg text-center text-muted-foreground max-w-2xl mx-auto mt-4">
-                        Transform your marketing with AI-powered automation. Create campaigns faster, generate better content <span className="hidden lg:inline">and make smarter decisions in minutes.</span>
-                    </p>
                     <Link href="#pricing" className="mt-8">
-                        <Button size="lg" className="bg-[#08fefe] hover:opacity-80 text-[#0A0F0F] border-0">
-                            Let&apos;s get started
+                        <Button size="xl"  className="bg-[#08fefe] hover:opacity-80 text-[#0A0F0F] border-0 text-lg md:text-xl lg:text-2xl">
+                        Reserva tu próximo viaje 
                         </Button>
                     </Link>
                 </div>
