@@ -57,13 +57,13 @@ const Navbar = () => {
             <a
               key={index}
               href={item.link}
-              className="text-red-500 hover:text-[#ff3131] text-lg font-medium"
+              className="text-white hover:text-[#ff3131] text-lg font-medium"
               onClick={() => setIsOpen(false)}
             >
               {item.name}
             </a>
           ))}
-          <NavbarButton href="#" variant="primary" className="mt-4">
+          <NavbarButton href="#" variant="primary" className="mt-4 bg-[#FF2400] text-white lg:bg-white lg:text-black">
             Reservar ahora
           </NavbarButton>
         </MobileNavMenu>
