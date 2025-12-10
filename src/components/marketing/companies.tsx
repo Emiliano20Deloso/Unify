@@ -29,6 +29,7 @@ const Companies = () => {
                             direction="left"
                             logoHeight={56}
                             gap={60}
+                            mobileGap={20}
                             scaleOnHover
                             fadeOut
                             fadeOutColor="rgba(0, 0, 0, 0)"

@@ -17,6 +17,7 @@ interface LogoLoopProps {
   direction?: 'left' | 'right' | 'up' | 'down';
   logoHeight?: number;
   gap?: number;
+  mobileGap?: number;
   hoverSpeed?: number;
   scaleOnHover?: boolean;
   fadeOut?: boolean;
@@ -31,6 +32,7 @@ const LogoLoop: React.FC<LogoLoopProps> = ({
   direction = 'left',
   logoHeight = 48,
   gap = 40,
+  mobileGap,
   hoverSpeed = 0,
   scaleOnHover = false,
   fadeOut = false,
@@ -41,12 +43,27 @@ const LogoLoop: React.FC<LogoLoopProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [animationSpeed, setAnimationSpeed] = useState(speed);
+  const [currentGap, setCurrentGap] = useState(gap);
 
   useEffect(() => {
     if (hoverSpeed !== undefined) {
       setAnimationSpeed(isHovered ? hoverSpeed : speed);
     }
   }, [isHovered, hoverSpeed, speed]);
+
+  useEffect(() => {
+    const updateGap = () => {
+      if (mobileGap !== undefined && window.innerWidth < 768) {
+        setCurrentGap(mobileGap);
+      } else {
+        setCurrentGap(gap);
+      }
+    };
+
+    updateGap();
+    window.addEventListener('resize', updateGap);
+    return () => window.removeEventListener('resize', updateGap);
+  }, [gap, mobileGap]);
 
   // Duplicate logos for seamless loop
   const duplicatedLogos = [...logos, ...logos];
@@ -106,7 +123,7 @@ const LogoLoop: React.FC<LogoLoopProps> = ({
         className={`${getContainerClass()} ${getAnimationClass()} w-max`}
         style={{
           '--duration': `${animationSpeed}s`,
-          gap: `${gap}px`,
+          gap: `${currentGap}px`,
         } as React.CSSProperties}
       >
         {duplicatedLogos.map((logo, index) => (
