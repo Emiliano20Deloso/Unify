@@ -1,17 +1,17 @@
-import Image from "next/image";
 import Container from "../global/container";
+import LogoLoop from "../ui/logo-loop";
 
 const Companies = () => {
     const companies = [
-        { name: "Didi", logo: "/images/companies/logodidi.png" },
-        { name: "Uber", logo: "/images/companies/Uber Icon.svg" },
-        { name: "Tesla", logo: "/images/companies/logotesla.png" },
-        { name: "Waze", logo: "/images/companies/Waze Icon.svg" },
-        { name: "Google Maps", logo: "/images/companies/Icono Googlemaps.svg" },
+        { name: "Didi", src: "/images/companies/logodidi.png", alt: "Didi" },
+        { name: "Uber", src: "/images/companies/Uber Icon.svg", alt: "Uber" },
+        { name: "Tesla", src: "/images/Logoteslablanc.png", alt: "Tesla" },
+        { name: "Waze", src: "/images/companies/Waze Icon.svg", alt: "Waze" },
+        { name: "Google Maps", src: "/images/companies/Icono Googlemaps.svg", alt: "Google Maps" },
     ];
 
     return (
-        <div className="relative flex flex-col items-center justify-center w-full py-20 mt-16 companies overflow-hidden">
+        <div className="relative flex flex-col items-center justify-center w-full py-20 mt-16 companies overflow-hidden bg-transparent">
             <Container>
                 <div className="flex flex-col items-center justify-center">
                     <h4 className="text-2xl text-center lg:text-4xl font-medium text-white">
@@ -21,27 +21,20 @@ const Companies = () => {
             </Container>
 
             <Container delay={0.1}>
-                <div className="flex flex-row flex-wrap items-center justify-center gap-8 max-w-4xl mx-auto pt-16">
-                    {companies.map((company, index) => (
-                        <div 
-                            key={index} 
-                            className="flex flex-col items-center justify-center gap-2"
-                        >
-                            <div className="h-12 md:h-14 w-auto opacity-60 hover:opacity-100 transition-opacity duration-300">
-                                <Image 
-                                    src={company.logo} 
-                                    alt={company.name}
-                                    width={180}
-                                    height={56}
-                                    className="h-12 md:h-14 w-auto object-contain"
-                                    unoptimized
-                                />
-                            </div>
-                            <span className="text-sm md:text-base font-medium text-white">
-                                {company.name}
-                            </span>
-                        </div>
-                    ))}
+                <div className="w-full max-w-6xl mx-auto pt-16">
+                    <div className="h-32 md:h-40 relative overflow-hidden bg-transparent">
+                        <LogoLoop
+                            logos={companies}
+                            speed={150}
+                            direction="left"
+                            logoHeight={56}
+                            gap={60}
+                            scaleOnHover
+                            fadeOut
+                            fadeOutColor="rgba(0, 0, 0, 0)"
+                            ariaLabel="Compañías asociadas"
+                        />
+                    </div>
                 </div>
             </Container>
         </div>

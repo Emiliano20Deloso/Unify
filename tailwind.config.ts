@@ -143,6 +143,38 @@ export default {
 						"opacity": "1",
 					},
 				},
+				"scroll-left": {
+					"0%": {
+						transform: "translateX(0)",
+					},
+					"100%": {
+						transform: "translateX(-50%)",
+					},
+				},
+				"scroll-right": {
+					"0%": {
+						transform: "translateX(-50%)",
+					},
+					"100%": {
+						transform: "translateX(0)",
+					},
+				},
+				"scroll-up": {
+					"0%": {
+						transform: "translateY(0)",
+					},
+					"100%": {
+						transform: "translateY(-50%)",
+					},
+				},
+				"scroll-down": {
+					"0%": {
+						transform: "translateY(-50%)",
+					},
+					"100%": {
+						transform: "translateY(0)",
+					},
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
@@ -154,6 +186,10 @@ export default {
 				ripple: "ripple var(--duration,2s) ease calc(var(--i, 0)*.2s) infinite",
 				blob: "blob 7s infinite",
 				"image-glow": "image-glow 6s ease-out 0.6s forwards",
+				"scroll-left": "scroll-left var(--duration, 20s) linear infinite",
+				"scroll-right": "scroll-right var(--duration, 20s) linear infinite",
+				"scroll-up": "scroll-up var(--duration, 20s) linear infinite",
+				"scroll-down": "scroll-down var(--duration, 20s) linear infinite",
 			},
 			spacing: {
 				"1/8": "12.5%",
