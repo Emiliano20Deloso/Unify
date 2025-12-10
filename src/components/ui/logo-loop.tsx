@@ -18,6 +18,7 @@ interface LogoLoopProps {
   logoHeight?: number;
   gap?: number;
   mobileGap?: number;
+  mobileSpeed?: number;
   hoverSpeed?: number;
   scaleOnHover?: boolean;
   fadeOut?: boolean;
@@ -33,6 +34,7 @@ const LogoLoop: React.FC<LogoLoopProps> = ({
   logoHeight = 48,
   gap = 40,
   mobileGap,
+  mobileSpeed,
   hoverSpeed = 0,
   scaleOnHover = false,
   fadeOut = false,
@@ -42,27 +44,37 @@ const LogoLoop: React.FC<LogoLoopProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
-  const [animationSpeed, setAnimationSpeed] = useState(speed);
+  const [isMobile, setIsMobile] = useState(false);
   const [currentGap, setCurrentGap] = useState(gap);
-
-  useEffect(() => {
-    if (hoverSpeed !== undefined) {
-      setAnimationSpeed(isHovered ? hoverSpeed : speed);
+  
+  // Calculate current speed based on mobile, hover, and base speed
+  const getCurrentSpeed = () => {
+    if (isHovered && hoverSpeed !== undefined && hoverSpeed > 0) {
+      return hoverSpeed;
     }
-  }, [isHovered, hoverSpeed, speed]);
+    if (isMobile && mobileSpeed !== undefined) {
+      return mobileSpeed;
+    }
+    return speed;
+  };
+  
+  const animationSpeed = getCurrentSpeed();
 
   useEffect(() => {
-    const updateGap = () => {
-      if (mobileGap !== undefined && window.innerWidth < 768) {
+    const updateLayout = () => {
+      const isMobileView = window.innerWidth < 768;
+      setIsMobile(isMobileView);
+      
+      if (mobileGap !== undefined && isMobileView) {
         setCurrentGap(mobileGap);
       } else {
         setCurrentGap(gap);
       }
     };
 
-    updateGap();
-    window.addEventListener('resize', updateGap);
-    return () => window.removeEventListener('resize', updateGap);
+    updateLayout();
+    window.addEventListener('resize', updateLayout);
+    return () => window.removeEventListener('resize', updateLayout);
   }, [gap, mobileGap]);
 
   // Duplicate logos for seamless loop
