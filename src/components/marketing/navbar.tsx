@@ -1,5 +1,5 @@
 "use client";
-import { NAV_LINKS } from "@/constants";
+import { NAV_LINKS, WHATSAPP_LINK } from "@/constants";
 import { 
   Navbar as ResizableNavbar, 
   NavBody, 
@@ -29,7 +29,7 @@ const Navbar = () => {
       <NavBody>
         <NavbarLogo />
         <NavItems items={navItems} />
-        <NavbarButton href="" variant="primary">
+        <NavbarButton href={WHATSAPP_LINK} variant="primary" target="_blank" rel="noopener noreferrer">
           Reservar ahora
         </NavbarButton>
       </NavBody>
@@ -63,7 +63,7 @@ const Navbar = () => {
               {item.name}
             </a>
           ))}
-          <NavbarButton href="#" variant="primary" className="mt-4 bg-[#FF2400] text-white lg:bg-white lg:text-black">
+          <NavbarButton href={WHATSAPP_LINK} variant="primary" className="mt-4 bg-[#FF2400] text-white lg:bg-white lg:text-black" target="_blank" rel="noopener noreferrer">
             Reservar ahora
           </NavbarButton>
         </MobileNavMenu>
