@@ -1,3 +1,4 @@
+import { WHATSAPP_LINK } from "@/constants";
 import { ArrowRightIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -30,7 +31,7 @@ const Hero = () => {
                     </Container>
                     <Container delay={0.25} className="z-20">
                         <div className="flex items-center justify-center mt-2 sm:mt-3 md:mt-4 lg:mt-6 gap-x-4 px-2 sm:px-4">
-                            <Link href="#" className="flex items-center gap-2 group">
+                            <Link href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 group">
                                 <Button size="lg" className="bg-[#ff3131] hover:opacity-80 text-[#ffffff] border-0 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 md:py-3">
                                 <span>Empieza tu viaje</span>
                                     <ArrowRightIcon className="size-3 sm:size-4 md:size-5 lg:size-6 xl:size-7 group-hover:translate-x-1 transition-all duration-300" />

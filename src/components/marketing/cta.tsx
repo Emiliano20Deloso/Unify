@@ -1,5 +1,6 @@
 "use client";
 
+import { WHATSAPP_LINK } from "@/constants";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Container from "../global/container";
@@ -43,7 +44,7 @@ const CTA = () => {
                     <h2 className="text-xl md:text-5xl lg:text-6xl font-heading font-medium !leading-snug text-foreground">
                     Tus mañanas pueden empezar mejor…<br /> <span className="font-subheading italic text-[#08fefe]">solo necesitas un viaje que esté a tu altura .</span>
                     </h2>
-                    <Link href="#pricing" className="mt-8">
+                    <Link href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="mt-8">
                         <Button size="xl"  className="bg-[#08fefe] hover:opacity-80 text-[#0A0F0F] border-0 text-lg md:text-xl lg:text-2xl">
                         Reserva tu próximo viaje 
                         </Button>
