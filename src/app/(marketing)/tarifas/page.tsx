@@ -135,7 +135,7 @@ export default function TarifasPage() {
                         msOverflowStyle: "none",
                     }}
                 >
-                    {ROUTES.map((route, idx) => (
+                    {ROUTES.map((route) => (
                         <RouteCard key={route.id} route={route} ctaText={t.pricing.cta} />
                     ))}
                     {/* Spacer at end */}
