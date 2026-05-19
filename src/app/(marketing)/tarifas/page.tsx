@@ -136,7 +136,7 @@ export default function TarifasPage() {
                     }}
                 >
                     {ROUTES.map((route, idx) => (
-                        <RouteCard key={route.id} route={route} idx={idx} ctaText={t.pricing.cta} />
+                        <RouteCard key={route.id} route={route} ctaText={t.pricing.cta} />
                     ))}
                     {/* Spacer at end */}
                     <div className="shrink-0 w-4" />
@@ -162,9 +162,8 @@ export default function TarifasPage() {
     );
 }
 
-function RouteCard({ route, idx, ctaText }: {
+function RouteCard({ route, ctaText }: {
     route: typeof ROUTES[0];
-    idx: number;
     ctaText: string;
 }) {
     return (
