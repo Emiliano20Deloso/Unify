@@ -7,6 +7,36 @@ import Image from "next/image";
 import Link from "next/link";
 import Container from "@/components/global/container";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+
+function LiveClock() {
+    const [time, setTime] = useState<Date | null>(null);
+
+    useEffect(() => {
+        setTime(new Date());
+        const id = setInterval(() => setTime(new Date()), 1000);
+        return () => clearInterval(id);
+    }, []);
+
+    if (!time) return null;
+
+    const hh = time.getHours().toString().padStart(2, "0");
+    const mm = time.getMinutes().toString().padStart(2, "0");
+    const ss = time.getSeconds().toString().padStart(2, "0");
+    const date = time.toLocaleDateString("es-MX", { weekday: "long", day: "numeric", month: "long" });
+
+    return (
+        <div className="flex flex-col items-end gap-1">
+            <div className="flex items-end gap-1.5 tabular-nums">
+                <span className="text-4xl lg:text-5xl font-bold text-white tracking-tight leading-none">
+                    {hh}<span className="text-[#FF2400] animate-pulse">:</span>{mm}
+                </span>
+                <span className="text-lg font-medium text-white/30 pb-0.5">{ss}</span>
+            </div>
+            <p className="text-xs text-white/35 capitalize">{date}</p>
+        </div>
+    );
+}
 
 const ROUTES = [
     {
@@ -70,17 +100,23 @@ export default function TarifasPage() {
             {/* Header */}
             <div className="w-full px-6 md:px-12 lg:px-20 pt-36 pb-16">
                 <Container>
-                    <div className="flex flex-col gap-4 max-w-2xl">
-                        <p className="text-xs uppercase tracking-[0.3em] text-[#FF2400]/70 font-medium">
-                            {t.nav.tarifas}
-                        </p>
-                        <h1 className="text-4xl lg:text-6xl font-bold text-white leading-tight">
-                            Rutas{" "}
-                            <span className="italic font-light text-white/50">populares</span>
-                        </h1>
-                        <p className="text-white/45 text-base lg:text-lg max-w-lg leading-relaxed">
-                            Cotizaciones orientativas para las rutas más solicitadas. El precio final depende del tráfico y hora del servicio.
-                        </p>
+                    <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-8">
+                        <div className="flex flex-col gap-4 max-w-2xl">
+                            <p className="text-xs uppercase tracking-[0.3em] text-[#FF2400]/70 font-medium">
+                                {t.nav.tarifas}
+                            </p>
+                            <h1 className="text-4xl lg:text-6xl font-bold text-white leading-tight">
+                                Rutas{" "}
+                                <span className="italic font-light text-white/50">populares</span>
+                            </h1>
+                            <p className="text-white/45 text-base lg:text-lg max-w-lg leading-relaxed">
+                                Cotizaciones orientativas para las rutas más solicitadas. El precio final depende del tráfico y hora del servicio.
+                            </p>
+                        </div>
+                        <div className="shrink-0 flex flex-col items-start sm:items-end gap-2 px-5 py-4 rounded-2xl bg-white/[0.03] border border-white/8">
+                            <p className="text-[10px] uppercase tracking-[0.25em] text-[#FF2400]/60 font-medium">Hora local · CDMX</p>
+                            <LiveClock />
+                        </div>
                     </div>
                 </Container>
             </div>
