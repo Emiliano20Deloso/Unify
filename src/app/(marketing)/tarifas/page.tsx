@@ -17,7 +17,7 @@ const ROUTES = [
         toFull: "Aeropuerto Internacional Ciudad de México",
         distance: "~25 km",
         time: "~35 min",
-        image: "/images/Viajesyneg.jpg",
+        image: "/images/Tarifas/Aero.jpg",
     },
     {
         id: 2,
@@ -27,7 +27,7 @@ const ROUTES = [
         toFull: "Autódromo Hermanos Rodríguez",
         distance: "~22 km",
         time: "~30 min",
-        image: "/images/priv2.jpg",
+        image: "/images/Tarifas/tari2.jpg",
     },
     {
         id: 3,
@@ -37,7 +37,7 @@ const ROUTES = [
         toFull: "Tepoztlán, Morelos",
         distance: "~100 km",
         time: "~1h 30 min",
-        image: "/images/priv3.jpg",
+        image: "/images/Tarifas/tepoz.jpg",
     },
     {
         id: 4,
@@ -47,7 +47,7 @@ const ROUTES = [
         toFull: "Aeropuerto Internacional de Toluca",
         distance: "~75 km",
         time: "~1 hr",
-        image: "/images/priv.jpg",
+        image: "/images/Tarifas/tari3.jpg",
     },
     {
         id: 5,
@@ -57,7 +57,7 @@ const ROUTES = [
         toFull: "Centro Comercial Perisur",
         distance: "~15 km",
         time: "~25 min",
-        image: "/images/interior.jpg",
+        image: "/images/Tarifas/tari4.jpg",
     },
 ];
 
