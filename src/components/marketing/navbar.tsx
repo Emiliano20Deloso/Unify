@@ -13,7 +13,7 @@ import type { Lang } from "@/translations";
 const NAV_KEYS = ["inicio", "servicios", "tarifas", "about", "contacto"] as const;
 const NAV_HREFS: Record<string, string> = {
     inicio: "/",
-    servicios: "/servicios",
+    servicios: "/#servicios",
     tarifas: "/tarifas",
     about: "#nosotros",
     contacto: "#contacto",
