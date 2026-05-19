@@ -12,7 +12,7 @@ const Pricing = () => {
     const { t } = useLanguage();
 
     return (
-        <div className="relative flex flex-col items-center justify-center w-full py-24">
+        <div id="servicios" className="relative flex flex-col items-center justify-center w-full py-24">
             <Container>
                 <div className="flex flex-col items-center text-center gap-3 max-w-2xl mx-auto mb-14">
                     <p className="text-xs uppercase tracking-[0.3em] text-[#FF2400]/70 font-medium">
