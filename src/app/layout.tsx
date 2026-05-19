@@ -4,6 +4,7 @@ import { generateMetadata } from "@/utils";
 import { base, heading } from "@/constants";
 import { Toaster } from "@/components/ui/sonner";
 import { subheading } from "@/constants/fonts";
+import { LanguageProvider } from "@/contexts/language-context";
 
 export const metadata = generateMetadata();
 
@@ -16,15 +17,17 @@ export default function RootLayout({
         <html lang="es" suppressHydrationWarning>
             <body
                 className={cn(
-                    "min-h-screen bg-red-600 text-foreground antialiased font-heading overflow-x-hidden !scrollbar-hide",
+                    "min-h-screen bg-black text-foreground antialiased font-heading overflow-x-hidden",
                     base.variable,
                     heading.variable,
                     subheading.variable,
                 )}
             >
-                    <Toaster richColors theme="light" position="top-right" />
+                <LanguageProvider>
+                    <Toaster richColors theme="dark" position="top-right" />
                     {children}
+                </LanguageProvider>
             </body>
         </html>
     );
-};
+}

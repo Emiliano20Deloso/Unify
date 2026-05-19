@@ -1,151 +1,103 @@
-import Link from "next/link";
+"use client";
+
+import { useLanguage } from "@/contexts/language-context";
+import { WHATSAPP_LINK } from "@/constants";
 import Image from "next/image";
-import Container from "../global/container";
-import Icons from "../global/icons";
+import Link from "next/link";
 
 const Footer = () => {
+    const { t } = useLanguage();
+
+    type FooterLink = { label: string; href: string; external?: boolean };
+    type FooterCol = { heading: string; links: FooterLink[] };
+
+    const columns: FooterCol[] = [
+        {
+            heading: t.nav.servicios,
+            links: [
+                { label: t.nav.inicio, href: "/" },
+                { label: t.nav.servicios, href: "/servicios" },
+                { label: t.nav.tarifas, href: "#tarifas" },
+            ],
+        },
+        {
+            heading: t.nav.about,
+            links: [
+                { label: t.nav.about, href: "#nosotros" },
+                { label: t.nav.contacto, href: "#contacto" },
+                { label: "WhatsApp", href: WHATSAPP_LINK, external: true },
+            ],
+        },
+        {
+            heading: "Legal",
+            links: [
+                { label: "Privacidad", href: "#" },
+                { label: "Términos", href: "#" },
+            ],
+        },
+    ];
+
     return (
-        <footer className="flex flex-col relative items-center justify-center border-t border-foreground/5 pt-16 pb-8 px-6 lg:px-8 w-full max-w-6xl mx-auto lg:pt-32 bg-[#0a0f0fb3] text-white">
-            <div className="grid gap-8 xl:grid-cols-3 xl:gap-8 w-full">
-                <Container className="bg-[#0a0f0fb3] text-white"> 
-                    <div className="flex flex-col items-start justify-start md:max-w-[200px]">
-                        <div className="flex items-center gap-2">
-                            <Image 
-                                src="/icons/iconouni.png" 
-                                alt="UNIFY Logo" 
-                                width={20} 
-                                height={20} 
-                                className="w-auto h-5"
+        <footer className="relative w-full border-t border-white/5 bg-black">
+            {/* Top red accent line */}
+            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#FF2400]/30 to-transparent" />
+
+            <div className="max-w-screen-xl mx-auto px-6 md:px-12 py-16">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
+
+                    {/* Brand column */}
+                    <div className="md:col-span-1 flex flex-col gap-5">
+                        <Link href="/" className="flex items-center gap-2.5">
+                            <Image
+                                src="/icons/iconouni.png"
+                                alt="UNIFY"
+                                width={24}
+                                height={24}
+                                className="w-auto h-6"
                             />
-                            <span className="text-base md:text-lg font-medium text-white">
-                                UNIFY
-                            </span>
-                        </div>
-                        <p className="text-muted-foreground mt-4 text-sm text-start">
-                            Transporte de ultra lujo donde redefinimos lo que es viajar con seguridad y confort al nivel más alto.
+                            <span className="text-lg font-bold text-white tracking-tight">UNIFY</span>
+                        </Link>
+                        <p className="text-sm text-white/65 leading-relaxed max-w-[220px]">
+                            Transporte de lujo en flota exclusiva Tesla. Silencio, potencia y sofisticación.
                         </p>
                     </div>
-                </Container>
 
-                <div className="grid-cols-2 gap-8 grid mt-16 xl:col-span-2 xl:mt-0 bg-[#0a0f0fb3] text-white">
-                    <div className="md:grid md:grid-cols-2 md:gap-8">
-                        <Container delay={0.1} className="h-auto bg-[#0a0f0fb3] text-white">
-                            <h3 className="text-base font-medium text-foreground">
-                                Product
-                            </h3>
-                            <ul className="mt-4 text-sm text-muted-foreground space-y-4">
-                                <li className="mt-2">
-                                    <Link href="#" className="hover:text-gray-300 transition-all duration-300">
-                                        Features
-                                    </Link>
-                                </li>
-                                <li className="mt-2">
-                                    <Link href="#" className="hover:text-gray-300 transition-all duration-300">
-                                        Pricing
-                                    </Link>
-                                </li>
-                                <li className="mt-2">
-                                    <Link href="#" className="hover:text-gray-300 transition-all duration-300">
-                                        Testimonials
-                                    </Link>
-                                </li>
-                                <li className="mt-2">
-                                    <Link href="#" className="hover:text-gray-300 transition-all duration-300">
-                                        Supported Languages
-                                    </Link>
-                                </li>
+                    {/* Link columns */}
+                    {columns.map((col) => (
+                        <div key={col.heading} className="flex flex-col gap-4">
+                            <p className="text-xs uppercase tracking-[0.2em] text-white/45 font-medium">
+                                {col.heading}
+                            </p>
+                            <ul className="flex flex-col gap-3">
+                                {col.links.map((link) => (
+                                    <li key={link.label}>
+                                        <Link
+                                            href={link.href}
+                                            target={link.external ? "_blank" : undefined}
+                                            rel={link.external ? "noopener noreferrer" : undefined}
+                                            className="text-sm text-white/65 hover:text-white transition-colors duration-200"
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    </li>
+                                ))}
                             </ul>
-                        </Container>
-                        <Container delay={0.2} className="h-auto bg-[#0a0f0fb3] text-white">
-                            <div className="mt-10 md:mt-0 flex flex-col">
-                                <h3 className="text-base font-medium text-foreground">
-                                    Solutions
-                                </h3>
-                                <ul className="mt-4 text-sm text-muted-foreground space-y-4">
-                                    <li>
-                                        <Link href="#" className="link hover:text-foreground transition-all duration-300">
-                                            Content Creators
-                                        </Link>
-                                    </li>
-                                    <li className="mt-2">
-                                        <Link href="#" className="link hover:text-foreground transition-all duration-300">
-                                            Businesses
-                                        </Link>
-                                    </li>
-                                    <li className="mt-2">
-                                        <Link href="#" className="link hover:text-foreground transition-all duration-300">
-                                            Education
-                                        </Link>
-                                    </li>
-                                    <li className="mt-2">
-                                        <Link href="#" className="link hover:text-foreground transition-all duration-300">
-                                            Enterprise
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </div>
-                        </Container>
-                    </div>
-                    <div className="md:grid md:grid-cols-2 md:gap-8">
-                        <Container delay={0.3} className="h-auto bg-[#0a0f0fb3] text-white">
-                            <h3 className="text-base font-medium text-foreground">
-                                Resources
-                            </h3>
-                            <ul className="mt-4 text-sm text-muted-foreground space-y-4">
-                                <li className="mt-2">
-                                    <Link href="#" className="link hover:text-foreground transition-all duration-300">
-                                        Blog
-                                    </Link>
-                                </li>
-                                <li className="mt-2">
-                                    <Link href="#" className="link hover:text-foreground transition-all duration-300">
-                                        Translation Guides
-                                    </Link>
-                                </li>
-                                <li className="mt-2">
-                                    <Link href="#" className="link hover:text-foreground transition-all duration-300">
-                                        Support
-                                    </Link>
-                                </li>
-                            </ul>
-                        </Container>
-                        <Container delay={0.4} className="h-auto bg-[#0a0f0fb3] text-white">
-                            <div className="mt-10 md:mt-0 flex flex-col">
-                                <h3 className="text-base font-medium text-foreground">
-                                    Company
-                                </h3>
-                                <ul className="mt-4 text-sm text-muted-foreground space-y-4">
-                                    <li>
-                                        <Link href="#" className="link hover:text-foreground transition-all duration-300">
-                                            About Us
-                                        </Link>
-                                    </li>
-                                    <li className="mt-2">
-                                        <Link href="#" className="link hover:text-foreground transition-all duration-300">
-                                            Privacy Policy
-                                        </Link>
-                                    </li>
-                                    <li className="mt-2">
-                                        <Link href="#" className="link hover:text-foreground transition-all duration-300">
-                                            Terms & Conditions
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </div>
-                        </Container>
-                    </div>
+                        </div>
+                    ))}
                 </div>
-            </div>
 
-            <Container delay={0.5} className="w-full relative mt-12 lg:mt-20">
-                <div className="mt-8 md:flex md:items-center justify-center footer w-full">
-                    <p className="text-sm text-muted-foreground mt-8 md:mt-0">
-                        &copy; {new Date().getFullYear()} UNIFY. All rights reserved.
+                {/* Bottom bar */}
+                <div className="mt-16 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <p className="text-xs text-white/45">
+                        © {new Date().getFullYear()} UNIFY. All rights reserved.
+                    </p>
+                    <p className="text-xs text-white/70 italic">
+                        The luxury of travelling green
                     </p>
                 </div>
-            </Container>
+            </div>
         </footer>
-    )
+    );
 };
 
-export default Footer
+export default Footer;

@@ -1,63 +1,81 @@
+"use client";
+
+import { useLanguage } from "@/contexts/language-context";
 import { WHATSAPP_LINK } from "@/constants";
-import { ArrowRightIcon } from "lucide-react";
+import { ArrowRightIcon, ChevronDownIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import Container from "../global/container";
-import Icons from "../global/icons";
 import { Button } from "../ui/button";
-import { OrbitingCircles } from "../ui/orbiting-circles";
 
 const Hero = () => {
+    const { t } = useLanguage();
+
     return (
-        <div className="relative flex flex-col items-center justify-start sm:justify-center w-full min-h-[85vh] sm:min-h-[90vh] px-4 sm:px-6 lg:px-8 pt-8 sm:pt-0">
+        <section className="relative w-full min-h-screen flex items-end overflow-hidden">
 
-                <div className="absolute flex lg:hidden size-40 rounded-full blur-[10rem] top-0 left-1/2 -translate-x-1/2 -z-10"></div>
+            {/* Background image */}
+            <div className="absolute inset-0 -z-10">
+                <Image
+                    src="/Hero.jpg"
+                    alt="Tesla Model 3 Performance — UNIFY"
+                    fill
+                    className="object-cover object-center"
+                    priority
+                    quality={90}
+                />
+                {/* Dark overlays */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/35 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+            </div>
 
-            {/* red glow behind hero content */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] lg:w-[600px] lg:h-[600px] rounded-full bg-gradient-to-br from-[#FF2400]/20 via-[#FF2400]/10 to-transparent blur-3xl -z-10"></div>
+            {/* Content — bottom-left */}
+            <div className="relative z-10 w-full px-6 lg:px-20 xl:px-28 pb-28 lg:pb-40">
+                <div className="max-w-3xl flex flex-col gap-6">
 
-            <div className="flex flex-col items-center justify-start sm:justify-center gap-y-2 sm:gap-y-3 md:gap-y-4 lg:gap-y-6 xl:gap-y-8 relative z-10 w-full">
-                <div className="flex flex-col items-center justify-center text-center gap-y-1.5 sm:gap-y-2 md:gap-y-3 lg:gap-y-4 w-full">
-                    <Container delay={0.15}>
-                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold text-center !leading-tight max-w-4xl mx-auto text-white px-2 sm:px-4">
-                        UNIFY
-                    </h1>
-
-                    </Container>
-                    <Container delay={0.2}>
-                        <p className="max-w-xl mx-auto mt-0.5 sm:mt-1 md:mt-2 text-base sm:text-sm md:text-base lg:text-xl xl:text-2xl text-center text-muted-foreground px-2 sm:px-4">
-                            The luxury of travelling green
+                    <div>
+                        <h1 className="text-[5rem] sm:text-[7rem] lg:text-[9rem] xl:text-[11rem] font-bold text-white leading-none tracking-tight">
+                            UNIFY
+                        </h1>
+                        <p className="mt-3 text-lg sm:text-2xl lg:text-3xl text-white/50 font-light italic tracking-wide">
+                            {t.hero.tagline}
                         </p>
-                    </Container>
-                    <Container delay={0.25} className="z-20">
-                        <div className="flex items-center justify-center mt-2 sm:mt-3 md:mt-4 lg:mt-6 gap-x-4 px-2 sm:px-4">
-                            <Link href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 group">
-                                <Button size="lg" className="bg-[#ff3131] hover:opacity-80 text-[#ffffff] border-0 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 md:py-3">
-                                <span>Empieza tu viaje</span>
-                                    <ArrowRightIcon className="size-3 sm:size-4 md:size-5 lg:size-6 xl:size-7 group-hover:translate-x-1 transition-all duration-300" />
-                                </Button>
-                            </Link>
-                        </div>
-                    </Container>
-                    <Container delay={0.3} className="relative w-full px-2 sm:px-4 md:px-6 lg:px-0">
-                        <div className="relative rounded-lg sm:rounded-xl lg:rounded-[32px] mt-2 sm:mt-3 md:mt-4 lg:mt-6 xl:mt-8 -translate-y-1 sm:-translate-y-2 md:-translate-y-4 lg:-translate-y-6 max-w-6xl mx-auto w-full">
-                            <div className="rounded-lg lg:rounded-[22px] overflow-hidden">
-                                <Image
-                                    src="/5.png"
-                                    alt="dashboard"
-                                    width={2200}
-                                    height={1240}
-                                    className="rounded-lg lg:rounded-[20px] scale-95 sm:scale-100 md:scale-105 lg:scale-110 w-full h-auto"
-                                />
+                    </div>
+
+                    <p className="max-w-md text-base lg:text-lg text-white/40 leading-relaxed">
+                        {t.hero.description}
+                    </p>
+
+                    <div className="flex items-center gap-5 mt-2">
+                        <Link href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
+                            <Button
+                                size="lg"
+                                className="group bg-[#ff3131] hover:bg-[#ff3131]/90 text-white border-0 text-base px-10 h-14 rounded-full shadow-[0_0_50px_rgba(255,49,49,0.45)] hover:shadow-[0_0_70px_rgba(255,49,49,0.65)] transition-all duration-300"
+                            >
+                                {t.hero.cta}
+                                <ArrowRightIcon className="ml-2 size-5 group-hover:translate-x-1 transition-transform duration-300" />
+                            </Button>
+                        </Link>
+
+                        <div className="hidden sm:flex items-center gap-6 pl-4 border-l border-white/10">
+                            <div>
+                                <p className="text-2xl font-bold text-white">+1,500</p>
+                                <p className="text-xs text-white/40 uppercase tracking-wider">{t.hero.tripsLabel}</p>
+                            </div>
+                            <div>
+                                <p className="text-2xl font-bold text-white">98%</p>
+                                <p className="text-xs text-white/40 uppercase tracking-wider">{t.hero.satisfactionLabel}</p>
                             </div>
                         </div>
-                        <div className="absolute bottom-0 inset-x-0 w-full h-1/2"></div>
-                    </Container>
-
+                    </div>
                 </div>
             </div>
-        </div>
-    )
+
+            {/* Scroll indicator */}
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1.5 opacity-40">
+                <ChevronDownIcon className="size-5 text-white animate-bounce" />
+            </div>
+        </section>
+    );
 };
 
-export default Hero
+export default Hero;
