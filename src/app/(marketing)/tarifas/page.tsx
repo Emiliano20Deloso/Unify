@@ -9,7 +9,7 @@ import Container from "@/components/global/container";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 
-function LiveClock() {
+function LiveClock({ locale }: { locale: string }) {
     const [time, setTime] = useState<Date | null>(null);
 
     useEffect(() => {
@@ -23,7 +23,7 @@ function LiveClock() {
     const hh = time.getHours().toString().padStart(2, "0");
     const mm = time.getMinutes().toString().padStart(2, "0");
     const ss = time.getSeconds().toString().padStart(2, "0");
-    const date = time.toLocaleDateString("es-MX", { weekday: "long", day: "numeric", month: "long" });
+    const date = time.toLocaleDateString(locale, { weekday: "long", day: "numeric", month: "long" });
 
     return (
         <div className="flex flex-col items-end gap-1">
@@ -45,6 +45,7 @@ const ROUTES = [
         to: "AICM",
         fromFull: "Polanco, CDMX",
         toFull: "Aeropuerto Internacional Ciudad de México",
+        toFullEn: "Mexico City International Airport",
         distance: "~25 km",
         time: "~35 min",
         image: "/images/Tarifas/Aero.jpg",
@@ -55,6 +56,7 @@ const ROUTES = [
         to: "Autódromo",
         fromFull: "Santa Fe, CDMX",
         toFull: "Autódromo Hermanos Rodríguez",
+        toFullEn: "Hermanos Rodríguez Circuit",
         distance: "~22 km",
         time: "~30 min",
         image: "/images/Tarifas/tari2.jpg",
@@ -65,6 +67,7 @@ const ROUTES = [
         to: "Tepoztlán",
         fromFull: "Colonia Roma, CDMX",
         toFull: "Tepoztlán, Morelos",
+        toFullEn: "Tepoztlán, Morelos",
         distance: "~100 km",
         time: "~1h 30 min",
         image: "/images/Tarifas/tepoz.jpg",
@@ -75,6 +78,7 @@ const ROUTES = [
         to: "Aeropuerto Toluca",
         fromFull: "Lomas de Chapultepec, CDMX",
         toFull: "Aeropuerto Internacional de Toluca",
+        toFullEn: "Toluca International Airport",
         distance: "~75 km",
         time: "~1 hr",
         image: "/images/Tarifas/tari3.jpg",
@@ -85,6 +89,7 @@ const ROUTES = [
         to: "Perisur",
         fromFull: "Colonia Condesa, CDMX",
         toFull: "Centro Comercial Perisur",
+        toFullEn: "Perisur Shopping Center",
         distance: "~15 km",
         time: "~25 min",
         image: "/images/Tarifas/tari4.jpg",
@@ -92,7 +97,8 @@ const ROUTES = [
 ];
 
 export default function TarifasPage() {
-    const { t } = useLanguage();
+    const { t, lang } = useLanguage();
+    const locale = lang === "en" ? "en-US" : "es-MX";
 
     return (
         <div className="min-h-screen bg-black">
@@ -106,16 +112,16 @@ export default function TarifasPage() {
                                 {t.nav.tarifas}
                             </p>
                             <h1 className="text-4xl lg:text-6xl font-bold text-white leading-tight">
-                                Rutas{" "}
-                                <span className="italic font-light text-white/50">populares</span>
+                                {t.tarifas.title}{" "}
+                                <span className="italic font-light text-white/50">{t.tarifas.titleHighlight}</span>
                             </h1>
                             <p className="text-white/45 text-base lg:text-lg max-w-lg leading-relaxed">
-                                Cotizaciones orientativas para las rutas más solicitadas. El precio final depende del tráfico y hora del servicio.
+                                {t.tarifas.subtitle}
                             </p>
                         </div>
                         <div className="shrink-0 flex flex-col items-start sm:items-end gap-2 px-5 py-4 rounded-2xl bg-white/[0.03] border border-white/8">
-                            <p className="text-[10px] uppercase tracking-[0.25em] text-[#FF2400]/60 font-medium">Hora local · CDMX</p>
-                            <LiveClock />
+                            <p className="text-[10px] uppercase tracking-[0.25em] text-[#FF2400]/60 font-medium">{t.tarifas.clockLabel}</p>
+                            <LiveClock locale={locale} />
                         </div>
                     </div>
                 </Container>
@@ -123,7 +129,6 @@ export default function TarifasPage() {
 
             {/* Scrollable cards */}
             <div className="relative">
-                {/* Fade right edge */}
                 <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-black to-transparent z-10" />
 
                 <div
@@ -136,9 +141,15 @@ export default function TarifasPage() {
                     }}
                 >
                     {ROUTES.map((route) => (
-                        <RouteCard key={route.id} route={route} ctaText={t.pricing.cta} />
+                        <RouteCard
+                            key={route.id}
+                            route={route}
+                            lang={lang}
+                            originLabel={t.tarifas.origin}
+                            destinationLabel={t.tarifas.destination}
+                            ctaText={t.pricing.cta}
+                        />
                     ))}
-                    {/* Spacer at end */}
                     <div className="shrink-0 w-4" />
                 </div>
             </div>
@@ -147,12 +158,12 @@ export default function TarifasPage() {
             <Container>
                 <div className="px-6 md:px-12 lg:px-20 pt-8 pb-24 flex flex-col sm:flex-row items-start sm:items-center gap-4 border-t border-white/5 mx-6 md:mx-12 lg:mx-20">
                     <div>
-                        <p className="text-white font-medium">¿Tu ruta no está aquí?</p>
-                        <p className="text-white/40 text-sm">Cotiza cualquier destino directamente por WhatsApp.</p>
+                        <p className="text-white font-medium">{t.tarifas.noRoute}</p>
+                        <p className="text-white/40 text-sm">{t.tarifas.noRouteDesc}</p>
                     </div>
                     <Link href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="sm:ml-auto shrink-0">
                         <Button className="group bg-[#ff3131] hover:bg-[#ff3131]/90 text-white rounded-full px-6 h-11">
-                            Cotizar mi ruta
+                            {t.tarifas.quoteBtn}
                             <ArrowRightIcon className="ml-2 size-4 group-hover:translate-x-0.5 transition-transform duration-200" />
                         </Button>
                     </Link>
@@ -162,10 +173,15 @@ export default function TarifasPage() {
     );
 }
 
-function RouteCard({ route, ctaText }: {
+function RouteCard({ route, lang, originLabel, destinationLabel, ctaText }: {
     route: typeof ROUTES[0];
+    lang: string;
+    originLabel: string;
+    destinationLabel: string;
     ctaText: string;
 }) {
+    const destination = lang === "en" ? route.toFullEn : route.toFull;
+
     return (
         <div
             className="shrink-0 w-[300px] sm:w-[340px] flex flex-col rounded-2xl bg-[#0a0a0a] border border-white/8 hover:border-[#FF2400]/30 overflow-hidden transition-all duration-300 group"
@@ -191,7 +207,6 @@ function RouteCard({ route, ctaText }: {
 
             {/* Content */}
             <div className="flex flex-col gap-4 p-5 flex-1">
-                {/* Origin → Destination */}
                 <div className="flex flex-col gap-2.5">
                     <div className="flex items-start gap-2.5">
                         <div className="mt-1.5 flex flex-col items-center gap-1 shrink-0">
@@ -201,12 +216,12 @@ function RouteCard({ route, ctaText }: {
                         </div>
                         <div className="flex flex-col gap-2.5 flex-1">
                             <div>
-                                <p className="text-[10px] text-white/30 uppercase tracking-wider">Origen</p>
+                                <p className="text-[10px] text-white/30 uppercase tracking-wider">{originLabel}</p>
                                 <p className="text-sm font-medium text-white/80 leading-tight">{route.fromFull}</p>
                             </div>
                             <div>
-                                <p className="text-[10px] text-white/30 uppercase tracking-wider">Destino</p>
-                                <p className="text-sm font-medium text-white/80 leading-tight">{route.toFull}</p>
+                                <p className="text-[10px] text-white/30 uppercase tracking-wider">{destinationLabel}</p>
+                                <p className="text-sm font-medium text-white/80 leading-tight">{destination}</p>
                             </div>
                         </div>
                     </div>
@@ -225,12 +240,7 @@ function RouteCard({ route, ctaText }: {
                 </div>
 
                 {/* CTA */}
-                <Link
-                    href={WHATSAPP_LINK}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-auto"
-                >
+                <Link href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="mt-auto">
                     <Button
                         size="sm"
                         className="w-full bg-white/5 hover:bg-[#ff3131] text-white/70 hover:text-white border border-white/10 hover:border-[#ff3131] rounded-xl h-10 text-xs font-medium transition-all duration-300"

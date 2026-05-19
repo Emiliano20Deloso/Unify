@@ -166,6 +166,17 @@ export const translations = {
             subtitle: "Reserva en minutos vía WhatsApp. Tu Tesla estará listo cuando tú lo estés.",
             button: "Reserva tu próximo viaje",
         },
+        tarifas: {
+            title: "Rutas",
+            titleHighlight: "populares",
+            subtitle: "Cotizaciones orientativas para las rutas más solicitadas. El precio final depende del tráfico y hora del servicio.",
+            clockLabel: "Hora local · CDMX",
+            origin: "Origen",
+            destination: "Destino",
+            noRoute: "¿Tu ruta no está aquí?",
+            noRouteDesc: "Cotiza cualquier destino directamente por WhatsApp.",
+            quoteBtn: "Cotizar mi ruta",
+        },
     },
 
     en: {
@@ -332,6 +343,17 @@ export const translations = {
             titleHighlight: "You just need a ride that matches your level.",
             subtitle: "Book in minutes via WhatsApp. Your Tesla will be ready when you are.",
             button: "Book your next ride",
+        },
+        tarifas: {
+            title: "Popular",
+            titleHighlight: "routes",
+            subtitle: "Indicative quotes for the most requested routes. Final price depends on traffic and time of service.",
+            clockLabel: "Local time · CDMX",
+            origin: "Origin",
+            destination: "Destination",
+            noRoute: "Can't find your route?",
+            noRouteDesc: "Get a quote for any destination directly on WhatsApp.",
+            quoteBtn: "Quote my route",
         },
     },
 } as const;
