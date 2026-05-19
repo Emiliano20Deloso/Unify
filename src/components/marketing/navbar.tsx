@@ -14,7 +14,7 @@ const NAV_KEYS = ["inicio", "servicios", "tarifas", "about", "contacto"] as cons
 const NAV_HREFS: Record<string, string> = {
     inicio: "/",
     servicios: "/servicios",
-    tarifas: "#tarifas",
+    tarifas: "/tarifas",
     about: "#nosotros",
     contacto: "#contacto",
 };
