@@ -24,8 +24,8 @@ const Hero = () => {
                     quality={90}
                 />
                 {/* Dark overlays */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/35 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent" />
             </div>
 
             {/* Content — bottom-left */}

@@ -106,7 +106,7 @@ const Navbar = () => {
                     <span className="text-lg font-bold text-white tracking-tight">UNIFY</span>
                 </Link>
                 <div className="flex items-center gap-3">
-                    <LangToggle lang={lang} setLang={setLang} compact />
+                    <LangToggle lang={lang} setLang={setLang} />
                     <button
                         onClick={() => setMobileOpen(!mobileOpen)}
                         className="text-white p-1"
@@ -158,11 +158,9 @@ const Navbar = () => {
 const LangToggle = ({
     lang,
     setLang,
-    compact = false,
 }: {
     lang: Lang;
     setLang: (l: Lang) => void;
-    compact?: boolean;
 }) => {
     return (
         <div className="flex items-center gap-0.5 p-0.5 rounded-full bg-white/6 border border-white/10">
@@ -175,7 +173,7 @@ const LangToggle = ({
                         : "text-white/45 hover:text-white/75"
                 )}
             >
-                {compact ? "ES" : "🇲🇽 ES"}
+                ES
             </button>
             <button
                 onClick={() => setLang("en")}
@@ -186,7 +184,7 @@ const LangToggle = ({
                         : "text-white/45 hover:text-white/75"
                 )}
             >
-                {compact ? "EN" : "🇺🇸 EN"}
+                EN
             </button>
         </div>
     );

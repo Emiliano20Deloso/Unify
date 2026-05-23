@@ -2,7 +2,6 @@
 
 import { useLanguage } from "@/contexts/language-context";
 import { WHATSAPP_LINK } from "@/constants";
-import { motion } from "framer-motion";
 import { ArrowRightIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -27,20 +26,11 @@ const CTA = () => {
                             quality={80}
                         />
                         {/* Dark overlay for readability */}
-                        <div className="absolute inset-0 bg-black/75" />
+                        <div className="absolute inset-0 bg-black/35" />
                     </div>
 
-                    {/* Rotating red glow */}
-                    <motion.div
-                        className="absolute -bottom-1/4 left-1/2 -translate-x-1/2 w-72 h-40 lg:w-[500px] lg:h-56 rounded-full blur-[6rem] lg:blur-[10rem] -z-10 pointer-events-none"
-                        style={{
-                            background: "conic-gradient(from 0deg at 50% 50%, #FF2400 0deg, #7f0000 180deg, #FF2400 360deg)",
-                        }}
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                    />
 
-                    {/* Top border glow */}
+{/* Top border glow */}
                     <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#FF2400]/60 to-transparent" />
                     {/* Bottom border glow */}
                     <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#FF2400]/30 to-transparent" />

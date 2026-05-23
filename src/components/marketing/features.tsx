@@ -2,17 +2,16 @@
 
 import { useLanguage } from "@/contexts/language-context";
 import { cn } from "@/lib";
-import { GemIcon, ShieldPlus, HandshakeIcon, HandCoinsIcon, BriefcaseBusiness } from "lucide-react";
 import Image from "next/image";
 import Container from "../global/container";
 import { MagicCard } from "../ui/magic-card";
 
 const FEATURES_META = [
-    { icon: GemIcon, image: "/images/interior.jpg" },
-    { icon: ShieldPlus, image: "/images/sentinel.jpg" },
-    { icon: HandshakeIcon, image: "/images/infoenter.jpg" },
-    { icon: HandCoinsIcon, image: "/images/tarifa.jpg" },
-    { icon: BriefcaseBusiness, image: "/images/priv2.jpg" },
+    { image: "/images/interior.jpg" },
+    { image: "/images/sentinel.jpg" },
+    { image: "/images/infoenter.jpg" },
+    { image: "/images/tarifa.jpg" },
+    { image: "/images/priv2.jpg" },
 ];
 
 const Features = () => {
@@ -60,10 +59,10 @@ const Features = () => {
 
                                         {/* Left: text */}
                                         <div className="flex flex-col justify-between gap-5 p-6 lg:p-8 flex-1">
-                                            <div className="flex items-center gap-3">
-                                                <div className="flex items-center justify-center size-9 rounded-xl bg-[#FF2400]/10 border border-[#FF2400]/20 shrink-0">
-                                                    <meta.icon className="size-4 text-[#FF2400]" />
-                                                </div>
+                                            <div>
+                                                <span className="text-[10px] font-bold tracking-[0.25em] text-[#FF2400]/50 uppercase block mb-1.5">
+                                                    {String(index + 1).padStart(2, "0")}
+                                                </span>
                                                 <h3 className="text-base font-semibold text-white">{item.title}</h3>
                                             </div>
 
@@ -132,10 +131,10 @@ const Features = () => {
                                 ) : (
                                     /* Normal card — vertical layout */
                                     <>
-                                        <div className="flex items-center gap-3 mb-3">
-                                            <div className="flex items-center justify-center size-9 rounded-xl bg-[#FF2400]/10 border border-[#FF2400]/20">
-                                                <meta.icon className="size-4 text-[#FF2400]" />
-                                            </div>
+                                        <div className="mb-4">
+                                            <span className="text-[10px] font-bold tracking-[0.25em] text-[#FF2400]/50 uppercase block mb-2">
+                                                {String(index + 1).padStart(2, "0")}
+                                            </span>
                                             <h3 className="text-base font-semibold text-white">{item.title}</h3>
                                         </div>
                                         <p className="text-sm text-white/40 leading-relaxed">{item.description}</p>
