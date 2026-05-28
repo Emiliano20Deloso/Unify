@@ -2,11 +2,13 @@
 
 import { useLanguage } from "@/contexts/language-context";
 import { cn } from "@/lib";
-import { WHATSAPP_LINK } from "@/constants";
-import { CheckIcon, ZapIcon } from "lucide-react";
-import Link from "next/link";
+import { CheckIcon, ZapIcon, CupSodaIcon, CandyIcon, NutIcon } from "lucide-react";
 import Container from "../global/container";
 import { Button } from "../ui/button";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
+import { QuoteDialog } from "./quote-form";
+
+const TIER_KEYS = ["practico", "select", "premium"] as const;
 
 const Pricing = () => {
     const { t } = useLanguage();
@@ -44,14 +46,10 @@ const Pricing = () => {
                                 </>
                             )}
 
-                            <div className="p-7 flex-1">
-                                <div className="flex items-start justify-between mb-5">
-                                    <div>
-                                        <h3 className="text-xl font-bold text-white">{tier.title}</h3>
-                                        <p className="text-sm text-white/40 mt-1.5 leading-relaxed max-w-[200px]">
-                                            {tier.desc}
-                                        </p>
-                                    </div>
+                            <div className="p-7 flex-1 flex flex-col">
+                                {/* Header */}
+                                <div className="flex items-start justify-between mb-2">
+                                    <h3 className="text-xl font-bold text-white">{tier.title}</h3>
                                     {tier.badge && (
                                         <span className="flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full bg-[#FF2400]/15 text-[#FF2400] border border-[#FF2400]/25 whitespace-nowrap">
                                             <ZapIcon className="size-3" />
@@ -60,7 +58,20 @@ const Pricing = () => {
                                     )}
                                 </div>
 
-                                <div className="space-y-2.5 mt-6">
+                                {/* Price */}
+                                <div className="mb-4">
+                                    <span className="text-3xl font-bold text-white">{tier.fromPrice}</span>
+                                    <span className="ml-1.5 text-xs text-white/30">MXN</span>
+                                    <p className="text-xs text-white/25 mt-0.5">{t.pricing.fromPriceNote}</p>
+                                </div>
+
+                                {/* Description */}
+                                <p className="text-sm text-white/40 leading-relaxed mb-5">
+                                    {tier.desc}
+                                </p>
+
+                                {/* Features */}
+                                <div className="space-y-2.5 flex-1">
                                     {tier.features.map((f, i) => (
                                         <div key={i} className="flex items-center gap-2.5">
                                             <div className={cn(
@@ -76,22 +87,49 @@ const Pricing = () => {
                                         </div>
                                     ))}
                                 </div>
-                            </div>
 
-                            <div className="p-7 pt-0">
-                                <Link href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
-                                    <Button
-                                        size="lg"
+                                {/* Snacks accordion */}
+                                <Accordion type="single" collapsible className="mt-4">
+                                    <AccordionItem
+                                        value="snacks"
                                         className={cn(
-                                            "w-full h-12 rounded-xl font-medium transition-all duration-300",
-                                            tier.badge
-                                                ? "bg-[#ff3131] hover:bg-[#ff3131]/90 text-white shadow-[0_0_30px_rgba(255,49,49,0.35)] hover:shadow-[0_0_50px_rgba(255,49,49,0.5)]"
-                                                : "bg-white/5 hover:bg-white/10 text-white border border-white/10"
+                                            "border-t",
+                                            tier.badge ? "border-[#FF2400]/15" : "border-white/8"
                                         )}
                                     >
-                                        {t.pricing.cta}
-                                    </Button>
-                                </Link>
+                                        <AccordionTrigger className="text-xs text-white/35 hover:text-white/60 py-3 hover:no-underline transition-colors">
+                                            {t.pricing.snacksLabel}
+                                        </AccordionTrigger>
+                                        <AccordionContent className="pb-1">
+                                            <div className="space-y-2">
+                                                <SnackRow icon={<CupSodaIcon className="size-3 text-white/30" />} value={tier.snacks.drink} />
+                                                <SnackRow icon={<CandyIcon className="size-3 text-white/30" />} value={tier.snacks.sweet} />
+                                                <SnackRow icon={<NutIcon className="size-3 text-white/30" />} value={tier.snacks.savory} />
+                                                <p className="text-[10px] text-white/20 pt-1">{t.pricing.snacksDisclaimer}</p>
+                                            </div>
+                                        </AccordionContent>
+                                    </AccordionItem>
+                                </Accordion>
+                            </div>
+
+                            {/* CTA */}
+                            <div className="p-7 pt-0">
+                                <QuoteDialog
+                                    initialTier={TIER_KEYS[idx]}
+                                    trigger={
+                                        <Button
+                                            size="lg"
+                                            className={cn(
+                                                "w-full h-12 rounded-xl font-medium transition-all duration-300",
+                                                tier.badge
+                                                    ? "bg-[#ff3131] hover:bg-[#ff3131]/90 text-white shadow-[0_0_30px_rgba(255,49,49,0.35)] hover:shadow-[0_0_50px_rgba(255,49,49,0.5)]"
+                                                    : "bg-white/5 hover:bg-white/10 text-white border border-white/10"
+                                            )}
+                                        >
+                                            {t.pricing.cta}
+                                        </Button>
+                                    }
+                                />
                             </div>
                         </div>
                     </Container>
@@ -100,5 +138,12 @@ const Pricing = () => {
         </div>
     );
 };
+
+const SnackRow = ({ icon, value }: { icon: React.ReactNode; value: string }) => (
+    <div className="flex items-center gap-2">
+        {icon}
+        <span className="text-xs text-white/45">{value}</span>
+    </div>
+);
 
 export default Pricing;

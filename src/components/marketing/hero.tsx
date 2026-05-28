@@ -1,11 +1,10 @@
 "use client";
 
 import { useLanguage } from "@/contexts/language-context";
-import { WHATSAPP_LINK } from "@/constants";
-import { ArrowRightIcon, ChevronDownIcon } from "lucide-react";
+import { ChevronDownIcon } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { Button } from "../ui/button";
+import { QuoteDialog } from "./quote-form";
 
 const Hero = () => {
     const { t } = useLanguage();
@@ -46,15 +45,17 @@ const Hero = () => {
                     </p>
 
                     <div className="flex items-center gap-5 mt-2">
-                        <Link href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
-                            <Button
-                                size="lg"
-                                className="group bg-[#ff3131] hover:bg-[#ff3131]/90 text-white border-0 text-base px-10 h-14 rounded-full shadow-[0_0_50px_rgba(255,49,49,0.45)] hover:shadow-[0_0_70px_rgba(255,49,49,0.65)] transition-all duration-300"
-                            >
-                                {t.hero.cta}
-                                <ArrowRightIcon className="ml-2 size-5 group-hover:translate-x-1 transition-transform duration-300" />
-                            </Button>
-                        </Link>
+                        <QuoteDialog
+                            trigger={
+                                <Button
+                                    size="lg"
+                                    className="group bg-[#ff3131] hover:bg-[#ff3131]/90 text-white border-0 text-base px-10 h-14 rounded-full shadow-[0_0_50px_rgba(255,49,49,0.45)] hover:shadow-[0_0_70px_rgba(255,49,49,0.65)] transition-all duration-300"
+                                >
+                                    {t.hero.cta}
+                                    <ChevronDownIcon className="ml-2 size-5 group-hover:translate-y-0.5 transition-transform duration-300" />
+                                </Button>
+                            }
+                        />
 
                         <div className="hidden sm:flex items-center gap-6 pl-4 border-l border-white/10">
                             <div>

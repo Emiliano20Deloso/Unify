@@ -1,12 +1,11 @@
 "use client";
 
 import { useLanguage } from "@/contexts/language-context";
-import { WHATSAPP_LINK } from "@/constants";
 import { ArrowRightIcon } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import Container from "../global/container";
 import { Button } from "../ui/button";
+import { QuoteDialog } from "./quote-form";
 
 const CTA = () => {
     const { t } = useLanguage();
@@ -25,12 +24,10 @@ const CTA = () => {
                             className="object-cover object-center"
                             quality={80}
                         />
-                        {/* Dark overlay for readability */}
                         <div className="absolute inset-0 bg-black/35" />
                     </div>
 
-
-{/* Top border glow */}
+                    {/* Top border glow */}
                     <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#FF2400]/60 to-transparent" />
                     {/* Bottom border glow */}
                     <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#FF2400]/30 to-transparent" />
@@ -44,15 +41,17 @@ const CTA = () => {
                             <span className="italic font-light text-white/60">{t.cta.titleHighlight}</span>
                         </h2>
                         <p className="text-white/50 text-base max-w-lg">{t.cta.subtitle}</p>
-                        <Link href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
-                            <Button
-                                size="lg"
-                                className="group bg-[#ff3131] hover:bg-[#ff3131]/90 text-white border-0 text-lg px-12 h-16 rounded-full shadow-[0_0_50px_rgba(255,49,49,0.5)] hover:shadow-[0_0_80px_rgba(255,49,49,0.7)] transition-all duration-300 mt-2"
-                            >
-                                {t.cta.button}
-                                <ArrowRightIcon className="ml-2 size-5 group-hover:translate-x-1 transition-transform duration-300" />
-                            </Button>
-                        </Link>
+                        <QuoteDialog
+                            trigger={
+                                <Button
+                                    size="lg"
+                                    className="group bg-[#ff3131] hover:bg-[#ff3131]/90 text-white border-0 text-lg px-12 h-16 rounded-full shadow-[0_0_50px_rgba(255,49,49,0.5)] hover:shadow-[0_0_80px_rgba(255,49,49,0.7)] transition-all duration-300 mt-2"
+                                >
+                                    {t.cta.button}
+                                    <ArrowRightIcon className="ml-2 size-5 group-hover:translate-x-1 transition-transform duration-300" />
+                                </Button>
+                            }
+                        />
                     </div>
                 </div>
             </Container>
