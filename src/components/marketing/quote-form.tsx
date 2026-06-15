@@ -6,6 +6,7 @@ import { ArrowRightIcon, ArrowLeftIcon, CheckIcon, MapPinIcon, CalendarIcon, Clo
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib";
+import { PlaceAutocomplete, type PlaceResult } from "@/components/marketing/place-autocomplete";
 
 type TierKey = "practico" | "select" | "premium";
 
@@ -15,8 +16,8 @@ interface QuoteDialogProps {
 }
 
 interface FormData {
-    origin: string;
-    destination: string;
+    origin: PlaceResult;
+    destination: PlaceResult;
     date: string;
     time: string;
     passengers: number;
@@ -44,8 +45,8 @@ export const QuoteDialog = ({ trigger, initialTier = "select" }: QuoteDialogProp
     const [submitted, setSubmitted] = useState(false);
     const [submitting, setSubmitting] = useState(false);
     const [form, setForm] = useState<FormData>({
-        origin: "",
-        destination: "",
+        origin: { text: "", lat: 0, lng: 0 },
+        destination: { text: "", lat: 0, lng: 0 },
         date: "",
         time: "",
         passengers: 1,
@@ -61,7 +62,7 @@ export const QuoteDialog = ({ trigger, initialTier = "select" }: QuoteDialogProp
     const set = (field: keyof FormData, value: unknown) =>
         setForm(prev => ({ ...prev, [field]: value }));
 
-    const canNext1 = form.origin.trim() !== "" && form.destination.trim() !== "" && form.date !== "" && form.time !== "";
+    const canNext1 = form.origin.lat !== 0 && form.destination.lat !== 0 && form.date !== "" && form.time !== "";
     const canSubmit = form.name.trim() !== "" && form.email.trim() !== "";
 
     const handleSubmit = async () => {
@@ -137,22 +138,20 @@ export const QuoteDialog = ({ trigger, initialTier = "select" }: QuoteDialogProp
 
                             {step === 1 && (
                                 <>
-                                    <FieldWrap icon={<MapPinIcon className="size-4 text-white/30 shrink-0" />} label={q.origin}>
-                                        <input
-                                            value={form.origin}
-                                            onChange={e => set("origin", e.target.value)}
-                                            placeholder={q.originPlaceholder}
-                                            className="w-full bg-transparent text-sm text-white placeholder:text-white/25 outline-none"
-                                        />
-                                    </FieldWrap>
-                                    <FieldWrap icon={<MapPinIcon className="size-4 text-[#FF2400]/60 shrink-0" />} label={q.destination}>
-                                        <input
-                                            value={form.destination}
-                                            onChange={e => set("destination", e.target.value)}
-                                            placeholder={q.destinationPlaceholder}
-                                            className="w-full bg-transparent text-sm text-white placeholder:text-white/25 outline-none"
-                                        />
-                                    </FieldWrap>
+                                    <PlaceAutocomplete
+                                        value={form.origin}
+                                        onChange={result => set("origin", result)}
+                                        label={q.origin}
+                                        placeholder={q.originPlaceholder}
+                                        icon={<MapPinIcon className="size-4 text-white/30 shrink-0" />}
+                                    />
+                                    <PlaceAutocomplete
+                                        value={form.destination}
+                                        onChange={result => set("destination", result)}
+                                        label={q.destination}
+                                        placeholder={q.destinationPlaceholder}
+                                        icon={<MapPinIcon className="size-4 text-[#FF2400]/60 shrink-0" />}
+                                    />
                                     <div className="grid grid-cols-2 gap-3">
                                         <FieldWrap icon={<CalendarIcon className="size-4 text-white/30 shrink-0" />} label={q.date}>
                                             <input

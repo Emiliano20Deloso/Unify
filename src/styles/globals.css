@@ -76,6 +76,12 @@
   }
 }
 
+@media (min-width: 1024px) {
+  html {
+    font-size: 18px;
+  }
+}
+
 ::-webkit-scrollbar {
   width: 4px;
 }
