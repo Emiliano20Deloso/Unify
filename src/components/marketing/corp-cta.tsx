@@ -2,6 +2,7 @@
 
 import { useLanguage } from "@/contexts/language-context";
 import { CheckIcon, ArrowRightIcon, BuildingIcon } from "lucide-react";
+import Image from "next/image";
 import Container from "../global/container";
 import { Button } from "../ui/button";
 import { QuoteDialog } from "./quote-form";
@@ -14,22 +15,10 @@ const CorpCta = () => {
         <div className="relative flex flex-col items-center justify-center w-full py-24">
             <Container className="w-full">
                 <div className="relative rounded-2xl lg:rounded-3xl border border-white/8 bg-[#0a0a0a] overflow-hidden">
-                    {/* Grid pattern overlay */}
-                    <div
-                        className="absolute inset-0 opacity-[0.025] pointer-events-none"
-                        style={{
-                            backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
-                            backgroundSize: "48px 48px",
-                        }}
-                    />
+                    <div className="grid lg:grid-cols-2 min-h-[520px]">
 
-                    {/* Subtle glow */}
-                    <div className="absolute -top-1/2 left-1/4 w-64 h-64 bg-[#FF2400]/8 blur-[100px] rounded-full pointer-events-none" />
-
-                    <div className="relative z-10 flex flex-col lg:flex-row items-start gap-10 lg:gap-16 p-8 lg:p-12">
-
-                        {/* Left: text */}
-                        <div className="flex-1 flex flex-col gap-5">
+                        {/* Left: content */}
+                        <div className="relative z-10 flex flex-col gap-5 p-8 lg:p-12 order-2 lg:order-1">
                             <div className="flex items-center gap-2.5">
                                 <div className="flex items-center justify-center size-8 rounded-lg bg-[#FF2400]/10 border border-[#FF2400]/20">
                                     <BuildingIcon className="size-4 text-[#FF2400]" />
@@ -44,11 +33,23 @@ const CorpCta = () => {
                                 <span className="italic font-light text-white/50">{c.titleHighlight}</span>
                             </h2>
 
-                            <p className="text-sm text-white/45 leading-relaxed max-w-lg">
+                            <p className="text-sm text-white/75 leading-relaxed max-w-lg">
                                 {c.desc}
                             </p>
 
-                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-2">
+                            {/* Points — compact 2-col grid */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-2.5 mt-1">
+                                {c.points.map((point, i) => (
+                                    <div key={i} className="flex items-start gap-2.5">
+                                        <div className="flex items-center justify-center size-5 rounded-full bg-[#FF2400]/15 border border-[#FF2400]/25 shrink-0 mt-0.5">
+                                            <CheckIcon className="size-3 text-[#FF2400]" />
+                                        </div>
+                                        <span className="text-sm text-white/85 leading-snug">{point}</span>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-3">
                                 <QuoteDialog
                                     initialTier="premium"
                                     trigger={
@@ -58,21 +59,26 @@ const CorpCta = () => {
                                         </Button>
                                     }
                                 />
-                                <p className="text-xs text-white/30">{c.ctaSub}</p>
+                                <p className="text-xs text-white/55">{c.ctaSub}</p>
                             </div>
                         </div>
 
-                        {/* Right: bullet points */}
-                        <div className="flex-1 grid grid-cols-1 gap-3 w-full lg:max-w-xs lg:pt-2">
-                            {c.points.map((point, i) => (
-                                <div key={i} className="flex items-start gap-3 p-4 rounded-xl bg-white/[0.03] border border-white/5">
-                                    <div className="flex items-center justify-center size-5 rounded-full bg-[#FF2400]/15 border border-[#FF2400]/25 shrink-0 mt-0.5">
-                                        <CheckIcon className="size-3 text-[#FF2400]" />
-                                    </div>
-                                    <span className="text-sm text-white/60 leading-snug">{point}</span>
-                                </div>
-                            ))}
+                        {/* Right: image with gradient fade into card */}
+                        <div className="relative min-h-[280px] lg:min-h-full order-1 lg:order-2">
+                            <Image
+                                src="/images/ejecutivo.jpg"
+                                alt="UNIFY Corporate"
+                                fill
+                                className="object-cover object-center"
+                                quality={85}
+                                sizes="(max-width: 1024px) 100vw, 50vw"
+                            />
+                            {/* Gradient overlay — fades into card bg from left (desktop) and bottom (mobile) */}
+                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0a0a0a] lg:bg-gradient-to-r lg:from-[#0a0a0a] lg:via-[#0a0a0a]/30 lg:to-transparent pointer-events-none" />
+                            {/* Subtle red glow accent */}
+                            <div className="absolute -top-20 -right-20 w-80 h-80 bg-[#FF2400]/10 blur-[100px] rounded-full pointer-events-none" />
                         </div>
+
                     </div>
                 </div>
             </Container>

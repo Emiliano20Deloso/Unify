@@ -60,7 +60,7 @@ Esto genera tres problemas:
 **Paso 3 — Datos de contacto:**
 - Nombre completo
 - Correo electrónico
-- Teléfono (opcional)
+- Teléfono (opcional)d
 - ¿Es viaje corporativo? (checkbox)
 
 ### Fase 3 — Algoritmo de cotización automática

@@ -3,7 +3,6 @@ import Features from "@/components/marketing/features";
 import Analysis from "@/components/marketing/analysis";
 import Pricing from "@/components/marketing/pricing";
 import Testimonials from "@/components/marketing/testimonials";
-import LanguageSupport from "@/components/marketing/lang-support";
 import CorpCta from "@/components/marketing/corp-cta";
 import CTA from "@/components/marketing/cta";
 
@@ -16,7 +15,6 @@ const HomePage = () => {
                 <Analysis />
                 <Pricing />
                 <Testimonials />
-                <LanguageSupport />
                 <CorpCta />
                 <CTA />
             </main>

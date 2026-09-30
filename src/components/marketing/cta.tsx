@@ -40,7 +40,6 @@ const CTA = () => {
                             {t.cta.title}{" "}
                             <span className="italic font-light text-white/60">{t.cta.titleHighlight}</span>
                         </h2>
-                        <p className="text-white/50 text-base max-w-lg">{t.cta.subtitle}</p>
                         <QuoteDialog
                             trigger={
                                 <Button

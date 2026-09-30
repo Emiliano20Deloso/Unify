@@ -42,7 +42,7 @@ const LanguageSupport = () => {
                             {/* Content */}
                             <div className="space-y-2 relative z-10">
                                 <h3 className="text-base font-semibold text-white">{step.title}</h3>
-                                <p className="text-sm text-white/40 leading-relaxed">{step.desc}</p>
+                                <p className="text-sm text-white/75 leading-relaxed">{step.desc}</p>
                             </div>
                         </div>
                     </Container>

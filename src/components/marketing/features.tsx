@@ -132,19 +132,19 @@ const Features = () => {
                                     /* Normal card — vertical layout */
                                     <>
                                         <div className="mb-4">
-                                            <span className="text-[10px] font-bold tracking-[0.25em] text-[#FF2400]/50 uppercase block mb-2">
+                                            <span className="text-[11px] font-bold tracking-[0.25em] text-[#FF2400]/60 uppercase block mb-2">
                                                 {String(index + 1).padStart(2, "0")}
                                             </span>
-                                            <h3 className="text-base font-semibold text-white">{item.title}</h3>
+                                            <h3 className="text-lg lg:text-xl font-semibold text-white">{item.title}</h3>
                                         </div>
-                                        <p className="text-sm text-white/40 leading-relaxed">{item.description}</p>
-                                        <div className="mt-6 w-full overflow-hidden rounded-xl">
+                                        <p className="text-base text-white/70 leading-relaxed">{item.description}</p>
+                                        <div className="mt-6 w-full overflow-hidden rounded-xl bg-black/40">
                                             <Image
                                                 src={meta.image}
                                                 alt={item.title}
-                                                width={500}
-                                                height={300}
-                                                className="w-full h-48 object-cover opacity-80 hover:opacity-100 transition-opacity duration-300"
+                                                width={1000}
+                                                height={667}
+                                                className="w-full h-auto aspect-[3/2] object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
                                             />
                                         </div>
                                     </>

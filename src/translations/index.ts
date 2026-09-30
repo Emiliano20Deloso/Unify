@@ -7,7 +7,6 @@ export const translations = {
             servicios: "Servicios",
             tarifas: "Tarifas",
             about: "Nosotros",
-            contacto: "Contacto",
             reservar: "Cotiza ahora",
         },
         hero: {
@@ -177,7 +176,6 @@ export const translations = {
             label: "Empieza hoy",
             title: "Tus mañanas pueden empezar mejor.",
             titleHighlight: "Solo necesitas un viaje a tu altura.",
-            subtitle: "Cotiza en menos de 2 minutos. Tu Tesla estará listo cuando tú lo estés.",
             button: "Cotiza tu próximo viaje",
         },
         quote: {
@@ -212,27 +210,27 @@ export const translations = {
         testimonials: {
             label: "Lo que dicen de nosotros",
             title: "Más de 1,500 viajes",
-            titleHighlight: "hablan por nosotros",
+            titleHighlight: "nos respaldan",
             items: [
                 {
                     name: "Carlos M.",
-                    role: "Ejecutivo de negocios",
+                    rating: 5,
                     text: "Usé UNIFY para ir al aeropuerto y fue una experiencia completamente diferente. El auto impecable, el conductor puntual y muy profesional.",
                 },
                 {
                     name: "Andrea L.",
-                    role: "Directora Comercial",
+                    rating: 4.5,
                     text: "Para nuestras reuniones corporativas, UNIFY es la única opción. Puntualidad, discreción y clase en cada traslado.",
                 },
                 {
                     name: "Roberto A.",
-                    role: "Empresario",
+                    rating: 5,
                     text: "Reservé para mi esposa y le encantó. Dijo que fue el traslado más cómodo que ha tenido. Ya somos clientes fijos.",
                 },
                 {
                     name: "Sofía R.",
-                    role: "Arquitecta",
-                    text: "El Tesla llegó antes de lo esperado, el conductor fue amable y la experiencia simplemente impecable. Un 10 de 10.",
+                    rating: 4,
+                    text: "El Tesla llegó a tiempo y muy limpio, el conductor fue amable. El trayecto fue cómodo y sin sorpresas. Buena opción para viajes importantes.",
                 },
             ],
         },
@@ -269,7 +267,6 @@ export const translations = {
             servicios: "Services",
             tarifas: "Pricing",
             about: "About Us",
-            contacto: "Contact",
             reservar: "Get a quote",
         },
         hero: {
@@ -439,7 +436,6 @@ export const translations = {
             label: "Start today",
             title: "Your mornings can start better.",
             titleHighlight: "You just need a ride that matches your level.",
-            subtitle: "Get a quote in under 2 minutes. Your Tesla will be ready when you are.",
             button: "Quote your next ride",
         },
         quote: {
@@ -478,23 +474,23 @@ export const translations = {
             items: [
                 {
                     name: "Carlos M.",
-                    role: "Business Executive",
+                    rating: 5,
                     text: "I used UNIFY to get to the airport and it was a completely different experience. The car was impeccable, the driver punctual and very professional.",
                 },
                 {
                     name: "Andrea L.",
-                    role: "Commercial Director",
+                    rating: 4.5,
                     text: "For our corporate meetings, UNIFY is the only option. Punctuality, discretion and class in every transfer.",
                 },
                 {
                     name: "Roberto A.",
-                    role: "Entrepreneur",
+                    rating: 5,
                     text: "I booked for my wife and she loved it. She said it was the most comfortable transfer she's ever had. We're now regulars.",
                 },
                 {
                     name: "Sofía R.",
-                    role: "Architect",
-                    text: "The Tesla arrived earlier than expected, the driver was friendly and the experience was simply flawless. A perfect 10.",
+                    rating: 4,
+                    text: "The Tesla arrived on time and very clean, the driver was friendly. The ride was comfortable and hassle-free. A good option for important trips.",
                 },
             ],
         },

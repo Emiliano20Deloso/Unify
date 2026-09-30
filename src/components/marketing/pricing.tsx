@@ -9,6 +9,55 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "..
 import { QuoteDialog } from "./quote-form";
 
 const TIER_KEYS = ["practico", "select", "premium"] as const;
+type TierKey = typeof TIER_KEYS[number];
+
+const TIER_THEMES: Record<TierKey, {
+    container: string;
+    glow: React.ReactNode;
+    checkBg: string;
+    checkIcon: string;
+    accordionBorder: string;
+    popularPill: string;
+    cta: string;
+}> = {
+    practico: {
+        container: "group border-white/30 bg-[#0a0a0a] hover:border-white/60",
+        glow: null,
+        checkBg: "bg-white/5",
+        checkIcon: "text-white/70",
+        accordionBorder: "border-white/8",
+        popularPill: "bg-white/10 text-white/80 border-white/20",
+        cta: "bg-white/5 hover:bg-white/10 text-white border border-white/10",
+    },
+    select: {
+        container: "group border-white/30 bg-[#0a0a0a] hover:border-[#D4AF37]",
+        glow: (
+            <>
+                <div className="absolute inset-0 bg-[#D4AF37]/[0.04] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute -top-px inset-x-0 h-px bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </>
+        ),
+        checkBg: "bg-[#D4AF37]/20",
+        checkIcon: "text-[#D4AF37]",
+        accordionBorder: "border-[#D4AF37]/15",
+        popularPill: "bg-[#D4AF37]/15 text-[#D4AF37] border-[#D4AF37]/30",
+        cta: "bg-[#D4AF37] hover:bg-[#c9a532] text-[#1a1206] shadow-[0_0_30px_rgba(212,175,55,0.35)] hover:shadow-[0_0_50px_rgba(212,175,55,0.5)]",
+    },
+    premium: {
+        container: "group border-white/30 bg-[#0a0a0a] hover:border-[#FF2400]",
+        glow: (
+            <>
+                <div className="absolute inset-0 bg-[#FF2400]/5 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute -top-px inset-x-0 h-px bg-gradient-to-r from-transparent via-[#FF2400] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </>
+        ),
+        checkBg: "bg-[#FF2400]/20",
+        checkIcon: "text-[#FF2400]",
+        accordionBorder: "border-[#FF2400]/15",
+        popularPill: "bg-[#FF2400]/15 text-[#FF2400] border-[#FF2400]/25",
+        cta: "bg-[#ff3131] hover:bg-[#ff3131]/90 text-white shadow-[0_0_30px_rgba(255,49,49,0.35)] hover:shadow-[0_0_50px_rgba(255,49,49,0.5)]",
+    },
+};
 
 const Pricing = () => {
     const { t } = useLanguage();
@@ -24,116 +73,108 @@ const Pricing = () => {
                         {t.pricing.title}{" "}
                         <span className="italic font-light text-white/50">{t.pricing.titleHighlight}</span>
                     </h2>
-                    <p className="text-white/40 text-base max-w-lg">{t.pricing.subtitle}</p>
+                    <p className="text-white/70 text-base max-w-lg">{t.pricing.subtitle}</p>
                 </div>
             </Container>
 
             <div className="grid w-full grid-cols-1 lg:grid-cols-3 gap-5 max-w-5xl mx-auto">
-                {t.pricing.tiers.map((tier, idx) => (
-                    <Container key={tier.id} delay={0.1 * idx + 0.1}>
-                        <div
-                            className={cn(
-                                "relative flex flex-col rounded-2xl border overflow-hidden h-full transition-all duration-300",
-                                tier.badge
-                                    ? "border-[#FF2400]/50 bg-[#0f0000]"
-                                    : "border-white/8 bg-[#0a0a0a] hover:border-white/15"
-                            )}
-                        >
-                            {tier.badge && (
-                                <>
-                                    <div className="absolute inset-0 bg-[#FF2400]/5 pointer-events-none" />
-                                    <div className="absolute -top-px inset-x-0 h-px bg-gradient-to-r from-transparent via-[#FF2400] to-transparent" />
-                                </>
-                            )}
+                {t.pricing.tiers.map((tier, idx) => {
+                    const tierKey = TIER_KEYS[idx];
+                    const theme = TIER_THEMES[tierKey];
+                    return (
+                        <Container key={tier.id} delay={0.1 * idx + 0.1}>
+                            <div
+                                className={cn(
+                                    "relative flex flex-col rounded-2xl border overflow-hidden h-full transition-all duration-300",
+                                    theme.container
+                                )}
+                            >
+                                {theme.glow}
 
-                            <div className="p-7 flex-1 flex flex-col">
-                                {/* Header */}
-                                <div className="flex items-start justify-between mb-2">
-                                    <h3 className="text-xl font-bold text-white">{tier.title}</h3>
-                                    {tier.badge && (
-                                        <span className="flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full bg-[#FF2400]/15 text-[#FF2400] border border-[#FF2400]/25 whitespace-nowrap">
-                                            <ZapIcon className="size-3" />
-                                            {t.pricing.mostPopular}
-                                        </span>
-                                    )}
-                                </div>
-
-                                {/* Price */}
-                                <div className="mb-4">
-                                    <span className="text-3xl font-bold text-white">{tier.fromPrice}</span>
-                                    <span className="ml-1.5 text-xs text-white/30">MXN</span>
-                                    <p className="text-xs text-white/25 mt-0.5">{t.pricing.fromPriceNote}</p>
-                                </div>
-
-                                {/* Description */}
-                                <p className="text-sm text-white/40 leading-relaxed mb-5">
-                                    {tier.desc}
-                                </p>
-
-                                {/* Features */}
-                                <div className="space-y-2.5 flex-1">
-                                    {tier.features.map((f, i) => (
-                                        <div key={i} className="flex items-center gap-2.5">
-                                            <div className={cn(
-                                                "flex items-center justify-center size-4 rounded-full shrink-0",
-                                                tier.badge ? "bg-[#FF2400]/20" : "bg-white/5"
+                                <div className="p-7 flex-1 flex flex-col">
+                                    {/* Header */}
+                                    <div className="flex items-start justify-between mb-2">
+                                        <h3 className="text-xl font-bold text-white">{tier.title}</h3>
+                                        {tier.badge && (
+                                            <span className={cn(
+                                                "flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full border whitespace-nowrap",
+                                                theme.popularPill
                                             )}>
-                                                <CheckIcon className={cn(
-                                                    "size-2.5",
-                                                    tier.badge ? "text-[#FF2400]" : "text-white/50"
-                                                )} />
+                                                <ZapIcon className="size-3" />
+                                                {t.pricing.mostPopular}
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    {/* Price */}
+                                    <div className="mb-4">
+                                        <span className="text-3xl font-bold text-white">{tier.fromPrice}</span>
+                                        <span className="ml-1.5 text-xs text-white/50">MXN</span>
+                                        <p className="text-xs text-white/50 mt-0.5">{t.pricing.fromPriceNote}</p>
+                                    </div>
+
+                                    {/* Description */}
+                                    <p className="text-sm text-white/70 leading-relaxed mb-5">
+                                        {tier.desc}
+                                    </p>
+
+                                    {/* Features */}
+                                    <div className="space-y-2.5 flex-1">
+                                        {tier.features.map((f, i) => (
+                                            <div key={i} className="flex items-center gap-2.5">
+                                                <div className={cn(
+                                                    "flex items-center justify-center size-4 rounded-full shrink-0",
+                                                    theme.checkBg
+                                                )}>
+                                                    <CheckIcon className={cn("size-2.5", theme.checkIcon)} />
+                                                </div>
+                                                <span className="text-sm text-white/85">{f}</span>
                                             </div>
-                                            <span className="text-sm text-white/60">{f}</span>
-                                        </div>
-                                    ))}
+                                        ))}
+                                    </div>
+
+                                    {/* Snacks accordion */}
+                                    <Accordion type="single" collapsible className="mt-4">
+                                        <AccordionItem
+                                            value="snacks"
+                                            className={cn("border-t", theme.accordionBorder)}
+                                        >
+                                            <AccordionTrigger className="text-xs text-white/60 hover:text-white/85 py-3 hover:no-underline transition-colors">
+                                                {t.pricing.snacksLabel}
+                                            </AccordionTrigger>
+                                            <AccordionContent className="pb-1">
+                                                <div className="space-y-2">
+                                                    <SnackRow icon={<CupSodaIcon className="size-3 text-white/50" />} value={tier.snacks.drink} />
+                                                    <SnackRow icon={<CandyIcon className="size-3 text-white/50" />} value={tier.snacks.sweet} />
+                                                    <SnackRow icon={<NutIcon className="size-3 text-white/50" />} value={tier.snacks.savory} />
+                                                    <p className="text-xs text-white/80 pt-1.5">{t.pricing.snacksDisclaimer}</p>
+                                                </div>
+                                            </AccordionContent>
+                                        </AccordionItem>
+                                    </Accordion>
                                 </div>
 
-                                {/* Snacks accordion */}
-                                <Accordion type="single" collapsible className="mt-4">
-                                    <AccordionItem
-                                        value="snacks"
-                                        className={cn(
-                                            "border-t",
-                                            tier.badge ? "border-[#FF2400]/15" : "border-white/8"
-                                        )}
-                                    >
-                                        <AccordionTrigger className="text-xs text-white/35 hover:text-white/60 py-3 hover:no-underline transition-colors">
-                                            {t.pricing.snacksLabel}
-                                        </AccordionTrigger>
-                                        <AccordionContent className="pb-1">
-                                            <div className="space-y-2">
-                                                <SnackRow icon={<CupSodaIcon className="size-3 text-white/30" />} value={tier.snacks.drink} />
-                                                <SnackRow icon={<CandyIcon className="size-3 text-white/30" />} value={tier.snacks.sweet} />
-                                                <SnackRow icon={<NutIcon className="size-3 text-white/30" />} value={tier.snacks.savory} />
-                                                <p className="text-[10px] text-white/20 pt-1">{t.pricing.snacksDisclaimer}</p>
-                                            </div>
-                                        </AccordionContent>
-                                    </AccordionItem>
-                                </Accordion>
+                                {/* CTA */}
+                                <div className="p-7 pt-0">
+                                    <QuoteDialog
+                                        initialTier={tierKey}
+                                        trigger={
+                                            <Button
+                                                size="lg"
+                                                className={cn(
+                                                    "w-full h-12 rounded-xl font-medium transition-all duration-300",
+                                                    theme.cta
+                                                )}
+                                            >
+                                                {t.pricing.cta}
+                                            </Button>
+                                        }
+                                    />
+                                </div>
                             </div>
-
-                            {/* CTA */}
-                            <div className="p-7 pt-0">
-                                <QuoteDialog
-                                    initialTier={TIER_KEYS[idx]}
-                                    trigger={
-                                        <Button
-                                            size="lg"
-                                            className={cn(
-                                                "w-full h-12 rounded-xl font-medium transition-all duration-300",
-                                                tier.badge
-                                                    ? "bg-[#ff3131] hover:bg-[#ff3131]/90 text-white shadow-[0_0_30px_rgba(255,49,49,0.35)] hover:shadow-[0_0_50px_rgba(255,49,49,0.5)]"
-                                                    : "bg-white/5 hover:bg-white/10 text-white border border-white/10"
-                                            )}
-                                        >
-                                            {t.pricing.cta}
-                                        </Button>
-                                    }
-                                />
-                            </div>
-                        </div>
-                    </Container>
-                ))}
+                        </Container>
+                    );
+                })}
             </div>
         </div>
     );
@@ -142,7 +183,7 @@ const Pricing = () => {
 const SnackRow = ({ icon, value }: { icon: React.ReactNode; value: string }) => (
     <div className="flex items-center gap-2">
         {icon}
-        <span className="text-xs text-white/45">{value}</span>
+        <span className="text-xs text-white/75">{value}</span>
     </div>
 );
 

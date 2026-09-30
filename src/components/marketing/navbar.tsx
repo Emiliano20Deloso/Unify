@@ -3,20 +3,19 @@
 import { useLanguage } from "@/contexts/language-context";
 import { WHATSAPP_LINK } from "@/constants";
 import { cn } from "@/lib";
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "motion/react";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent, useTransform, useMotionTemplate } from "motion/react";
 import { ArrowRightIcon, MenuIcon, XIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import type { Lang } from "@/translations";
 
-const NAV_KEYS = ["inicio", "servicios", "tarifas", "about", "contacto"] as const;
+const NAV_KEYS = ["inicio", "servicios", "tarifas", "about"] as const;
 const NAV_HREFS: Record<string, string> = {
     inicio: "/",
     servicios: "/#servicios",
     tarifas: "/tarifas",
     about: "#nosotros",
-    contacto: "#contacto",
 };
 
 const Navbar = () => {
@@ -29,6 +28,20 @@ const Navbar = () => {
         setScrolled(v > 60);
         if (v > 60 && mobileOpen) setMobileOpen(false);
     });
+
+    // Continuous scroll-linked liquid glass effect (0px → 140px)
+    const GLASS_RANGE: [number, number] = [0, 140];
+    const bgOpacity = useTransform(scrollY, GLASS_RANGE, [0, 0.55], { clamp: true });
+    const blurAmount = useTransform(scrollY, GLASS_RANGE, [0, 20], { clamp: true });
+    const saturateAmount = useTransform(scrollY, GLASS_RANGE, [100, 180], { clamp: true });
+    const borderOpacity = useTransform(scrollY, GLASS_RANGE, [0, 0.08], { clamp: true });
+    const highlightOpacity = useTransform(scrollY, GLASS_RANGE, [0, 0.08], { clamp: true });
+    const shadowOpacity = useTransform(scrollY, GLASS_RANGE, [0, 0.35], { clamp: true });
+
+    const glassBg = useMotionTemplate`rgba(15,15,17,${bgOpacity})`;
+    const glassFilter = useMotionTemplate`blur(${blurAmount}px) saturate(${saturateAmount}%)`;
+    const glassBorder = useMotionTemplate`rgba(255,255,255,${borderOpacity})`;
+    const glassShadow = useMotionTemplate`inset 0 1px 0 0 rgba(255,255,255,${highlightOpacity}), 0 8px 32px 0 rgba(0,0,0,${shadowOpacity})`;
 
     const navItems = NAV_KEYS.map((key) => ({
         name: t.nav[key as keyof typeof t.nav],
@@ -44,14 +57,16 @@ const Navbar = () => {
         >
             {/* Desktop nav */}
             <motion.nav
-                animate={{
-                    backgroundColor: scrolled ? "rgba(0,0,0,0.88)" : "transparent",
-                    backdropFilter: scrolled ? "blur(24px)" : "blur(0px)",
-                    borderBottomColor: scrolled ? "rgba(255,49,49,0.12)" : "rgba(0,0,0,0)",
+                style={{
+                    backgroundColor: glassBg,
+                    backdropFilter: glassFilter,
+                    WebkitBackdropFilter: glassFilter,
+                    borderBottomColor: glassBorder,
+                    boxShadow: glassShadow,
                 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
                 className="hidden lg:flex items-center justify-between w-full px-8 xl:px-16 py-5 border-b"
             >
+                {/* Logo */}
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-2.5 shrink-0">
                     <Image
@@ -70,7 +85,7 @@ const Navbar = () => {
                         <Link
                             key={item.href}
                             href={item.href}
-                            className="relative px-4 py-2 text-sm text-white/55 hover:text-white transition-colors duration-200 rounded-lg hover:bg-white/5"
+                            className="relative px-4 py-2 text-base text-white hover:text-white transition-colors duration-200 rounded-lg hover:bg-white/5"
                         >
                             {item.name}
                         </Link>
@@ -79,7 +94,9 @@ const Navbar = () => {
 
                 {/* Right: language toggle + CTA */}
                 <div className="flex items-center gap-3 shrink-0">
-                    <LangToggle lang={lang} setLang={setLang} />
+                    <div className="-translate-x-28">
+                        <LangToggle lang={lang} setLang={setLang} />
+                    </div>
                     <Link
                         href={WHATSAPP_LINK}
                         target="_blank"
@@ -95,17 +112,21 @@ const Navbar = () => {
             {/* Mobile nav */}
             <motion.nav
                 animate={{
-                    backgroundColor: scrolled || mobileOpen ? "rgba(0,0,0,0.92)" : "transparent",
-                    backdropFilter: scrolled || mobileOpen ? "blur(24px)" : "blur(0px)",
+                    backgroundColor: scrolled || mobileOpen ? "rgba(15,15,17,0.6)" : "transparent",
+                    backdropFilter: scrolled || mobileOpen ? "blur(20px) saturate(180%)" : "blur(0px) saturate(100%)",
+                    borderBottomColor: scrolled || mobileOpen ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0)",
+                    boxShadow: scrolled || mobileOpen
+                        ? "inset 0 1px 0 0 rgba(255,255,255,0.08), 0 8px 32px 0 rgba(0,0,0,0.35)"
+                        : "inset 0 0 0 0 rgba(0,0,0,0), 0 0 0 0 rgba(0,0,0,0)",
                 }}
-                transition={{ duration: 0.25, ease: "easeInOut" }}
-                className="flex lg:hidden items-center justify-between w-full px-5 py-4 border-b border-transparent"
+                transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
+                className="flex lg:hidden items-center justify-between w-full px-5 py-4 border-b"
             >
                 <Link href="/" className="flex items-center gap-2">
-                    <Image src="/icons/iconouni.png" alt="UNIFY" width={36} height={36} className="w-auto h-9" />
+                    <Image src="/icons/plano.png" alt="UNIFY" width={36} height={36} className="w-auto h-9" />
                     <span className="text-lg font-bold text-white tracking-tight">UNIFY</span>
                 </Link>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-5">
                     <LangToggle lang={lang} setLang={setLang} />
                     <button
                         onClick={() => setMobileOpen(!mobileOpen)}
@@ -163,29 +184,29 @@ const LangToggle = ({
     setLang: (l: Lang) => void;
 }) => {
     return (
-        <div className="flex items-center gap-0.5 p-0.5 rounded-full bg-white/6 border border-white/10">
-            <button
-                onClick={() => setLang("es")}
-                className={cn(
-                    "px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200",
-                    lang === "es"
-                        ? "bg-[#ff3131] text-white shadow-sm"
-                        : "text-white/45 hover:text-white/75"
-                )}
-            >
-                ES
-            </button>
-            <button
-                onClick={() => setLang("en")}
-                className={cn(
-                    "px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200",
-                    lang === "en"
-                        ? "bg-[#ff3131] text-white shadow-sm"
-                        : "text-white/45 hover:text-white/75"
-                )}
-            >
-                EN
-            </button>
+        <div className="relative flex items-center gap-0.5 p-0.5 rounded-full bg-white/10 border border-white/40">
+            {(["es", "en"] as const).map((l) => {
+                const active = lang === l;
+                return (
+                    <button
+                        key={l}
+                        onClick={() => setLang(l)}
+                        className={cn(
+                            "relative px-3 py-1.5 rounded-full text-xs font-medium transition-colors duration-200",
+                            active ? "text-white" : "text-white/55 hover:text-white/85"
+                        )}
+                    >
+                        {active && (
+                            <motion.span
+                                layoutId="lang-toggle-pill"
+                                className="absolute inset-0 rounded-full bg-[#ff3131] shadow-[0_2px_10px_rgba(255,49,49,0.35)]"
+                                transition={{ type: "tween", duration: 2.0, ease: [0.32, 0.72, 0, 1] }}
+                            />
+                        )}
+                        <span className="relative z-10">{l.toUpperCase()}</span>
+                    </button>
+                );
+            })}
         </div>
     );
 };

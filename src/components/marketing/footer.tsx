@@ -24,7 +24,6 @@ const Footer = () => {
             heading: t.nav.about,
             links: [
                 { label: t.nav.about, href: "#nosotros" },
-                { label: t.nav.contacto, href: "#contacto" },
                 { label: "WhatsApp", href: WHATSAPP_LINK, external: true },
             ],
         },
@@ -88,10 +87,10 @@ const Footer = () => {
 
                 {/* Bottom bar */}
                 <div className="mt-16 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <p className="text-xs text-white/45">
+                    <p className="text-sm text-white/80">
                         © {new Date().getFullYear()} UNIFY. All rights reserved.
                     </p>
-                    <p className="text-xs text-white/70 italic">
+                    <p className="text-sm text-white/90 italic">
                         The luxury of travelling green
                     </p>
                 </div>
