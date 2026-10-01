@@ -18,7 +18,7 @@ const Hero = () => {
                     src="/Hero.jpg"
                     alt="Tesla Model 3 Performance — UNIFY"
                     fill
-                    className="object-cover object-center"
+                    className="object-cover object-center brightness-110 saturate-105"
                     priority
                     quality={90}
                 />

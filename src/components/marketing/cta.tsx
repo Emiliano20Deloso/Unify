@@ -1,11 +1,8 @@
 "use client";
 
 import { useLanguage } from "@/contexts/language-context";
-import { ArrowRightIcon } from "lucide-react";
 import Image from "next/image";
 import Container from "../global/container";
-import { Button } from "../ui/button";
-import { QuoteDialog } from "./quote-form";
 
 const CTA = () => {
     const { t } = useLanguage();
@@ -13,7 +10,7 @@ const CTA = () => {
     return (
         <div className="relative flex flex-col items-center justify-center w-full py-24">
             <Container className="max-w-6xl mx-auto w-full">
-                <div className="relative flex flex-col items-center justify-center py-16 lg:py-24 px-6 rounded-2xl lg:rounded-3xl text-center border border-[#FF2400]/25 overflow-hidden">
+                <div className="relative flex flex-col items-center justify-start pt-10 pb-24 lg:pt-14 lg:pb-32 px-6 rounded-2xl lg:rounded-3xl text-center border-2 border-[#FF2400] shadow-[0_0_40px_rgba(255,36,0,0.45),inset_0_0_20px_rgba(255,36,0,0.1)] overflow-hidden">
 
                     {/* Background image */}
                     <div className="absolute inset-0 -z-10">
@@ -33,24 +30,10 @@ const CTA = () => {
                     <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#FF2400]/30 to-transparent" />
 
                     <div className="relative z-10 flex flex-col items-center gap-6 max-w-3xl">
-                        <p className="text-xs uppercase tracking-[0.3em] text-[#FF2400]/80 font-medium">
-                            {t.cta.label}
-                        </p>
-                        <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold !leading-tight text-white">
+                        <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold !leading-tight text-white">
                             {t.cta.title}{" "}
                             <span className="italic font-light text-white/60">{t.cta.titleHighlight}</span>
                         </h2>
-                        <QuoteDialog
-                            trigger={
-                                <Button
-                                    size="lg"
-                                    className="group bg-[#ff3131] hover:bg-[#ff3131]/90 text-white border-0 text-lg px-12 h-16 rounded-full shadow-[0_0_50px_rgba(255,49,49,0.5)] hover:shadow-[0_0_80px_rgba(255,49,49,0.7)] transition-all duration-300 mt-2"
-                                >
-                                    {t.cta.button}
-                                    <ArrowRightIcon className="ml-2 size-5 group-hover:translate-x-1 transition-transform duration-300" />
-                                </Button>
-                            }
-                        />
                     </div>
                 </div>
             </Container>

@@ -37,15 +37,15 @@ const Footer = () => {
     ];
 
     return (
-        <footer className="relative w-full border-t border-white/5 bg-black">
+        <footer className="relative w-full border-t border-white/20 bg-black">
             {/* Top red accent line */}
-            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#FF2400]/30 to-transparent" />
+            <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#FF2400]/70 to-transparent shadow-[0_0_12px_rgba(255,36,0,0.4)]" />
 
-            <div className="max-w-screen-xl mx-auto px-6 md:px-12 py-16">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
+            <div className="max-w-screen-xl mx-auto px-6 md:px-12 py-10">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-6">
 
                     {/* Brand column */}
-                    <div className="md:col-span-1 flex flex-col gap-5">
+                    <div className="md:col-span-1 flex flex-col gap-3.5">
                         <Link href="/" className="flex items-center gap-2.5">
                             <Image
                                 src="/icons/iconouni.png"
@@ -56,25 +56,25 @@ const Footer = () => {
                             />
                             <span className="text-lg font-bold text-white tracking-tight">UNIFY</span>
                         </Link>
-                        <p className="text-sm text-white/65 leading-relaxed max-w-[220px]">
+                        <p className="text-sm text-white/65 leading-relaxed max-w-[260px]">
                             Transporte de lujo en flota exclusiva Tesla. Silencio, potencia y sofisticación.
                         </p>
                     </div>
 
                     {/* Link columns */}
                     {columns.map((col) => (
-                        <div key={col.heading} className="flex flex-col gap-4">
-                            <p className="text-xs uppercase tracking-[0.2em] text-white/45 font-medium">
+                        <div key={col.heading} className="flex flex-col gap-3.5">
+                            <p className="text-xs uppercase tracking-[0.2em] text-white/50 font-medium">
                                 {col.heading}
                             </p>
-                            <ul className="flex flex-col gap-3">
+                            <ul className="flex flex-col gap-2.5">
                                 {col.links.map((link) => (
                                     <li key={link.label}>
                                         <Link
                                             href={link.href}
                                             target={link.external ? "_blank" : undefined}
                                             rel={link.external ? "noopener noreferrer" : undefined}
-                                            className="text-sm text-white/65 hover:text-white transition-colors duration-200"
+                                            className="text-sm text-white/70 hover:text-white transition-colors duration-200"
                                         >
                                             {link.label}
                                         </Link>
@@ -86,11 +86,11 @@ const Footer = () => {
                 </div>
 
                 {/* Bottom bar */}
-                <div className="mt-16 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <p className="text-sm text-white/80">
-                        © {new Date().getFullYear()} UNIFY. All rights reserved.
+                <div className="mt-10 pt-5 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <p className="text-sm md:text-base text-white/80">
+                        © 2025 UNIFY. All rights reserved.
                     </p>
-                    <p className="text-sm text-white/90 italic">
+                    <p className="text-sm md:text-base text-white/90 italic">
                         The luxury of travelling green
                     </p>
                 </div>

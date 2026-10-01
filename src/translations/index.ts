@@ -85,7 +85,7 @@ export const translations = {
             label: "Niveles de servicio",
             title: "Elige tu",
             titleHighlight: "experiencia",
-            subtitle: "Cada viaje se cotiza según distancia y horario. Recibe tu tarifa exacta en minutos.",
+            subtitle: "*Cada viaje se cotiza según distancia y horario. Recibe tu tarifa exacta en minutos.",
             mostPopular: "Más popular",
             cta: "Cotizar ahora",
             fromPriceNote: "precio base · varía por ruta",

@@ -10,14 +10,16 @@ const HomePage = () => {
     return (
         <>
             <Hero />
-            <main className="w-full px-4 md:px-12 lg:max-w-screen-xl lg:mx-auto">
+            <div className="w-full px-4 md:px-12 lg:max-w-screen-xl lg:mx-auto">
                 <Features />
                 <Analysis />
                 <Pricing />
                 <Testimonials />
-                <CorpCta />
+            </div>
+            <CorpCta />
+            <div className="w-full px-4 md:px-12 lg:max-w-screen-xl lg:mx-auto">
                 <CTA />
-            </main>
+            </div>
         </>
     );
 };

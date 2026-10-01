@@ -61,7 +61,7 @@ const Testimonials = () => {
 };
 
 const TestimonialCard = ({ item, colorIdx }: { item: Item; colorIdx: number }) => (
-    <div className="relative flex flex-col gap-4 p-6 rounded-2xl bg-[#0a0a0a] border border-white/5 hover:border-white/15 transition-all duration-300 w-[340px] shrink-0 group">
+    <div className="relative flex flex-col gap-4 p-6 rounded-2xl bg-[#0a0a0a] border border-white/25 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:border-white/50 hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] transition-all duration-300 w-[340px] shrink-0 group">
         <div className="absolute top-0 right-0 w-20 h-20 bg-[#FF2400]/5 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
         {/* Rating */}

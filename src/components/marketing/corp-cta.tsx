@@ -3,7 +3,6 @@
 import { useLanguage } from "@/contexts/language-context";
 import { CheckIcon, ArrowRightIcon, BuildingIcon } from "lucide-react";
 import Image from "next/image";
-import Container from "../global/container";
 import { Button } from "../ui/button";
 import { QuoteDialog } from "./quote-form";
 
@@ -12,77 +11,76 @@ const CorpCta = () => {
     const c = t.corpCta;
 
     return (
-        <div className="relative flex flex-col items-center justify-center w-full py-24">
-            <Container className="w-full">
-                <div className="relative rounded-2xl lg:rounded-3xl border border-white/8 bg-[#0a0a0a] overflow-hidden">
-                    <div className="grid lg:grid-cols-2 min-h-[520px]">
+        <section className="relative w-full min-h-screen flex items-end overflow-hidden">
 
-                        {/* Left: content */}
-                        <div className="relative z-10 flex flex-col gap-5 p-8 lg:p-12 order-2 lg:order-1">
-                            <div className="flex items-center gap-2.5">
-                                <div className="flex items-center justify-center size-8 rounded-lg bg-[#FF2400]/10 border border-[#FF2400]/20">
-                                    <BuildingIcon className="size-4 text-[#FF2400]" />
+            {/* Background image */}
+            <div className="absolute inset-0 -z-10">
+                <Image
+                    src="/images/ejecutivo.jpg"
+                    alt="UNIFY Corporate"
+                    fill
+                    className="object-cover object-center"
+                    quality={90}
+                />
+                {/* Dark overlays — match hero */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                {/* Subtle red glow accent */}
+                <div className="absolute -top-20 -right-20 w-96 h-96 bg-[#FF2400]/10 blur-[120px] rounded-full pointer-events-none" />
+            </div>
+
+            {/* Content — bottom-left, hero style */}
+            <div className="relative z-10 w-full px-6 lg:px-20 xl:px-28 pb-28 lg:pb-40">
+                <div className="max-w-3xl flex flex-col gap-6">
+
+                    <div className="flex items-center gap-2.5">
+                        <div className="flex items-center justify-center size-10 rounded-lg bg-[#FF2400]/15 border border-[#FF2400]/25 backdrop-blur-sm">
+                            <BuildingIcon className="size-5 text-[#FF2400]" />
+                        </div>
+                        <p className="text-xs sm:text-sm uppercase tracking-[0.3em] text-[#FF2400]/80 font-medium">
+                            {c.label}
+                        </p>
+                    </div>
+
+                    <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold !leading-[1.05] text-white tracking-tight">
+                        {c.title}{" "}
+                        <span className="italic font-light text-white/50">{c.titleHighlight}</span>
+                    </h2>
+
+                    <p className="max-w-xl text-base lg:text-lg text-white/60 leading-relaxed">
+                        {c.desc}
+                    </p>
+
+                    {/* Points — compact 2-col grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 mt-1 max-w-2xl">
+                        {c.points.map((point, i) => (
+                            <div key={i} className="flex items-start gap-2.5">
+                                <div className="flex items-center justify-center size-5 rounded-full bg-[#FF2400]/20 border border-[#FF2400]/30 shrink-0 mt-0.5 backdrop-blur-sm">
+                                    <CheckIcon className="size-3 text-[#FF2400]" />
                                 </div>
-                                <p className="text-xs uppercase tracking-[0.3em] text-[#FF2400]/70 font-medium">
-                                    {c.label}
-                                </p>
+                                <span className="text-sm lg:text-base text-white/85 leading-snug">{point}</span>
                             </div>
+                        ))}
+                    </div>
 
-                            <h2 className="text-3xl lg:text-4xl font-bold !leading-tight text-white">
-                                {c.title}{" "}
-                                <span className="italic font-light text-white/50">{c.titleHighlight}</span>
-                            </h2>
-
-                            <p className="text-sm text-white/75 leading-relaxed max-w-lg">
-                                {c.desc}
-                            </p>
-
-                            {/* Points — compact 2-col grid */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-2.5 mt-1">
-                                {c.points.map((point, i) => (
-                                    <div key={i} className="flex items-start gap-2.5">
-                                        <div className="flex items-center justify-center size-5 rounded-full bg-[#FF2400]/15 border border-[#FF2400]/25 shrink-0 mt-0.5">
-                                            <CheckIcon className="size-3 text-[#FF2400]" />
-                                        </div>
-                                        <span className="text-sm text-white/85 leading-snug">{point}</span>
-                                    </div>
-                                ))}
-                            </div>
-
-                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-3">
-                                <QuoteDialog
-                                    initialTier="premium"
-                                    trigger={
-                                        <Button className="group bg-[#FF2400] hover:bg-[#FF2400]/90 text-white rounded-full px-8 h-12 text-sm font-medium shadow-[0_0_30px_rgba(255,49,49,0.3)] hover:shadow-[0_0_50px_rgba(255,49,49,0.45)] transition-all duration-300">
-                                            {c.cta}
-                                            <ArrowRightIcon className="ml-2 size-4 group-hover:translate-x-0.5 transition-transform" />
-                                        </Button>
-                                    }
-                                />
-                                <p className="text-xs text-white/55">{c.ctaSub}</p>
-                            </div>
-                        </div>
-
-                        {/* Right: image with gradient fade into card */}
-                        <div className="relative min-h-[280px] lg:min-h-full order-1 lg:order-2">
-                            <Image
-                                src="/images/ejecutivo.jpg"
-                                alt="UNIFY Corporate"
-                                fill
-                                className="object-cover object-center"
-                                quality={85}
-                                sizes="(max-width: 1024px) 100vw, 50vw"
-                            />
-                            {/* Gradient overlay — fades into card bg from left (desktop) and bottom (mobile) */}
-                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0a0a0a] lg:bg-gradient-to-r lg:from-[#0a0a0a] lg:via-[#0a0a0a]/30 lg:to-transparent pointer-events-none" />
-                            {/* Subtle red glow accent */}
-                            <div className="absolute -top-20 -right-20 w-80 h-80 bg-[#FF2400]/10 blur-[100px] rounded-full pointer-events-none" />
-                        </div>
-
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 mt-3">
+                        <QuoteDialog
+                            initialTier="premium"
+                            trigger={
+                                <Button
+                                    size="lg"
+                                    className="group bg-[#ff3131] hover:bg-[#ff3131]/90 text-white border-0 text-base px-10 h-14 rounded-full shadow-[0_0_50px_rgba(255,49,49,0.45)] hover:shadow-[0_0_70px_rgba(255,49,49,0.65)] transition-all duration-300"
+                                >
+                                    {c.cta}
+                                    <ArrowRightIcon className="ml-2 size-5 group-hover:translate-x-0.5 transition-transform duration-300" />
+                                </Button>
+                            }
+                        />
+                        <p className="text-xs lg:text-sm text-white/60">{c.ctaSub}</p>
                     </div>
                 </div>
-            </Container>
-        </div>
+            </div>
+        </section>
     );
 };
 

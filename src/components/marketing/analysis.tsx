@@ -25,94 +25,109 @@ const Analysis = () => {
                 </div>
             </Container>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+            {/* Horizontal snap-scroll rail */}
+            <div
+                className="relative w-full overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden"
+                style={{ scrollbarWidth: "none" }}
+            >
+                <div className="flex gap-5 lg:gap-6 px-4 lg:px-8 pb-4">
 
-                {/* Card 1 */}
-                <Container delay={0.15}>
-                    <div className="rounded-2xl bg-[#0a0a0a] border border-[#FF2400]/15 h-full">
-                        <MagicCard
-                            gradientFrom="#FF2400"
-                            gradientTo="#ff3131"
-                            gradientColor="rgba(255,49,49,0.07)"
-                            className="p-5 lg:p-6 w-full overflow-hidden rounded-2xl"
-                        >
-                            <div className="absolute bottom-0 right-0 bg-[#FF2400] w-1/4 h-1/4 blur-[8rem] opacity-20 pointer-events-none" />
-                            <div className="space-y-3.5">
-                                <h3 className="text-lg lg:text-xl font-semibold text-white">{card1.title}</h3>
-                                <p className="text-sm text-white/70 leading-relaxed">{card1.desc}</p>
-                                <div className="flex items-start justify-between">
-                                    <div>
-                                        <div className="text-2xl lg:text-3xl font-bold text-white">{card1.metric}</div>
-                                        <div className="text-sm text-green-400 flex items-center gap-1.5 mt-1">
-                                            <SmilePlus className="size-4" />
-                                            {card1.metricSub}
+                    {/* Card 1 */}
+                    <Container delay={0.15} className="snap-center shrink-0 w-[88%] md:w-[75%] lg:w-[70%]">
+                        <div className="rounded-2xl bg-[#0a0a0a] border border-[#FF2400]/15 h-full">
+                            <MagicCard
+                                gradientFrom="#FF2400"
+                                gradientTo="#ff3131"
+                                gradientColor="rgba(255,49,49,0.07)"
+                                className="p-6 lg:p-10 w-full overflow-hidden rounded-2xl"
+                            >
+                                <div className="absolute bottom-0 right-0 bg-[#FF2400] w-1/3 h-1/3 blur-[9rem] opacity-25 pointer-events-none" />
+                                <div className="space-y-5">
+                                    <h3 className="text-xl lg:text-3xl font-semibold text-white">{card1.title}</h3>
+                                    <p className="text-sm lg:text-base text-white/70 leading-relaxed max-w-xl">{card1.desc}</p>
+                                    <div className="flex items-start justify-between">
+                                        <div>
+                                            <div className="text-2xl lg:text-4xl font-bold text-white">{card1.metric}</div>
+                                            <div className="text-sm lg:text-base text-green-400 flex items-center gap-1.5 mt-1">
+                                                <SmilePlus className="size-4" />
+                                                {card1.metricSub}
+                                            </div>
                                         </div>
+                                        <Button size="icon" variant="ghost" className="text-white/30">
+                                            <CarFront className="size-5 lg:size-6" />
+                                        </Button>
                                     </div>
-                                    <Button size="icon" variant="ghost" className="text-white/30">
-                                        <CarFront className="size-5" />
-                                    </Button>
-                                </div>
-                                <div className="space-y-0.5 pt-1">
-                                    <div className="grid grid-cols-4 text-sm text-center text-white/50 py-1.5 border-b border-white/5">
-                                        {card1.cols.map((c) => <div key={c}>{c}</div>)}
-                                    </div>
-                                    {card1.rows.map((row, i) => (
-                                        <div key={i} className="grid grid-cols-4 text-sm py-2 border-b border-white/5 last:border-0 text-white/80">
-                                            {row.map((cell, j) => (
-                                                <div key={j} className={j === 0 ? "font-medium" : "text-center"}>{cell}</div>
-                                            ))}
+                                    <div className="space-y-0.5 pt-1">
+                                        <div className="grid grid-cols-4 text-sm lg:text-base text-center text-white/50 py-2 border-b border-white/5">
+                                            {card1.cols.map((c) => <div key={c}>{c}</div>)}
                                         </div>
-                                    ))}
+                                        {card1.rows.map((row, i) => (
+                                            <div key={i} className="grid grid-cols-4 text-sm lg:text-base py-2.5 border-b border-white/5 last:border-0 text-white/80">
+                                                {row.map((cell, j) => (
+                                                    <div key={j} className={j === 0 ? "font-medium" : "text-center"}>{cell}</div>
+                                                ))}
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
-                        </MagicCard>
-                    </div>
-                </Container>
+                            </MagicCard>
+                        </div>
+                    </Container>
 
-                {/* Card 2 */}
-                <Container delay={0.25}>
-                    <div className="rounded-2xl bg-[#0a0a0a] border border-[#FF2400]/15 h-full">
-                        <MagicCard
-                            gradientFrom="#FF2400"
-                            gradientTo="#ff3131"
-                            gradientColor="rgba(255,49,49,0.07)"
-                            className="p-5 lg:p-6 w-full overflow-hidden rounded-2xl"
-                        >
-                            <div className="absolute bottom-0 right-0 bg-[#FF2400] w-1/4 h-1/4 blur-[8rem] opacity-20 pointer-events-none" />
-                            <div className="space-y-3.5">
-                                <h3 className="text-lg lg:text-xl font-semibold text-white">{card2.title}</h3>
-                                <p className="text-sm text-white/70 leading-relaxed">{card2.desc}</p>
-                                <div className="flex items-start justify-between">
-                                    <div>
-                                        <div className="text-2xl lg:text-3xl font-bold text-white">{card2.metric}</div>
-                                        <div className="text-sm text-green-400 flex items-center gap-1.5 mt-1">
-                                            <CupSoda className="size-4" />
-                                            {card2.metricSub}
+                    {/* Card 2 */}
+                    <Container delay={0.25} className="snap-center shrink-0 w-[88%] md:w-[75%] lg:w-[70%]">
+                        <div className="rounded-2xl bg-[#0a0a0a] border border-[#FF2400]/15 h-full">
+                            <MagicCard
+                                gradientFrom="#FF2400"
+                                gradientTo="#ff3131"
+                                gradientColor="rgba(255,49,49,0.07)"
+                                className="p-6 lg:p-10 w-full overflow-hidden rounded-2xl"
+                            >
+                                <div className="absolute bottom-0 right-0 bg-[#FF2400] w-1/3 h-1/3 blur-[9rem] opacity-25 pointer-events-none" />
+                                <div className="space-y-5">
+                                    <h3 className="text-xl lg:text-3xl font-semibold text-white">{card2.title}</h3>
+                                    <p className="text-sm lg:text-base text-white/70 leading-relaxed max-w-xl">{card2.desc}</p>
+                                    <div className="flex items-start justify-between">
+                                        <div>
+                                            <div className="text-2xl lg:text-4xl font-bold text-white">{card2.metric}</div>
+                                            <div className="text-sm lg:text-base text-green-400 flex items-center gap-1.5 mt-1">
+                                                <CupSoda className="size-4" />
+                                                {card2.metricSub}
+                                            </div>
                                         </div>
+                                        <Button size="icon" variant="ghost" className="text-white/30">
+                                            <Sparkles className="size-5 lg:size-6" />
+                                        </Button>
                                     </div>
-                                    <Button size="icon" variant="ghost" className="text-white/30">
-                                        <Sparkles className="size-5" />
-                                    </Button>
-                                </div>
-                                <div className="space-y-0.5 pt-1">
-                                    <div className="grid grid-cols-4 text-sm text-white/50 py-1.5 border-b border-white/5">
-                                        {card2.cols.map((c) => <div key={c}>{c}</div>)}
-                                    </div>
-                                    {card2.rows.map((row, i) => (
-                                        <div key={i} className="grid grid-cols-4 text-sm py-2 border-b border-white/5 last:border-0 text-white/80">
-                                            <div className="font-semibold text-[#FF2400]/90">{row[0]}</div>
-                                            <div>{row[1]}</div>
-                                            <div>{row[2]}</div>
-                                            <div>{row[3]}</div>
+                                    <div className="space-y-0.5 pt-1">
+                                        <div className="grid grid-cols-4 text-sm lg:text-base text-white/50 py-2 border-b border-white/5">
+                                            {card2.cols.map((c) => <div key={c}>{c}</div>)}
                                         </div>
-                                    ))}
-                                    <p className="text-xs text-white/40 pt-1.5">{card2.disclaimer}</p>
+                                        {card2.rows.map((row, i) => (
+                                            <div key={i} className="grid grid-cols-4 text-sm lg:text-base py-2.5 border-b border-white/5 last:border-0 text-white/80">
+                                                <div className="font-semibold text-[#FF2400]/90">{row[0]}</div>
+                                                <div>{row[1]}</div>
+                                                <div>{row[2]}</div>
+                                                <div>{row[3]}</div>
+                                            </div>
+                                        ))}
+                                        <p className="text-xs lg:text-sm text-white/40 pt-2">{card2.disclaimer}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        </MagicCard>
-                    </div>
-                </Container>
+                            </MagicCard>
+                        </div>
+                    </Container>
+                </div>
+
+                {/* Edge fade gradients for premium feel */}
+                <div className="pointer-events-none absolute inset-y-0 left-0 w-8 lg:w-16 bg-gradient-to-r from-black to-transparent" />
+                <div className="pointer-events-none absolute inset-y-0 right-0 w-8 lg:w-16 bg-gradient-to-l from-black to-transparent" />
             </div>
+
+            {/* Scroll hint */}
+            <p className="mt-6 text-xs text-white/40 uppercase tracking-[0.3em]">
+                ← Desliza para explorar →
+            </p>
         </div>
     );
 };

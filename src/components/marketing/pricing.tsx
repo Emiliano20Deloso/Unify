@@ -39,9 +39,9 @@ const TIER_THEMES: Record<TierKey, {
         ),
         checkBg: "bg-[#D4AF37]/20",
         checkIcon: "text-[#D4AF37]",
-        accordionBorder: "border-[#D4AF37]/15",
+        accordionBorder: "border-[#D4AF37]/60",
         popularPill: "bg-[#D4AF37]/15 text-[#D4AF37] border-[#D4AF37]/30",
-        cta: "bg-[#D4AF37] hover:bg-[#c9a532] text-[#1a1206] shadow-[0_0_30px_rgba(212,175,55,0.35)] hover:shadow-[0_0_50px_rgba(212,175,55,0.5)]",
+        cta: "bg-white/5 text-white border border-[#D4AF37]/30 hover:bg-[#D4AF37] hover:text-[#1a1206] hover:border-[#D4AF37] hover:shadow-[0_0_40px_rgba(212,175,55,0.45)]",
     },
     premium: {
         container: "group border-white/30 bg-[#0a0a0a] hover:border-[#FF2400]",
@@ -53,9 +53,9 @@ const TIER_THEMES: Record<TierKey, {
         ),
         checkBg: "bg-[#FF2400]/20",
         checkIcon: "text-[#FF2400]",
-        accordionBorder: "border-[#FF2400]/15",
+        accordionBorder: "border-[#FF2400]/60",
         popularPill: "bg-[#FF2400]/15 text-[#FF2400] border-[#FF2400]/25",
-        cta: "bg-[#ff3131] hover:bg-[#ff3131]/90 text-white shadow-[0_0_30px_rgba(255,49,49,0.35)] hover:shadow-[0_0_50px_rgba(255,49,49,0.5)]",
+        cta: "bg-white/5 text-white border border-[#FF2400]/30 hover:bg-[#ff3131] hover:text-white hover:border-[#ff3131] hover:shadow-[0_0_40px_rgba(255,49,49,0.45)]",
     },
 };
 
