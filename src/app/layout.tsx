@@ -14,7 +14,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="es" suppressHydrationWarning>
+        <html lang="es" suppressHydrationWarning className="overflow-x-hidden">
             <body
                 className={cn(
                     "min-h-screen bg-black text-foreground antialiased font-heading overflow-x-hidden",

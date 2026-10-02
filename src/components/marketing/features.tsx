@@ -2,15 +2,17 @@
 
 import { useLanguage } from "@/contexts/language-context";
 import { cn } from "@/lib";
+import { ChevronLeft } from "lucide-react";
 import Image from "next/image";
 import type { CSSProperties, MouseEvent as ReactMouseEvent } from "react";
+import { useState } from "react";
 import Container from "../global/container";
 
 const FEATURES_META = [
     { image: "/images/Model3_56.jpg" },
     { image: "/images/sentinel.jpg" },
     { image: "/images/infoenter.jpg" },
-    { image: "/images/interior.jpg" },
+    { image: "/images/Confortdlujo.jpg" },
     { image: "/images/priv2.jpg" },
 ];
 
@@ -25,6 +27,16 @@ const handleGridMouseMove = (e: ReactMouseEvent<HTMLDivElement>) => {
 
 const Features = () => {
     const { t } = useLanguage();
+    const [revealedCards, setRevealedCards] = useState<Set<number>>(new Set());
+
+    const toggleCard = (idx: number) => {
+        setRevealedCards((prev) => {
+            const next = new Set(prev);
+            if (next.has(idx)) next.delete(idx);
+            else next.add(idx);
+            return next;
+        });
+    };
 
     return (
         <div className="relative flex flex-col items-center justify-center w-full max-w-screen-xl mx-auto py-14">
@@ -33,7 +45,7 @@ const Features = () => {
                     <p className="text-xs uppercase tracking-[0.3em] text-[#FF2400]/70 font-medium">
                         {t.features.label}
                     </p>
-                    <h2 className="text-3xl lg:text-5xl font-bold !leading-tight text-white whitespace-nowrap">
+                    <h2 className="text-3xl lg:text-5xl font-bold !leading-tight text-white lg:whitespace-nowrap">
                         {t.features.title}{" "}
                         <span className="italic font-light text-white/50">{t.features.titleHighlight}</span>{" "}
                         {t.features.titleEnd}
@@ -48,6 +60,7 @@ const Features = () => {
                 {t.features.items.map((item, index) => {
                     const meta = FEATURES_META[index];
                     const isHero = index === 0;
+                    const isRevealed = revealedCards.has(index);
 
                     return (
                         <Container
@@ -68,7 +81,10 @@ const Features = () => {
                                     src={meta.image}
                                     alt={item.title}
                                     fill
-                                    className="object-cover object-center brightness-110 saturate-105"
+                                    className={cn(
+                                        "object-cover brightness-110 saturate-105",
+                                        index === 3 ? "object-[center_30%] sm:object-center" : "object-center"
+                                    )}
                                     quality={85}
                                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                 />
@@ -77,21 +93,46 @@ const Features = () => {
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                                 <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-transparent" />
 
-                                {/* Content — bottom-left (hero style) */}
+                                {/* Content — title at bottom-left (hero style) */}
                                 <div className="relative z-10 flex flex-col justify-end h-full p-6 lg:p-8 gap-3">
                                     <h3 className={cn(
-                                        "font-bold text-white leading-tight tracking-tight",
-                                        isHero ? "text-2xl lg:text-4xl xl:text-5xl" : "text-lg lg:text-2xl"
+                                        "font-bold text-white leading-tight tracking-tight transition-all duration-500 sm:!opacity-100 sm:!translate-x-0",
+                                        isHero ? "text-2xl lg:text-4xl xl:text-5xl" : "text-lg lg:text-2xl",
+                                        isRevealed && "opacity-0 -translate-x-8"
                                     )}>
                                         {item.title}
                                     </h3>
                                     <p className={cn(
-                                        "text-white/75 leading-relaxed",
+                                        "hidden sm:block text-white/75 leading-relaxed",
                                         isHero ? "text-sm lg:text-base max-w-md" : "text-sm max-w-xs"
                                     )}>
                                         {item.description}
                                     </p>
                                 </div>
+
+                                {/* Mobile reveal — description slides in from right */}
+                                <div className={cn(
+                                    "sm:hidden absolute inset-0 flex items-end p-6 pr-14 z-10 transition-all duration-500",
+                                    isRevealed ? "opacity-100 translate-x-0 pointer-events-auto" : "opacity-0 translate-x-10 pointer-events-none"
+                                )}>
+                                    <p className="text-sm text-white leading-relaxed">
+                                        {item.description}
+                                    </p>
+                                </div>
+
+                                {/* Mobile slide-tab trigger — anchored to right edge */}
+                                <button
+                                    type="button"
+                                    onClick={() => toggleCard(index)}
+                                    aria-label={isRevealed ? "Ocultar detalles" : "Ver detalles"}
+                                    aria-expanded={isRevealed}
+                                    className="sm:hidden absolute right-0 top-1/2 -translate-y-1/2 z-30 flex items-center justify-center w-8 h-16 rounded-l-lg backdrop-blur-md border-l border-y border-white/25 bg-black/50 shadow-lg active:scale-95 transition-transform"
+                                >
+                                    <ChevronLeft className={cn(
+                                        "size-4 text-white transition-transform duration-500",
+                                        isRevealed && "rotate-180"
+                                    )} />
+                                </button>
 
                                 {/* Cursor-following red border glow — illuminates border where cursor is near, spills across adjacent cards */}
                                 <div

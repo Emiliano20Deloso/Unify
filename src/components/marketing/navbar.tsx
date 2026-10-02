@@ -4,10 +4,10 @@ import { useLanguage } from "@/contexts/language-context";
 import { WHATSAPP_LINK } from "@/constants";
 import { cn } from "@/lib";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent, useTransform, useMotionTemplate } from "motion/react";
-import { ArrowRightIcon, MenuIcon, XIcon } from "lucide-react";
+import { ArrowRightIcon, CalendarIcon, ClockIcon, MapPinIcon, MenuIcon, PlusIcon, XIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useId, useState } from "react";
 import type { Lang } from "@/translations";
 
 const NAV_KEYS = ["inicio", "servicios", "tarifas", "about"] as const;
@@ -20,13 +20,17 @@ const NAV_HREFS: Record<string, string> = {
 
 const Navbar = () => {
     const { lang, setLang, t } = useLanguage();
-    const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
+    const [pastHero, setPastHero] = useState(false);
+    const [showReturn, setShowReturn] = useState(false);
     const { scrollY } = useScroll();
 
     useMotionValueEvent(scrollY, "change", (v) => {
-        setScrolled(v > 60);
         if (v > 60 && mobileOpen) setMobileOpen(false);
+        // Hero is min-h-screen; reveal UNIFY after scrolling ~80% of viewport
+        if (typeof window !== "undefined") {
+            setPastHero(v > window.innerHeight * 0.8);
+        }
     });
 
     // Continuous scroll-linked liquid glass effect (0px → 140px)
@@ -111,65 +115,175 @@ const Navbar = () => {
 
             {/* Mobile nav */}
             <motion.nav
-                animate={{
-                    backgroundColor: scrolled || mobileOpen ? "rgba(15,15,17,0.6)" : "transparent",
-                    backdropFilter: scrolled || mobileOpen ? "blur(20px) saturate(180%)" : "blur(0px) saturate(100%)",
-                    borderBottomColor: scrolled || mobileOpen ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0)",
-                    boxShadow: scrolled || mobileOpen
-                        ? "inset 0 1px 0 0 rgba(255,255,255,0.08), 0 8px 32px 0 rgba(0,0,0,0.35)"
-                        : "inset 0 0 0 0 rgba(0,0,0,0), 0 0 0 0 rgba(0,0,0,0)",
+                style={{
+                    backgroundColor: glassBg,
+                    backdropFilter: glassFilter,
+                    WebkitBackdropFilter: glassFilter,
+                    borderBottomColor: glassBorder,
+                    boxShadow: glassShadow,
                 }}
-                transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
-                className="flex lg:hidden items-center justify-between w-full px-5 py-4 border-b"
+                className="flex lg:hidden items-center justify-between w-full px-5 py-5 border-b"
             >
-                <Link href="/" className="flex items-center gap-2">
-                    <Image src="/icons/plano.png" alt="UNIFY" width={36} height={36} className="w-auto h-9" />
-                    <span className="text-lg font-bold text-white tracking-tight">UNIFY</span>
+                <Link href="/" className="relative flex items-center h-10 min-w-[90px]">
+                    {/* Icon logo — visible within hero */}
+                    <Image
+                        src="/icons/iconouni.png"
+                        alt="UNIFY"
+                        width={44}
+                        height={44}
+                        className={cn(
+                            "absolute left-0 top-1/2 -translate-y-1/2 w-auto h-10 transition-opacity duration-300",
+                            pastHero ? "opacity-0 pointer-events-none" : "opacity-100"
+                        )}
+                    />
+                    {/* Text — visible after scrolling past hero */}
+                    <span className={cn(
+                        "absolute left-0 top-1/2 -translate-y-1/2 text-2xl font-bold text-white tracking-tight transition-opacity duration-300",
+                        pastHero ? "opacity-100" : "opacity-0 pointer-events-none"
+                    )}>UNIFY</span>
                 </Link>
                 <div className="flex items-center gap-5">
-                    <LangToggle lang={lang} setLang={setLang} />
-                    <button
-                        onClick={() => setMobileOpen(!mobileOpen)}
-                        className="text-white p-1"
-                        aria-label="Toggle menu"
-                    >
-                        {mobileOpen ? <XIcon className="size-6" /> : <MenuIcon className="size-6" />}
-                    </button>
+                    {!mobileOpen && (
+                        <button
+                            onClick={() => setMobileOpen(true)}
+                            className={cn("p-1 transition-colors duration-300", pastHero ? "text-white" : "text-black")}
+                            aria-label="Abrir menú"
+                        >
+                            <MenuIcon className="size-9" />
+                        </button>
+                    )}
                 </div>
             </motion.nav>
 
-            {/* Mobile menu panel */}
+            {/* Mobile quote menu — slides up from bottom, white rounded card */}
             <AnimatePresence>
                 {mobileOpen && (
-                    <motion.div
-                        key="mobile-menu"
-                        initial={{ opacity: 0, y: -8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -8 }}
-                        transition={{ duration: 0.2, ease: "easeOut" }}
-                        className="lg:hidden absolute inset-x-0 top-full bg-black/95 backdrop-blur-2xl border-b border-white/5 px-5 pb-6 pt-4 flex flex-col gap-1"
-                    >
-                        {navItems.map((item) => (
-                            <Link
-                                key={item.href}
-                                href={item.href}
-                                onClick={() => setMobileOpen(false)}
-                                className="text-white/60 hover:text-white text-base py-3 px-3 rounded-lg hover:bg-white/5 transition-colors"
-                            >
-                                {item.name}
-                            </Link>
-                        ))}
-                        <Link
-                            href={WHATSAPP_LINK}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                    <>
+                        {/* Backdrop */}
+                        <motion.div
+                            key="menu-backdrop"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.25 }}
                             onClick={() => setMobileOpen(false)}
-                            className="mt-3 flex items-center justify-center gap-2 bg-[#ff3131] text-white text-sm font-medium px-5 py-3.5 rounded-full"
+                            className="lg:hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
+                        />
+                        {/* Modal */}
+                        <motion.div
+                            key="mobile-menu"
+                            initial={{ y: "100%" }}
+                            animate={{ y: 0 }}
+                            exit={{ y: "100%" }}
+                            transition={{ type: "tween", duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
+                            className="lg:hidden fixed inset-x-0 bottom-0 z-50 bg-white rounded-t-3xl shadow-[0_-10px_40px_rgba(0,0,0,0.3)] px-5 pt-5 pb-7 flex flex-col gap-5 max-h-[90vh] overflow-y-auto"
                         >
-                            {t.nav.reservar}
-                            <ArrowRightIcon className="size-4" />
-                        </Link>
-                    </motion.div>
+                            {/* Top row: X on left, title centered, spacer right */}
+                            <div className="flex items-center justify-between">
+                                <button
+                                    onClick={() => setMobileOpen(false)}
+                                    aria-label="Cerrar"
+                                    className="p-1 text-black active:scale-90 transition-transform"
+                                >
+                                    <XIcon className="size-6" />
+                                </button>
+                                <h2 className="text-base font-semibold text-black tracking-tight">{t.quote.title}</h2>
+                                <div className="w-8" />
+                            </div>
+
+                            {/* Origin & Destination */}
+                            <div className="flex flex-col gap-2">
+                                <p className="text-xs text-black/50 font-medium px-1">{t.quote.originDestLabel}</p>
+                                <div className="flex items-center gap-3 bg-black/5 rounded-full px-4 py-3">
+                                    <MapPinIcon className="size-4 text-black/60 shrink-0" />
+                                    <input
+                                        type="text"
+                                        placeholder={t.quote.originPlaceholder}
+                                        className="flex-1 bg-transparent text-sm text-black placeholder:text-black/40 outline-none"
+                                    />
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => setShowReturn(!showReturn)}
+                                    className="flex items-center gap-1.5 text-sm text-black/70 hover:text-black px-2 py-1 w-fit transition-colors"
+                                >
+                                    <PlusIcon className={cn("size-4 transition-transform", showReturn && "rotate-45")} />
+                                    {showReturn ? t.quote.removeReturn : t.quote.addReturn}
+                                </button>
+                            </div>
+
+                            {/* Pickup date + time */}
+                            <div className="flex flex-col gap-2">
+                                <p className="text-xs text-black/50 font-medium px-1">{t.quote.pickupLabel}</p>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <div className="flex items-center gap-2.5 bg-black/5 rounded-2xl px-3 py-3">
+                                        <CalendarIcon className="size-4 text-black/60 shrink-0" />
+                                        <input
+                                            type="date"
+                                            className="flex-1 bg-transparent text-sm text-black outline-none"
+                                        />
+                                    </div>
+                                    <div className="flex items-center gap-2.5 bg-black/5 rounded-2xl px-3 py-3">
+                                        <ClockIcon className="size-4 text-black/60 shrink-0" />
+                                        <input
+                                            type="time"
+                                            defaultValue="10:00"
+                                            className="flex-1 bg-transparent text-sm text-black outline-none"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Return date + time (toggled by "Agrega regreso") */}
+                            <AnimatePresence initial={false}>
+                                {showReturn && (
+                                    <motion.div
+                                        key="return-section"
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: "auto" }}
+                                        exit={{ opacity: 0, height: 0 }}
+                                        transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
+                                        className="overflow-hidden"
+                                    >
+                                        <div className="flex flex-col gap-2">
+                                            <p className="text-xs text-black/50 font-medium px-1">{t.quote.returnLabel}</p>
+                                            <div className="grid grid-cols-2 gap-2">
+                                                <div className="flex items-center gap-2.5 bg-black/5 rounded-2xl px-3 py-3">
+                                                    <CalendarIcon className="size-4 text-black/60 shrink-0" />
+                                                    <input
+                                                        type="date"
+                                                        className="flex-1 bg-transparent text-sm text-black outline-none"
+                                                    />
+                                                </div>
+                                                <div className="flex items-center gap-2.5 bg-black/5 rounded-2xl px-3 py-3">
+                                                    <ClockIcon className="size-4 text-black/60 shrink-0" />
+                                                    <input
+                                                        type="time"
+                                                        defaultValue="18:00"
+                                                        className="flex-1 bg-transparent text-sm text-black outline-none"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+
+                            {/* Language toggle */}
+                            <div className="self-center pt-1">
+                                <LangToggle lang={lang} setLang={setLang} variant="light" />
+                            </div>
+
+                            {/* CTA */}
+                            <button
+                                onClick={() => setMobileOpen(false)}
+                                className="w-full flex items-center justify-center gap-2 bg-black hover:bg-black/90 text-white text-base font-medium py-4 rounded-full transition-colors"
+                            >
+                                {t.hero.cta}
+                                <ArrowRightIcon className="size-4" />
+                            </button>
+                        </motion.div>
+                    </>
                 )}
             </AnimatePresence>
         </motion.header>
@@ -179,12 +293,21 @@ const Navbar = () => {
 const LangToggle = ({
     lang,
     setLang,
+    variant = "dark",
 }: {
     lang: Lang;
     setLang: (l: Lang) => void;
+    variant?: "dark" | "light";
 }) => {
+    const isDark = variant === "dark";
+    const pillId = useId();
     return (
-        <div className="relative flex items-center gap-0.5 p-0.5 rounded-full bg-white/10 border border-white/40">
+        <div className={cn(
+            "relative flex items-center gap-0.5 p-0.5 rounded-full",
+            isDark
+                ? "bg-white/10 border border-white shadow-[0_0_12px_rgba(255,255,255,0.3)]"
+                : "bg-black/10 border border-black shadow-[0_0_12px_rgba(0,0,0,0.25)]"
+        )}>
             {(["es", "en"] as const).map((l) => {
                 const active = lang === l;
                 return (
@@ -193,14 +316,18 @@ const LangToggle = ({
                         onClick={() => setLang(l)}
                         className={cn(
                             "relative px-3 py-1.5 rounded-full text-xs font-medium transition-colors duration-200",
-                            active ? "text-white" : "text-white/55 hover:text-white/85"
+                            active
+                                ? "text-white"
+                                : isDark
+                                    ? "text-white/55 hover:text-white/85"
+                                    : "text-black hover:text-black"
                         )}
                     >
                         {active && (
                             <motion.span
-                                layoutId="lang-toggle-pill"
+                                layoutId={`lang-toggle-pill-${pillId}`}
                                 className="absolute inset-0 rounded-full bg-[#ff3131] shadow-[0_2px_10px_rgba(255,49,49,0.35)]"
-                                transition={{ type: "tween", duration: 2.0, ease: [0.32, 0.72, 0, 1] }}
+                                transition={{ type: "tween", duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
                             />
                         )}
                         <span className="relative z-10">{l.toUpperCase()}</span>

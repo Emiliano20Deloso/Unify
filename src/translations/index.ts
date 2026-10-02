@@ -206,6 +206,11 @@ export const translations = {
             successTitle: "¡Listo! Cotización recibida",
             successDesc: "Te contactaremos en menos de 30 minutos con tu tarifa personalizada para ese trayecto.",
             successSub: "Revisa tu correo electrónico.",
+            originDestLabel: "Origen & Destino",
+            addReturn: "Agrega regreso",
+            removeReturn: "Quitar regreso",
+            pickupLabel: "Recogida",
+            returnLabel: "Regreso",
         },
         testimonials: {
             label: "Lo que dicen de nosotros",
@@ -466,6 +471,11 @@ export const translations = {
             successTitle: "Quote received!",
             successDesc: "We'll contact you within 30 minutes with your personalized fare for that route.",
             successSub: "Check your email inbox.",
+            originDestLabel: "Origin & Destination",
+            addReturn: "Add return",
+            removeReturn: "Remove return",
+            pickupLabel: "Pickup",
+            returnLabel: "Return",
         },
         testimonials: {
             label: "What our clients say",

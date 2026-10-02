@@ -14,37 +14,47 @@ const Hero = () => {
 
             {/* Background image */}
             <div className="absolute inset-0 -z-10">
+                {/* Mobile hero image */}
+                <Image
+                    src="/images/heromov.jpg"
+                    alt="Tesla Model 3 Performance — UNIFY"
+                    fill
+                    className="sm:hidden object-cover object-center brightness-[1.35] saturate-110"
+                    priority
+                    quality={90}
+                />
+                {/* Desktop hero image */}
                 <Image
                     src="/Hero.jpg"
                     alt="Tesla Model 3 Performance — UNIFY"
                     fill
-                    className="object-cover object-center brightness-110 saturate-105"
+                    className="hidden sm:block object-cover object-center brightness-110 saturate-105"
                     priority
                     quality={90}
                 />
-                {/* Dark overlays */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent" />
+                {/* Dark overlays (lighter on mobile for a clearer image) */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/35 sm:from-black/60 via-black/10 sm:via-black/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 sm:from-black/60 via-black/5 to-transparent" />
             </div>
 
             {/* Content — bottom-left */}
-            <div className="relative z-10 w-full px-6 lg:px-20 xl:px-28 pb-28 lg:pb-40">
-                <div className="max-w-3xl flex flex-col gap-6">
+            <div className="relative z-10 w-full px-6 lg:px-20 xl:px-28 pb-[12vh] sm:pt-0 sm:pb-28 lg:pb-40">
+                <div className="max-w-3xl mx-auto sm:mx-0 flex flex-col gap-6 items-center sm:items-start text-center sm:text-left">
 
                     <div>
                         <h1 className="text-[5rem] sm:text-[7rem] lg:text-[9rem] xl:text-[11rem] font-bold text-white leading-none tracking-tight">
                             UNIFY
                         </h1>
-                        <p className="mt-3 text-lg sm:text-2xl lg:text-3xl text-white/50 font-light italic tracking-wide">
+                        <p className="mt-3 text-lg sm:text-2xl lg:text-3xl text-white/70 sm:text-white/50 font-light italic tracking-wide">
                             {t.hero.tagline}
                         </p>
                     </div>
 
-                    <p className="max-w-md text-base lg:text-lg text-white/40 leading-relaxed">
+                    <p className="hidden sm:block max-w-md text-base lg:text-lg text-white/40 leading-relaxed">
                         {t.hero.description}
                     </p>
 
-                    <div className="flex items-center gap-5 mt-2">
+                    <div className="hidden sm:flex items-center gap-5 mt-2">
                         <QuoteDialog
                             trigger={
                                 <Button
