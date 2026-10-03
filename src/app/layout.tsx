@@ -5,6 +5,7 @@ import { base, heading } from "@/constants";
 import { Toaster } from "@/components/ui/sonner";
 import { subheading } from "@/constants/fonts";
 import { LanguageProvider } from "@/contexts/language-context";
+import { MobileMenuProvider } from "@/contexts/mobile-menu-context";
 
 export const metadata = generateMetadata();
 
@@ -24,8 +25,10 @@ export default function RootLayout({
                 )}
             >
                 <LanguageProvider>
-                    <Toaster richColors theme="dark" position="top-right" />
-                    {children}
+                    <MobileMenuProvider>
+                        <Toaster richColors theme="dark" position="top-right" />
+                        {children}
+                    </MobileMenuProvider>
                 </LanguageProvider>
             </body>
         </html>

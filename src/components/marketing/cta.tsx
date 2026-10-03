@@ -18,10 +18,10 @@ const CTA = () => {
                             src="/images/new.jpg"
                             alt="UNIFY Tesla"
                             fill
-                            className="object-cover object-center"
+                            className="object-cover object-center brightness-[1.3] saturate-110 sm:brightness-100 sm:saturate-100"
                             quality={80}
                         />
-                        <div className="absolute inset-0 bg-black/35" />
+                        <div className="absolute inset-0 bg-black/20 sm:bg-black/35" />
                     </div>
 
                     {/* Top border glow */}
