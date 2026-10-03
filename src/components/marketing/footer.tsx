@@ -17,21 +17,20 @@ const Footer = () => {
             links: [
                 { label: t.nav.inicio, href: "/" },
                 { label: t.nav.servicios, href: "/servicios" },
-                { label: t.nav.tarifas, href: "#tarifas" },
+                { label: t.nav.tarifas, href: "/tarifas" },
             ],
         },
         {
-            heading: t.nav.about,
+            heading: t.nav.contacto,
             links: [
-                { label: t.nav.about, href: "#nosotros" },
                 { label: "WhatsApp", href: WHATSAPP_LINK, external: true },
             ],
         },
         {
             heading: "Legal",
             links: [
-                { label: "Privacidad", href: "#" },
-                { label: "Términos", href: "#" },
+                { label: "Privacidad", href: "/#" },
+                { label: "Términos", href: "/#" },
             ],
         },
     ];

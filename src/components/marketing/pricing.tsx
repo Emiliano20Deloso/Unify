@@ -77,15 +77,18 @@ const Pricing = () => {
                 </div>
             </Container>
 
-            <div className="grid w-full grid-cols-1 lg:grid-cols-3 gap-5 max-w-5xl mx-auto">
+            <div
+                className="flex lg:grid items-stretch overflow-x-auto overflow-y-hidden lg:overflow-visible snap-x snap-mandatory lg:snap-none lg:grid-cols-3 gap-5 w-full lg:max-w-5xl lg:mx-auto px-4 lg:px-0 pb-4 lg:pb-0 [&::-webkit-scrollbar]:hidden touch-pan-x lg:touch-auto"
+                style={{ scrollbarWidth: "none" }}
+            >
                 {t.pricing.tiers.map((tier, idx) => {
                     const tierKey = TIER_KEYS[idx];
                     const theme = TIER_THEMES[tierKey];
                     return (
-                        <Container key={tier.id} delay={0.1 * idx + 0.1}>
+                        <Container key={tier.id} delay={0.1 * idx + 0.1} className="snap-center shrink-0 w-[85%] lg:w-auto">
                             <div
                                 className={cn(
-                                    "relative flex flex-col rounded-2xl border overflow-hidden h-full transition-all duration-300",
+                                    "relative flex flex-col rounded-2xl border overflow-hidden h-full min-h-[620px] lg:min-h-0 transition-all duration-300",
                                     theme.container
                                 )}
                             >

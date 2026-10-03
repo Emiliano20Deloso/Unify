@@ -1,6 +1,7 @@
 "use client";
 
 import { useLanguage } from "@/contexts/language-context";
+import { useMobileMenu } from "@/contexts/mobile-menu-context";
 import { WHATSAPP_LINK } from "@/constants";
 import { cn } from "@/lib";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent, useTransform, useMotionTemplate } from "motion/react";
@@ -20,7 +21,8 @@ const NAV_HREFS: Record<string, string> = {
 
 const Navbar = () => {
     const { lang, setLang, t } = useLanguage();
-    const [mobileOpen, setMobileOpen] = useState(false);
+    const { isOpen: mobileOpen, openMenu, closeMenu } = useMobileMenu();
+    const setMobileOpen = (v: boolean) => (v ? openMenu() : closeMenu());
     const [pastHero, setPastHero] = useState(false);
     const [showReturn, setShowReturn] = useState(false);
     const { scrollY } = useScroll();
