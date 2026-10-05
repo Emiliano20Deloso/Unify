@@ -115,7 +115,7 @@ export const translations = {
                 {
                     id: "select",
                     title: "Select",
-                    badge: true,
+                    badge: false,
                     fromPrice: "Desde $399",
                     desc: "Una experiencia elevada con detalles pensados para hacer tu viaje más cómodo y memorable.",
                     features: [
@@ -382,7 +382,7 @@ export const translations = {
                 {
                     id: "select",
                     title: "Select",
-                    badge: true,
+                    badge: false,
                     fromPrice: "From $399",
                     desc: "An elevated experience with details designed to make your trip more comfortable and memorable.",
                     features: [

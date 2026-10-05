@@ -73,16 +73,25 @@ const Navbar = () => {
                 className="hidden lg:flex items-center justify-between w-full px-8 xl:px-16 py-5 border-b"
             >
                 {/* Logo */}
-                {/* Logo */}
                 <Link href="/" className="flex items-center gap-2.5 shrink-0">
                     <Image
                         src="/icons/iconouni.png"
                         alt="UNIFY"
                         width={44}
                         height={44}
-                        className="w-auto h-11"
+                        className={cn(
+                            "w-auto h-11 transition-opacity duration-300",
+                            pastHero ? "opacity-0 pointer-events-none" : "opacity-100"
+                        )}
                     />
-                    <span className="text-xl font-bold text-white tracking-tight">UNIFY</span>
+                    <span
+                        className={cn(
+                            "text-xl font-bold text-white tracking-tight transition-opacity duration-300",
+                            pastHero ? "opacity-100" : "opacity-0 pointer-events-none"
+                        )}
+                    >
+                        UNIFY
+                    </span>
                 </Link>
 
                 {/* Links — centered */}
@@ -314,7 +323,7 @@ const LangToggle = ({
                 const active = lang === l;
                 return (
                     <button
-                        key={l}
+                        key={l}  
                         onClick={() => setLang(l)}
                         className={cn(
                             "relative px-3 py-1.5 rounded-full text-xs font-medium transition-colors duration-200",
