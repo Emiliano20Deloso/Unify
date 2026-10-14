@@ -4,7 +4,7 @@ import { useLanguage } from "@/contexts/language-context";
 import { cn } from "@/lib";
 import { ChevronLeft } from "lucide-react";
 import Image from "next/image";
-import type { CSSProperties, MouseEvent as ReactMouseEvent } from "react";
+import type { CSSProperties, MouseEvent as ReactMouseEvent, TouchEvent as ReactTouchEvent } from "react";
 import { useState } from "react";
 import Container from "../global/container";
 
@@ -74,7 +74,27 @@ const Features = () => {
                             <div
                                 data-feature-card
                                 style={{ "--mx": "-9999px", "--my": "-9999px" } as CSSProperties}
-                                className="relative h-full min-h-[260px] overflow-hidden rounded-2xl lg:rounded-3xl border border-white/10 group/card transition-colors duration-300"
+                                className="relative h-full min-h-[260px] overflow-hidden rounded-2xl lg:rounded-3xl border border-white/10 group/card transition-colors duration-300 touch-pan-y"
+                                onTouchStart={(e: ReactTouchEvent<HTMLDivElement>) => {
+                                    e.currentTarget.dataset.swipeStartX = String(e.touches[0].clientX);
+                                    e.currentTarget.dataset.swipeStartY = String(e.touches[0].clientY);
+                                }}
+                                onTouchEnd={(e: ReactTouchEvent<HTMLDivElement>) => {
+                                    const target = e.currentTarget;
+                                    const startX = parseFloat(target.dataset.swipeStartX ?? "NaN");
+                                    const startY = parseFloat(target.dataset.swipeStartY ?? "NaN");
+                                    delete target.dataset.swipeStartX;
+                                    delete target.dataset.swipeStartY;
+                                    if (isNaN(startX) || isNaN(startY)) return;
+                                    const endX = e.changedTouches[0].clientX;
+                                    const endY = e.changedTouches[0].clientY;
+                                    const deltaX = endX - startX;
+                                    const deltaY = endY - startY;
+                                    // Only treat as swipe if horizontal distance > vertical (not a scroll)
+                                    if (Math.abs(deltaX) < 40 || Math.abs(deltaX) < Math.abs(deltaY)) return;
+                                    if (deltaX < 0 && !isRevealed) toggleCard(index);
+                                    else if (deltaX > 0 && isRevealed) toggleCard(index);
+                                }}
                             >
                                 {/* Background image — fills card like hero */}
                                 <Image

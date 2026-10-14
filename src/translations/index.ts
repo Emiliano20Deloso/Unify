@@ -7,6 +7,7 @@ export const translations = {
             servicios: "Servicios",
             tarifas: "Tarifas",
             about: "Nosotros",
+            contacto: "Contacto",
             reservar: "Cotiza ahora",
         },
         hero: {
@@ -101,32 +102,33 @@ export const translations = {
                     features: [
                         "Vehículo Tesla",
                         "Conductor certificado",
-                        "Rastreo en tiempo real",
+                        "Comfort superior",
                         "Confirmación en minutos",
+                        "Traslado Ágil",
                     ],
                     snacks: {
                         drink: "Agua natural",
                         sweet: "—",
-                        savory: "Mix de nueces",
+                        savory: "—",
                     },
                 },
                 {
                     id: "select",
                     title: "Select",
-                    badge: true,
+                    badge: false,
                     fromPrice: "Desde $399",
                     desc: "Una experiencia elevada con detalles pensados para hacer tu viaje más cómodo y memorable.",
                     features: [
-                        "Vehículo Tesla premium",
-                        "Conductor certificado VIP",
+                        "Model 3 ",
+                        "Conductor certificado ",
                         "Música a tu elección",
-                        "Cargador inalámbrico",
-                        "Tarifa fija sin recargos",
+                        "Bebida de bienvenida",
+                        "Snack ligero",
                     ],
                     snacks: {
-                        drink: "Agua mineral premium",
-                        sweet: "Galletas artesanales",
-                        savory: "Frutos secos y chips",
+                        drink: "Agua natural o mineral",
+                        sweet: "Mentas",
+                        savory: "Frutos secos o chips",
                     },
                 },
                 {
@@ -136,8 +138,9 @@ export const translations = {
                     fromPrice: "Desde $599",
                     desc: "El pináculo del transporte de lujo. Una experiencia diseñada para quienes exigen lo mejor.",
                     features: [
-                        "Tesla Model S / X",
+                        "Model 3 / Y - premium ",
                         "Conductor de élite",
+                        "Todas las amenities a bordo",
                         "Ambiente personalizado",
                         "Prioridad de reserva 24/7",
                         "Servicio white-glove",
@@ -309,6 +312,7 @@ export const translations = {
             servicios: "Services",
             tarifas: "Pricing",
             about: "About Us",
+            contacto: "Contact",
             reservar: "Get a quote",
         },
         hero: {
@@ -415,7 +419,7 @@ export const translations = {
                 {
                     id: "select",
                     title: "Select",
-                    badge: true,
+                    badge: false,
                     fromPrice: "From $399",
                     desc: "An elevated experience with details designed to make your trip more comfortable and memorable.",
                     features: [

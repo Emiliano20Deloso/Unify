@@ -1,6 +1,7 @@
 "use client";
 
 import { useLanguage } from "@/contexts/language-context";
+import { useMobileMenu } from "@/contexts/mobile-menu-context";
 import { WHATSAPP_LINK } from "@/constants";
 import { cn } from "@/lib";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent, useTransform, useMotionTemplate } from "motion/react";
@@ -20,7 +21,8 @@ const NAV_HREFS: Record<string, string> = {
 
 const Navbar = () => {
     const { lang, setLang, t } = useLanguage();
-    const [mobileOpen, setMobileOpen] = useState(false);
+    const { isOpen: mobileOpen, openMenu, closeMenu } = useMobileMenu();
+    const setMobileOpen = (v: boolean) => (v ? openMenu() : closeMenu());
     const [pastHero, setPastHero] = useState(false);
     const [showReturn, setShowReturn] = useState(false);
     const { scrollY } = useScroll();
@@ -71,16 +73,25 @@ const Navbar = () => {
                 className="hidden lg:flex items-center justify-between w-full px-8 xl:px-16 py-5 border-b"
             >
                 {/* Logo */}
-                {/* Logo */}
                 <Link href="/" className="flex items-center gap-2.5 shrink-0">
                     <Image
                         src="/icons/iconouni.png"
                         alt="UNIFY"
                         width={44}
                         height={44}
-                        className="w-auto h-11"
+                        className={cn(
+                            "w-auto h-11 transition-opacity duration-300",
+                            pastHero ? "opacity-0 pointer-events-none" : "opacity-100"
+                        )}
                     />
-                    <span className="text-xl font-bold text-white tracking-tight">UNIFY</span>
+                    <span
+                        className={cn(
+                            "text-xl font-bold text-white tracking-tight transition-opacity duration-300",
+                            pastHero ? "opacity-100" : "opacity-0 pointer-events-none"
+                        )}
+                    >
+                        UNIFY
+                    </span>
                 </Link>
 
                 {/* Links — centered */}
@@ -312,7 +323,7 @@ const LangToggle = ({
                 const active = lang === l;
                 return (
                     <button
-                        key={l}
+                        key={l}  
                         onClick={() => setLang(l)}
                         className={cn(
                             "relative px-3 py-1.5 rounded-full text-xs font-medium transition-colors duration-200",

@@ -12,7 +12,9 @@ const HomePage = () => {
             <Hero />
             <div className="w-full px-4 md:px-12 lg:max-w-screen-xl lg:mx-auto">
                 <Features />
-                <Analysis />
+                <div className="hidden sm:block">
+                    <Analysis />
+                </div>
                 <Pricing />
                 <Testimonials />
             </div>
