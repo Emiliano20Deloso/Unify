@@ -30,6 +30,17 @@ interface FormData {
     corporate: boolean;
 }
 
+interface QuoteResponse {
+    id: string;
+    pricePreliminary: number | null;
+    distanceKm: number | null;
+    durationMin: number | null;
+    needsManualQuote: boolean;
+}
+
+const buildClientReference = (id: string) =>
+    `UF-${new Date().getFullYear()}-${id.slice(0, 8).toUpperCase()}`;
+
 const TIER_LABELS: Record<TierKey, { es: string; en: string }> = {
     practico: { es: "Práctico", en: "Essential" },
     select: { es: "Select", en: "Select" },
@@ -44,6 +55,8 @@ export const QuoteDialog = ({ trigger, initialTier = "select" }: QuoteDialogProp
     const [step, setStep] = useState(1);
     const [submitted, setSubmitted] = useState(false);
     const [submitting, setSubmitting] = useState(false);
+    const [apiResponse, setApiResponse] = useState<QuoteResponse | null>(null);
+    const [apiError, setApiError] = useState<string | null>(null);
     const [form, setForm] = useState<FormData>({
         origin: { text: "", lat: 0, lng: 0 },
         destination: { text: "", lat: 0, lng: 0 },
@@ -67,10 +80,52 @@ export const QuoteDialog = ({ trigger, initialTier = "select" }: QuoteDialogProp
 
     const handleSubmit = async () => {
         setSubmitting(true);
-        // TODO: POST /api/quote
-        await new Promise(r => setTimeout(r, 1200));
-        setSubmitting(false);
-        setSubmitted(true);
+        setApiError(null);
+        try {
+            const [year, month, day] = form.date.split("-").map(Number);
+            const [hour, minute] = form.time.split(":").map(Number);
+            const pickupAt = new Date(year, month - 1, day, hour, minute).toISOString();
+
+            const payload = {
+                origin: form.origin.text,
+                originLat: form.origin.lat || undefined,
+                originLng: form.origin.lng || undefined,
+                destination: form.destination.text,
+                destinationLat: form.destination.lat || undefined,
+                destinationLng: form.destination.lng || undefined,
+                pickupAt,
+                passengers: form.passengers,
+                luggage: form.luggage,
+                serviceLevel: form.tier,
+                customerName: form.name.trim(),
+                customerEmail: form.email.trim(),
+                customerPhone: form.phone.trim() || undefined,
+                isCorporate: form.corporate,
+                notes: form.notes.trim() || undefined,
+            };
+
+            const resp = await fetch("/api/quote", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+            });
+
+            if (!resp.ok) {
+                const errBody = (await resp.json().catch(() => null)) as { error?: string } | null;
+                console.warn("[QuoteDialog] API error:", resp.status, errBody);
+                setApiError(q.errorGeneric);
+                return;
+            }
+
+            const data = (await resp.json()) as QuoteResponse;
+            setApiResponse(data);
+            setSubmitted(true);
+        } catch (e) {
+            console.warn("[QuoteDialog] network error:", e);
+            setApiError(q.errorNetwork);
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     const handleOpenChange = (v: boolean) => {
@@ -80,6 +135,8 @@ export const QuoteDialog = ({ trigger, initialTier = "select" }: QuoteDialogProp
                 setStep(1);
                 setSubmitted(false);
                 setSubmitting(false);
+                setApiResponse(null);
+                setApiError(null);
             }, 300);
         }
     };
@@ -269,6 +326,13 @@ export const QuoteDialog = ({ trigger, initialTier = "select" }: QuoteDialogProp
                             )}
                         </div>
 
+                        {/* Error inline */}
+                        {apiError && step === 3 && (
+                            <div className="mx-7 mb-4 px-4 py-3 rounded-xl border border-red-500/30 bg-red-500/10 text-sm text-red-200/90">
+                                {apiError}
+                            </div>
+                        )}
+
                         {/* Footer */}
                         <div className="px-7 pb-7 pt-5 flex items-center justify-between gap-3 border-t border-white/5">
                             {step > 1 ? (
@@ -304,19 +368,24 @@ export const QuoteDialog = ({ trigger, initialTier = "select" }: QuoteDialogProp
                         </div>
                     </>
                 ) : (
-                    /* Success state */
-                    <div className="flex flex-col items-center justify-center py-16 px-8 text-center gap-4">
-                        <div className="size-16 rounded-full bg-[#FF2400]/15 border border-[#FF2400]/30 flex items-center justify-center mb-2">
+                    /* Success state — thank-you. La propuesta oficial se envía por email tras aprobación del admin. */
+                    <div className="flex flex-col items-center py-14 px-8 text-center gap-4">
+                        <div className="size-16 rounded-full bg-[#FF2400]/15 border border-[#FF2400]/30 flex items-center justify-center mb-1">
                             <CheckIcon className="size-7 text-[#FF2400]" />
                         </div>
                         <h3 className="text-xl font-bold text-white">{q.successTitle}</h3>
-                        <p className="text-sm text-white/50 max-w-xs leading-relaxed">{q.successDesc}</p>
-                        <p className="text-xs text-white/30">{q.successSub}</p>
+                        <p className="text-sm text-white/55 max-w-sm leading-relaxed">{q.successDesc}</p>
+                        <p className="text-xs text-white/35">{q.successSub}</p>
+                        {apiResponse && (
+                            <p className="text-[11px] text-white/30 font-mono mt-2">
+                                {q.successRefLabel}: {buildClientReference(apiResponse.id)}
+                            </p>
+                        )}
                         <Button
                             onClick={() => handleOpenChange(false)}
                             className="mt-4 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-full px-8 h-10 text-sm"
                         >
-                            Cerrar
+                            {q.successClose}
                         </Button>
                     </div>
                 )}
@@ -374,3 +443,4 @@ const Stepper = ({
         </button>
     </div>
 );
+
