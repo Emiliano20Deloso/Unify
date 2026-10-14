@@ -1,0 +1,33 @@
+{
+    "currency": "MXN",
+    "timezone": "America/Mexico_City",
+    "base": {
+        "practico": 100,
+        "select": 200,
+        "premium": 300
+    },
+    "per_km": {
+        "practico": 10,
+        "select": 10,
+        "premium": 10
+    },
+    "multipliers": {
+        "normal": 1.0,
+        "peak_hour": 1.25,
+        "nighttime": 1.35,
+        "weekend": 1.15,
+        "holiday": 1.5
+    },
+    "windows": {
+        "peak_morning": { "start": 7, "end": 9 },
+        "peak_evening": { "start": 18, "end": 20 },
+        "nighttime": { "start": 22, "end": 6 }
+    },
+    "extras": {
+        "passenger_fee_from": 4,
+        "passenger_fee_amount": 50,
+        "luggage_fee_from": 3,
+        "luggage_fee_amount": 25
+    },
+    "holidays_mx": []
+}
