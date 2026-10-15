@@ -5,9 +5,10 @@ import { useMobileMenu } from "@/contexts/mobile-menu-context";
 import { WHATSAPP_LINK } from "@/constants";
 import { cn } from "@/lib";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent, useTransform, useMotionTemplate } from "motion/react";
-import { ArrowRightIcon, CalendarIcon, ClockIcon, MapPinIcon, MenuIcon, PlusIcon, XIcon } from "lucide-react";
+import { ArrowLeftIcon, ArrowRightIcon, CalendarIcon, ClockIcon, MapPinIcon, MenuIcon, PlusIcon, XIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useId, useState } from "react";
 import type { Lang } from "@/translations";
 
@@ -16,7 +17,7 @@ const NAV_HREFS: Record<string, string> = {
     inicio: "/",
     servicios: "/#servicios",
     tarifas: "/tarifas",
-    about: "#nosotros",
+    about: "/nosotros",
 };
 
 const Navbar = () => {
@@ -26,10 +27,12 @@ const Navbar = () => {
     const [pastHero, setPastHero] = useState(false);
     const [showReturn, setShowReturn] = useState(false);
     const { scrollY } = useScroll();
+    const pathname = usePathname();
+    const isLegalPage = pathname === "/terminos" || pathname === "/privacidad";
+    const isNosotrosPage = pathname === "/nosotros";
 
     useMotionValueEvent(scrollY, "change", (v) => {
         if (v > 60 && mobileOpen) setMobileOpen(false);
-        // Hero is min-h-screen; reveal UNIFY after scrolling ~80% of viewport
         if (typeof window !== "undefined") {
             setPastHero(v > window.innerHeight * 0.8);
         }
@@ -100,7 +103,12 @@ const Navbar = () => {
                         <Link
                             key={item.href}
                             href={item.href}
-                            className="relative px-4 py-2 text-base text-white hover:text-white transition-colors duration-200 rounded-lg hover:bg-white/5"
+                            className={cn(
+                                "relative px-4 py-2 text-base transition-colors duration-200 rounded-lg hover:bg-white/5",
+                                isNosotrosPage && !pastHero
+                                    ? "text-black font-semibold hover:text-black"
+                                    : "text-white hover:text-white"
+                            )}
                         >
                             {item.name}
                         </Link>
@@ -135,35 +143,55 @@ const Navbar = () => {
                 }}
                 className="flex lg:hidden items-center justify-between w-full px-5 py-5 border-b"
             >
-                <Link href="/" className="relative flex items-center h-10 min-w-[90px]">
-                    {/* Icon logo — visible within hero */}
-                    <Image
-                        src="/icons/iconouni.png"
-                        alt="UNIFY"
-                        width={44}
-                        height={44}
-                        className={cn(
-                            "absolute left-0 top-1/2 -translate-y-1/2 w-auto h-10 transition-opacity duration-300",
-                            pastHero ? "opacity-0 pointer-events-none" : "opacity-100"
-                        )}
-                    />
-                    {/* Text — visible after scrolling past hero */}
-                    <span className={cn(
-                        "absolute left-0 top-1/2 -translate-y-1/2 text-2xl font-bold text-white tracking-tight transition-opacity duration-300",
-                        pastHero ? "opacity-100" : "opacity-0 pointer-events-none"
-                    )}>UNIFY</span>
-                </Link>
-                <div className="flex items-center gap-5">
-                    {!mobileOpen && (
-                        <button
-                            onClick={() => setMobileOpen(true)}
-                            className={cn("p-1 transition-colors duration-300", pastHero ? "text-white" : "text-black")}
-                            aria-label="Abrir menú"
+                {isLegalPage ? (
+                    <>
+                        <Link
+                            href="/#footer"
+                            aria-label="Volver al inicio"
+                            className="p-1 text-white active:scale-90 transition-transform"
                         >
-                            <MenuIcon className="size-9" />
-                        </button>
-                    )}
-                </div>
+                            <ArrowLeftIcon className="size-8" />
+                        </Link>
+                        <div className="flex items-center gap-4">
+                            <LangToggle lang={lang} setLang={setLang} />
+                            <Link href="/" aria-label="Ir al inicio" className="flex items-center h-10">
+                                <span className="text-2xl font-bold text-white tracking-tight">UNIFY</span>
+                            </Link>
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <Link href="/" className="relative flex items-center h-10 min-w-[90px]">
+                            {/* Icon logo — visible within hero */}
+                            <Image
+                                src="/icons/iconouni.png"
+                                alt="UNIFY"
+                                width={44}
+                                height={44}
+                                className={cn(
+                                    "absolute left-0 top-1/2 -translate-y-1/2 w-auto h-10 transition-opacity duration-300",
+                                    pastHero ? "opacity-0 pointer-events-none" : "opacity-100"
+                                )}
+                            />
+                            {/* Text — visible after scrolling past hero */}
+                            <span className={cn(
+                                "absolute left-0 top-1/2 -translate-y-1/2 text-2xl font-bold text-white tracking-tight transition-opacity duration-300",
+                                pastHero ? "opacity-100" : "opacity-0 pointer-events-none"
+                            )}>UNIFY</span>
+                        </Link>
+                        <div className="flex items-center gap-5">
+                            {!mobileOpen && (
+                                <button
+                                    onClick={() => setMobileOpen(true)}
+                                    className={cn("p-1 transition-colors duration-300", pastHero ? "text-white" : "text-black")}
+                                    aria-label="Abrir menú"
+                                >
+                                    <MenuIcon className="size-9" />
+                                </button>
+                            )}
+                        </div>
+                    </>
+                )}
             </motion.nav>
 
             {/* Mobile quote menu — slides up from bottom, white rounded card */}
@@ -286,13 +314,16 @@ const Navbar = () => {
                             </div>
 
                             {/* CTA */}
-                            <button
+                            <Link
+                                href={WHATSAPP_LINK}
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 onClick={() => setMobileOpen(false)}
                                 className="w-full flex items-center justify-center gap-2 bg-black hover:bg-black/90 text-white text-base font-medium py-4 rounded-full transition-colors"
                             >
                                 {t.hero.cta}
                                 <ArrowRightIcon className="size-4" />
-                            </button>
+                            </Link>
                         </motion.div>
                     </>
                 )}

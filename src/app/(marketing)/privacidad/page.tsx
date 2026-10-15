@@ -4,7 +4,6 @@ import Container from "@/components/global/container";
 import { WHATSAPP_LINK } from "@/constants";
 import { useLanguage } from "@/contexts/language-context";
 import type { Lang } from "@/translations";
-import { ShieldCheckIcon } from "lucide-react";
 
 type Block =
     | { type: "p"; children: React.ReactNode }
@@ -433,22 +432,16 @@ const COPY: Record<Lang, {
     title: string;
     titleHighlight: string;
     subtitle: string;
-    updatedLabel: string;
-    updatedDate: string;
 }> = {
     es: {
         title: "Aviso de",
         titleHighlight: "Privacidad",
         subtitle: "Cómo tratamos, protegemos y resguardamos sus datos personales en Unify Luxury.",
-        updatedLabel: "Última actualización",
-        updatedDate: "14 de Octubre, 2026",
     },
     en: {
         title: "Privacy",
         titleHighlight: "Notice",
         subtitle: "How we process, protect and safeguard your personal data at Unify Luxury.",
-        updatedLabel: "Last updated",
-        updatedDate: "October 14, 2026",
     },
 };
 
@@ -462,25 +455,14 @@ export default function PrivacidadPage() {
             {/* Header */}
             <div className="w-full px-6 md:px-12 lg:px-20 pt-36 pb-16">
                 <Container>
-                    <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-8">
-                        <div className="flex flex-col gap-4 max-w-2xl">
-                            <h1 className="text-4xl lg:text-6xl font-bold text-white leading-tight">
-                                {copy.title}{" "}
-                                <span className="italic font-light text-white/50">{copy.titleHighlight}</span>
-                            </h1>
-                            <p className="text-white/45 text-base lg:text-lg max-w-lg leading-relaxed">
-                                {copy.subtitle}
-                            </p>
-                        </div>
-                        <div className="shrink-0 flex items-center gap-3 px-5 py-4 rounded-2xl bg-white/[0.03] border border-white/8">
-                            <ShieldCheckIcon className="size-5 text-[#FF2400]/70" />
-                            <div className="flex flex-col">
-                                <p className="text-[10px] uppercase tracking-[0.25em] text-[#FF2400]/60 font-medium">
-                                    {copy.updatedLabel}
-                                </p>
-                                <p className="text-sm text-white/80 font-medium">{copy.updatedDate}</p>
-                            </div>
-                        </div>
+                    <div className="flex flex-col gap-4 max-w-2xl">
+                        <h1 className="text-4xl lg:text-6xl font-bold text-white leading-tight">
+                            {copy.title}{" "}
+                            <span className="italic font-light text-white/50">{copy.titleHighlight}</span>
+                        </h1>
+                        <p className="text-white/45 text-base lg:text-lg max-w-lg leading-relaxed">
+                            {copy.subtitle}
+                        </p>
                     </div>
                 </Container>
             </div>

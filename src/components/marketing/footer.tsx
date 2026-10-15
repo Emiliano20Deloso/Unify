@@ -36,7 +36,7 @@ const Footer = () => {
     ];
 
     return (
-        <footer className="relative w-full border-t border-white/20 bg-black">
+        <footer id="footer" className="relative w-full border-t border-white/20 bg-black">
             {/* Top red accent line */}
             <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#FF2400]/70 to-transparent shadow-[0_0_12px_rgba(255,36,0,0.4)]" />
 
