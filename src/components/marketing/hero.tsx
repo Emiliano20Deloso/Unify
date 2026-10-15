@@ -1,10 +1,11 @@
 "use client";
 
 import { useLanguage } from "@/contexts/language-context";
+import { WHATSAPP_LINK } from "@/constants";
 import { ChevronDownIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "../ui/button";
-import { QuoteDialog } from "./quote-form";
 
 const Hero = () => {
     const { t } = useLanguage();
@@ -19,7 +20,7 @@ const Hero = () => {
                     src="/images/heromov.jpg"
                     alt="Tesla Model 3 Performance — UNIFY"
                     fill
-                    className="sm:hidden object-cover object-center brightness-[1.35] saturate-110"
+                    className="sm:hidden object-cover object-center brightness-[1.45] saturate-110 contrast-105"
                     priority
                     quality={90}
                 />
@@ -28,13 +29,13 @@ const Hero = () => {
                     src="/Hero.jpg"
                     alt="Tesla Model 3 Performance — UNIFY"
                     fill
-                    className="hidden sm:block object-cover object-center brightness-110 saturate-105"
+                    className="hidden sm:block object-cover object-center brightness-125 saturate-110 contrast-105"
                     priority
                     quality={90}
                 />
                 {/* Dark overlays (lighter on mobile for a clearer image) */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/35 sm:from-black/60 via-black/10 sm:via-black/20 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 sm:from-black/60 via-black/5 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/30 sm:from-black/50 via-black/5 sm:via-black/15 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/35 sm:from-black/50 via-black/5 to-transparent" />
             </div>
 
             {/* Content — bottom-left */}
@@ -55,17 +56,15 @@ const Hero = () => {
                     </p>
 
                     <div className="hidden sm:flex items-center gap-5 mt-2">
-                        <QuoteDialog
-                            trigger={
-                                <Button
-                                    size="lg"
-                                    className="group bg-[#ff3131] hover:bg-[#ff3131]/90 text-white border-0 text-base px-10 h-14 rounded-full shadow-[0_0_50px_rgba(255,49,49,0.45)] hover:shadow-[0_0_70px_rgba(255,49,49,0.65)] transition-all duration-300"
-                                >
-                                    {t.hero.cta}
-                                    <ChevronDownIcon className="ml-2 size-5 group-hover:translate-y-0.5 transition-transform duration-300" />
-                                </Button>
-                            }
-                        />
+                        <Link href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
+                            <Button
+                                size="lg"
+                                className="group bg-[#ff3131] hover:bg-[#ff3131]/90 text-white border-0 text-base px-10 h-14 rounded-full shadow-[0_0_50px_rgba(255,49,49,0.45)] hover:shadow-[0_0_70px_rgba(255,49,49,0.65)] transition-all duration-300"
+                            >
+                                {t.hero.cta}
+                                <ChevronDownIcon className="ml-2 size-5 group-hover:translate-y-0.5 transition-transform duration-300" />
+                            </Button>
+                        </Link>
 
                         <div className="hidden sm:flex items-center gap-6 pl-4 border-l border-white/10">
                             <div>

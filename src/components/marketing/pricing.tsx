@@ -1,12 +1,15 @@
 "use client";
 
 import { useLanguage } from "@/contexts/language-context";
+import { WHATSAPP_LINK } from "@/constants";
 import { cn } from "@/lib";
 import { CheckIcon, ZapIcon, CupSodaIcon, CandyIcon, NutIcon } from "lucide-react";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import Container from "../global/container";
 import { Button } from "../ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
-import { QuoteDialog } from "./quote-form";
 
 const TIER_KEYS = ["practico", "select", "premium"] as const;
 type TierKey = typeof TIER_KEYS[number];
@@ -60,7 +63,16 @@ const TIER_THEMES: Record<TierKey, {
 };
 
 const Pricing = () => {
-    const { t } = useLanguage();
+    const { t, lang } = useLanguage();
+    const [isDesktop, setIsDesktop] = useState(false);
+
+    useEffect(() => {
+        const mql = window.matchMedia("(min-width: 1024px)");
+        const update = () => setIsDesktop(mql.matches);
+        update();
+        mql.addEventListener("change", update);
+        return () => mql.removeEventListener("change", update);
+    }, []);
 
     return (
         <div id="servicios" className="relative flex flex-col items-center justify-center w-full py-24">
@@ -85,7 +97,14 @@ const Pricing = () => {
                     const tierKey = TIER_KEYS[idx];
                     const theme = TIER_THEMES[tierKey];
                     return (
-                        <Container key={tier.id} delay={0.1 * idx + 0.1} className="snap-center shrink-0 w-[85%] lg:w-auto">
+                        <motion.div
+                            key={`${tier.id}-${lang}`}
+                            initial={isDesktop ? { opacity: 0, y: 40 } : false}
+                            whileInView={isDesktop ? { opacity: 1, y: 0 } : undefined}
+                            viewport={{ once: true, amount: 0.15 }}
+                            transition={{ duration: 0.7, delay: 0.15 * idx + 0.05, ease: [0.22, 1, 0.36, 1] }}
+                            className="snap-center shrink-0 w-[85%] lg:w-auto h-full"
+                        >
                             <div
                                 className={cn(
                                     "relative flex flex-col rounded-2xl border overflow-hidden h-full min-h-[620px] lg:min-h-0 transition-all duration-300",
@@ -159,23 +178,20 @@ const Pricing = () => {
 
                                 {/* CTA */}
                                 <div className="p-7 pt-0">
-                                    <QuoteDialog
-                                        initialTier={tierKey}
-                                        trigger={
-                                            <Button
-                                                size="lg"
-                                                className={cn(
-                                                    "w-full h-12 rounded-xl font-medium transition-all duration-300",
-                                                    theme.cta
-                                                )}
-                                            >
-                                                {t.pricing.cta}
-                                            </Button>
-                                        }
-                                    />
+                                    <Link href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
+                                        <Button
+                                            size="lg"
+                                            className={cn(
+                                                "w-full h-12 rounded-xl font-medium transition-all duration-300",
+                                                theme.cta
+                                            )}
+                                        >
+                                            {t.pricing.cta}
+                                        </Button>
+                                    </Link>
                                 </div>
                             </div>
-                        </Container>
+                        </motion.div>
                     );
                 })}
             </div>

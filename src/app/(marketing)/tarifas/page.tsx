@@ -31,9 +31,9 @@ function LiveClock({ locale }: { locale: string }) {
                 <span className="text-4xl lg:text-5xl font-bold text-white tracking-tight leading-none">
                     {hh}<span className="text-[#FF2400] animate-pulse">:</span>{mm}
                 </span>
-                <span className="text-lg font-medium text-white/30 pb-0.5">{ss}</span>
+                <span className="text-lg font-medium text-white/70 pb-0.5">{ss}</span>
             </div>
-            <p className="text-xs text-white/35 capitalize">{date}</p>
+            <p className="text-xs text-white/75 capitalize">{date}</p>
         </div>
     );
 }
@@ -108,19 +108,19 @@ export default function TarifasPage() {
                 <Container>
                     <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-8">
                         <div className="flex flex-col gap-4 max-w-2xl">
-                            <p className="text-xs uppercase tracking-[0.3em] text-[#FF2400]/70 font-medium">
+                            <p className="text-xs uppercase tracking-[0.3em] text-[#FF2400] font-semibold">
                                 {t.nav.tarifas}
                             </p>
                             <h1 className="text-4xl lg:text-6xl font-bold text-white leading-tight">
                                 {t.tarifas.title}{" "}
-                                <span className="italic font-light text-white/50">{t.tarifas.titleHighlight}</span>
+                                <span className="italic font-light text-white/75">{t.tarifas.titleHighlight}</span>
                             </h1>
-                            <p className="text-white/45 text-base lg:text-lg max-w-lg leading-relaxed">
+                            <p className="text-white/75 text-base lg:text-lg max-w-lg leading-relaxed">
                                 {t.tarifas.subtitle}
                             </p>
                         </div>
                         <div className="shrink-0 flex flex-col items-start sm:items-end gap-2 px-5 py-4 rounded-2xl bg-white/[0.03] border border-white/8">
-                            <p className="text-[10px] uppercase tracking-[0.25em] text-[#FF2400]/60 font-medium">{t.tarifas.clockLabel}</p>
+                            <p className="text-[10px] uppercase tracking-[0.25em] text-[#FF2400] font-semibold">{t.tarifas.clockLabel}</p>
                             <LiveClock locale={locale} />
                         </div>
                     </div>
@@ -147,7 +147,6 @@ export default function TarifasPage() {
                             lang={lang}
                             originLabel={t.tarifas.origin}
                             destinationLabel={t.tarifas.destination}
-                            ctaText={t.pricing.cta}
                         />
                     ))}
                     <div className="shrink-0 w-4" />
@@ -159,7 +158,7 @@ export default function TarifasPage() {
                 <div className="px-6 md:px-12 lg:px-20 pt-8 pb-24 flex flex-col sm:flex-row items-start sm:items-center gap-4 border-t border-white/5 mx-6 md:mx-12 lg:mx-20">
                     <div>
                         <p className="text-white font-medium">{t.tarifas.noRoute}</p>
-                        <p className="text-white/40 text-sm">{t.tarifas.noRouteDesc}</p>
+                        <p className="text-white/75 text-sm">{t.tarifas.noRouteDesc}</p>
                     </div>
                     <Link href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="sm:ml-auto shrink-0">
                         <Button className="group bg-[#ff3131] hover:bg-[#ff3131]/90 text-white rounded-full px-6 h-11">
@@ -173,12 +172,11 @@ export default function TarifasPage() {
     );
 }
 
-function RouteCard({ route, lang, originLabel, destinationLabel, ctaText }: {
+function RouteCard({ route, lang, originLabel, destinationLabel }: {
     route: typeof ROUTES[0];
     lang: string;
     originLabel: string;
     destinationLabel: string;
-    ctaText: string;
 }) {
     const destination = lang === "en" ? route.toFullEn : route.toFull;
 
@@ -199,7 +197,7 @@ function RouteCard({ route, lang, originLabel, destinationLabel, ctaText }: {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
 
                 {/* Route badge */}
-                <div className="absolute bottom-3 left-3 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-sm border border-white/10">
+                <div className="absolute bottom-1 left-3 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-sm border border-white/10">
                     <RouteIcon className="size-3 text-[#FF2400]" />
                     <span className="text-xs text-white/80 font-medium">{route.from} → {route.to}</span>
                 </div>
@@ -216,11 +214,11 @@ function RouteCard({ route, lang, originLabel, destinationLabel, ctaText }: {
                         </div>
                         <div className="flex flex-col gap-2.5 flex-1">
                             <div>
-                                <p className="text-[10px] text-white/30 uppercase tracking-wider">{originLabel}</p>
+                                <p className="text-[10px] text-white/70 uppercase tracking-wider">{originLabel}</p>
                                 <p className="text-sm font-medium text-white/80 leading-tight">{route.fromFull}</p>
                             </div>
                             <div>
-                                <p className="text-[10px] text-white/30 uppercase tracking-wider">{destinationLabel}</p>
+                                <p className="text-[10px] text-white/70 uppercase tracking-wider">{destinationLabel}</p>
                                 <p className="text-sm font-medium text-white/80 leading-tight">{destination}</p>
                             </div>
                         </div>
@@ -228,26 +226,16 @@ function RouteCard({ route, lang, originLabel, destinationLabel, ctaText }: {
                 </div>
 
                 {/* Distance + time */}
-                <div className="flex items-center gap-4 pt-1 border-t border-white/5">
+                <div className="flex items-center gap-4 pt-1 mt-auto border-t border-white/5">
                     <div className="flex items-center gap-1.5">
-                        <MapPinIcon className="size-3.5 text-[#FF2400]/60" />
-                        <span className="text-xs text-white/50">{route.distance}</span>
+                        <MapPinIcon className="size-3.5 text-[#FF2400]" />
+                        <span className="text-xs text-white/75">{route.distance}</span>
                     </div>
                     <div className="flex items-center gap-1.5">
-                        <ClockIcon className="size-3.5 text-[#FF2400]/60" />
-                        <span className="text-xs text-white/50">{route.time}</span>
+                        <ClockIcon className="size-3.5 text-[#FF2400]" />
+                        <span className="text-xs text-white/75">{route.time}</span>
                     </div>
                 </div>
-
-                {/* CTA */}
-                <Link href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="mt-auto">
-                    <Button
-                        size="sm"
-                        className="w-full bg-white/5 hover:bg-[#ff3131] text-white/70 hover:text-white border border-white/10 hover:border-[#ff3131] rounded-xl h-10 text-xs font-medium transition-all duration-300"
-                    >
-                        {ctaText}
-                    </Button>
-                </Link>
             </div>
         </div>
     );
