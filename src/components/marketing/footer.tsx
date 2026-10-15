@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const Footer = () => {
-    const { t } = useLanguage();
+    const { t, lang } = useLanguage();
 
     type FooterLink = { label: string; href: string; external?: boolean };
     type FooterCol = { heading: string; links: FooterLink[] };
@@ -29,8 +29,8 @@ const Footer = () => {
         {
             heading: "Legal",
             links: [
-                { label: "Privacidad", href: "/#" },
-                { label: "Términos", href: "/#" },
+                { label: lang === "en" ? "Privacy" : "Privacidad", href: "/privacidad" },
+                { label: lang === "en" ? "Terms & Conditions" : "Términos", href: "/terminos" },
             ],
         },
     ];

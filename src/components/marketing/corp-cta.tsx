@@ -1,18 +1,17 @@
 "use client";
 
 import { useLanguage } from "@/contexts/language-context";
-import { useMobileMenu } from "@/contexts/mobile-menu-context";
+import { WHATSAPP_LINK } from "@/constants";
 import { cn } from "@/lib";
 import { CheckIcon, ArrowRightIcon, BuildingIcon } from "lucide-react";
 import { motion, type PanInfo } from "motion/react";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { Button } from "../ui/button";
-import { QuoteDialog } from "./quote-form";
 
 const CorpCta = () => {
     const { t } = useLanguage();
-    const { openMenu } = useMobileMenu();
     const c = t.corpCta;
     const [cardOpen, setCardOpen] = useState(false);
 
@@ -96,16 +95,17 @@ const CorpCta = () => {
                         ))}
                     </div>
 
-                    {/* CTA centered, lifted off bottom — opens mobile quote menu */}
+                    {/* CTA centered, lifted off bottom — opens WhatsApp */}
                     <div className="mt-auto pt-6 pb-6 flex flex-col items-center gap-2">
-                        <Button
-                            size="lg"
-                            onClick={openMenu}
-                            className="group bg-[#ff3131] hover:bg-[#ff3131]/90 text-white border-0 text-sm px-7 h-11 rounded-full shadow-[0_0_30px_rgba(255,49,49,0.45)]"
-                        >
-                            {c.cta}
-                            <ArrowRightIcon className="ml-2 size-4" />
-                        </Button>
+                        <Link href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
+                            <Button
+                                size="lg"
+                                className="group bg-[#ff3131] hover:bg-[#ff3131]/90 text-white border-0 text-sm px-7 h-11 rounded-full shadow-[0_0_30px_rgba(255,49,49,0.45)]"
+                            >
+                                {c.cta}
+                                <ArrowRightIcon className="ml-2 size-4" />
+                            </Button>
+                        </Link>
                         <p className="text-[11px] text-white/70 text-center">{c.ctaSub}</p>
                     </div>
                 </div>
@@ -145,18 +145,15 @@ const CorpCta = () => {
                     </div>
 
                     <div className="flex flex-row items-center gap-5 mt-3">
-                        <QuoteDialog
-                            initialTier="premium"
-                            trigger={
-                                <Button
-                                    size="lg"
-                                    className="group bg-[#ff3131] hover:bg-[#ff3131]/90 text-white border-0 text-base px-10 h-14 rounded-full shadow-[0_0_50px_rgba(255,49,49,0.45)] hover:shadow-[0_0_70px_rgba(255,49,49,0.65)] transition-all duration-300"
-                                >
-                                    {c.cta}
-                                    <ArrowRightIcon className="ml-2 size-5 group-hover:translate-x-0.5 transition-transform duration-300" />
-                                </Button>
-                            }
-                        />
+                        <Link href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
+                            <Button
+                                size="lg"
+                                className="group bg-[#ff3131] hover:bg-[#ff3131]/90 text-white border-0 text-base px-10 h-14 rounded-full shadow-[0_0_50px_rgba(255,49,49,0.45)] hover:shadow-[0_0_70px_rgba(255,49,49,0.65)] transition-all duration-300"
+                            >
+                                {c.cta}
+                                <ArrowRightIcon className="ml-2 size-5 group-hover:translate-x-0.5 transition-transform duration-300" />
+                            </Button>
+                        </Link>
                         <p className="text-xs lg:text-sm text-white/60">{c.ctaSub}</p>
                     </div>
                 </div>
