@@ -44,3 +44,6 @@ dummy
 ignore
 
 !.env.example
+
+# copias de trabajo temporales (git worktrees de agentes)
+.claude/worktrees/

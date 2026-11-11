@@ -1,10 +1,11 @@
-// STUB de la Fase 1a: solo estructura. El contenido lo construye su dueño en la Fase 2.
 import type { Metadata } from "next";
+import { privacyNotice } from "@/content/legal";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { resolveLocale } from "@/i18n/params";
+import { localizedHref } from "@/i18n/routes";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { PageTransition } from "@/components/motion";
-import { PageHero } from "@/components/ui";
+import { LegalDocument } from "@/components/sections/legal";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/privacidad">): Promise<Metadata> {
     const lang = await resolveLocale(params);
@@ -17,7 +18,14 @@ export default async function PrivacyPage({ params }: PageProps<"/[lang]/privaci
     const dict = await getDictionary(lang, "legal");
     return (
         <PageTransition>
-            <PageHero title={dict.privacy.title} />
+            <LegalDocument
+                lang={lang}
+                doc={privacyNotice[lang]}
+                title={dict.privacy.title}
+                text={dict.privacy.text}
+                ui={dict.ui}
+                related={{ label: dict.terms.title, href: localizedHref(lang, "terms") }}
+            />
         </PageTransition>
     );
 }
