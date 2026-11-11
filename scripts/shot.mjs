@@ -82,7 +82,8 @@ ws.onmessage = (ev) => {
         const { res, rej, timer } = pending.get(msg.id);
         clearTimeout(timer);
         pending.delete(msg.id);
-        msg.error ? rej(new Error(msg.error.message)) : res(msg.result);
+        if (msg.error) rej(new Error(msg.error.message));
+        else res(msg.result);
         return;
     }
     if (msg.method === "Page.loadEventFired" && loadResolve) loadResolve();
