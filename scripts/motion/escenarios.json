@@ -1,0 +1,2415 @@
+{
+  "base": "http://localhost:3100",
+  "viewports": {
+    "d": {
+      "width": 1440,
+      "height": 900
+    },
+    "m": {
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dpr": 2
+    }
+  },
+  "defaults": {
+    "maxMs": 1600,
+    "settleMs": 350,
+    "mask": [
+      ".animate-spin",
+      ".animate-pulse"
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "N1-inicio-servicios",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "header nav a[href=\"/servicios\"]"
+        }
+      ],
+      "track": [
+        "header nav a[aria-current=\"page\"]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200
+    },
+    {
+      "id": "N2-servicios-tarifas",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/servicios"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "header nav a[href=\"/tarifas\"]"
+        }
+      ],
+      "track": [
+        "header nav a[aria-current=\"page\"]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200
+    },
+    {
+      "id": "N3-tarifas-nosotros",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "header nav a[href=\"/nosotros\"]"
+        }
+      ],
+      "track": [
+        "header nav a[aria-current=\"page\"]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200
+    },
+    {
+      "id": "N4-logo-inicio",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/nosotros"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "header a[href=\"/\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200
+    },
+    {
+      "id": "N5-cta-cotizar",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "header a[href=\"/tarifas#cotizar\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200
+    },
+    {
+      "id": "N6-pie-terminos",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "scroll",
+          "selector": "footer",
+          "block": "end"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "footer a[href=\"/terminos\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200
+    },
+    {
+      "id": "N7-atras",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "header nav a[href=\"/servicios\"]",
+          "wait": 1500
+        },
+        {
+          "op": "click",
+          "selector": "header nav a[href=\"/tarifas\"]",
+          "wait": 1500
+        }
+      ],
+      "action": [
+        {
+          "op": "eval",
+          "expr": "history.back()"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200
+    },
+    {
+      "id": "N8-idioma-es-en",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "eval",
+          "expr": "window.__boot = 1"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "header a[hreflang=\"en\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200,
+      "post": [
+        {
+          "op": "eval",
+          "label": "idioma y misma sesión JS (navegación de cliente)",
+          "expr": "[document.documentElement.lang.slice(0,2), window.__boot ?? null]",
+          "equals": [
+            "en",
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "N9-idioma-desde-menu",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/en/tarifas"
+        },
+        {
+          "op": "click",
+          "selector": "header button[aria-label=\"Open menu\"]",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "[role=\"dialog\"] a[hreflang^=\"es\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200
+    },
+    {
+      "id": "N10-hover-menu",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "hover",
+          "selector": "header nav a[href=\"/servicios\"]"
+        },
+        {
+          "op": "wait",
+          "ms": 350
+        },
+        {
+          "op": "hover",
+          "selector": "header nav a[href=\"/nosotros\"]"
+        }
+      ],
+      "roi": "header",
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "N11-menu-solido",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "y": 160
+        }
+      ],
+      "roi": "header",
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "N12-abrir-menu",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "header button[aria-label=\"Abrir menú\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "N13-cerrar-menu",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "header button[aria-label=\"Abrir menú\"]",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "[role=\"dialog\"] button[aria-label=\"Cerrar menú\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "N14-escape-menu",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "header button[aria-label=\"Abrir menú\"]",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "key",
+          "key": "Escape"
+        }
+      ],
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "N15-navegar-desde-menu",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "header button[aria-label=\"Abrir menú\"]",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "[role=\"dialog\"] a[href=\"/tarifas\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200
+    },
+    {
+      "id": "B1-presion",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "press",
+          "selector": "form[aria-label] button[type=\"submit\"]",
+          "ms": 150
+        }
+      ],
+      "roi": "form[aria-label] button[type=\"submit\"]",
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "B2-foco-tab",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "key",
+          "key": "Tab",
+          "times": 2
+        }
+      ],
+      "roi": "header",
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "B3-enlace-flecha",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "hover",
+          "selector": "section[aria-labelledby=\"preguntas\"] a[href=\"/terminos\"]"
+        }
+      ],
+      "roi": "section[aria-labelledby=\"preguntas\"] a[href=\"/terminos\"]",
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "B4-interruptor",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#cotizar label:has(input[role=\"switch\"])"
+        }
+      ],
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "L1-carga-portada",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "nocache"
+        },
+        {
+          "op": "goto",
+          "url": "data:text/html,<body style='background:%230b0b0c'>",
+          "wait": 300
+        }
+      ],
+      "action": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 700,
+      "maxMs": 4000
+    },
+    {
+      "id": "L2-carga-portada-movil",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "nocache"
+        },
+        {
+          "op": "goto",
+          "url": "data:text/html,<body style='background:%230b0b0c'>",
+          "wait": 300
+        }
+      ],
+      "action": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 700,
+      "maxMs": 4000
+    },
+    {
+      "id": "L3-carga-servicios",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "data:text/html,<body style='background:%230b0b0c'>",
+          "wait": 300
+        }
+      ],
+      "action": [
+        {
+          "op": "goto",
+          "url": "/servicios"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 700,
+      "maxMs": 4000
+    },
+    {
+      "id": "L4-carga-nosotros",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "data:text/html,<body style='background:%230b0b0c'>",
+          "wait": 300
+        }
+      ],
+      "action": [
+        {
+          "op": "goto",
+          "url": "/nosotros"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 700,
+      "maxMs": 4000
+    },
+    {
+      "id": "L5-carga-tarifas",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "data:text/html,<body style='background:%230b0b0c'>",
+          "wait": 300
+        }
+      ],
+      "action": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 700,
+      "maxMs": 4000,
+      "track": [
+        "#cotizar input[type=\"date\"]"
+      ]
+    },
+    {
+      "id": "L6-tarifas-con-borrador",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "data:text/html,<body style='background:%230b0b0c'>",
+          "wait": 300
+        }
+      ],
+      "action": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 700,
+      "maxMs": 4000,
+      "note": "sessionStorage es por origen: se escribe en /tarifas y luego se sale a una página oscura"
+    },
+    {
+      "id": "L7-tarifas-con-url",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "data:text/html,<body style='background:%230b0b0c'>",
+          "wait": 300
+        }
+      ],
+      "action": [
+        {
+          "op": "goto",
+          "url": "/tarifas?o=cat:polanco&d=cat:aicm-t1&n=select&p=2"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 700,
+      "maxMs": 4000
+    },
+    {
+      "id": "L8-foto-lenta",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "throttle",
+          "latency": 400,
+          "down": 187500,
+          "up": 93750
+        },
+        {
+          "op": "nocache"
+        },
+        {
+          "op": "goto",
+          "url": "data:text/html,<body style='background:%230b0b0c'>",
+          "wait": 300
+        }
+      ],
+      "action": [
+        {
+          "op": "goto",
+          "url": "/servicios"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 900,
+      "maxMs": 9000,
+      "roi": "main img"
+    },
+    {
+      "id": "L9-404",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "data:text/html,<body style='background:%230b0b0c'>",
+          "wait": 300
+        }
+      ],
+      "action": [
+        {
+          "op": "goto",
+          "url": "/no-existe"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 700,
+      "maxMs": 4000
+    },
+    {
+      "id": "L10-404-en",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "data:text/html,<body style='background:%230b0b0c'>",
+          "wait": 300
+        }
+      ],
+      "action": [
+        {
+          "op": "goto",
+          "url": "/en/no-existe"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 700,
+      "maxMs": 4000
+    },
+    {
+      "id": "S1-niveles",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#niveles"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000
+    },
+    {
+      "id": "S2-rutas",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#rutas"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000
+    },
+    {
+      "id": "S3-testimonios",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#testimonios"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000
+    },
+    {
+      "id": "S4-cifras",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "main section:nth-of-type(2)"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000
+    },
+    {
+      "id": "S5-tipos-de-servicio",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/servicios"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#tipos-de-servicio"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000
+    },
+    {
+      "id": "S6-formula",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#como-se-calcula"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000
+    },
+    {
+      "id": "S7-que-incluye",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#que-incluye"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000
+    },
+    {
+      "id": "S8-quienes-somos",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/nosotros"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#quienes-somos"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000
+    },
+    {
+      "id": "S9-por-que-tesla",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/nosotros"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#por-que-tesla"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000
+    },
+    {
+      "id": "S10-indice-legal",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/privacidad"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "article section:nth-of-type(3)"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "track": [
+        "nav a[aria-current=\"location\"]"
+      ]
+    },
+    {
+      "id": "A1-abrir-faq",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "section[aria-labelledby=\"preguntas\"] h3 button"
+        }
+      ],
+      "roi": "section[aria-labelledby=\"preguntas\"]",
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "A2-cambiar-faq",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "section[aria-labelledby=\"preguntas\"] h3 button",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "section[aria-labelledby=\"preguntas\"] h3 button",
+          "nth": 1
+        }
+      ],
+      "roi": "section[aria-labelledby=\"preguntas\"]",
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "A3-cerrar-faq",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "section[aria-labelledby=\"preguntas\"] h3 button",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "section[aria-labelledby=\"preguntas\"] h3 button"
+        }
+      ],
+      "roi": "section[aria-labelledby=\"preguntas\"]",
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "A4-indice-legal-movil",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/privacidad"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "details > summary"
+        }
+      ],
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "Q1-lista-abre",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "form[aria-label] input[role=\"combobox\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "Q2-escribir",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "form[aria-label] input[role=\"combobox\"]",
+          "wait": 800
+        }
+      ],
+      "action": [
+        {
+          "op": "type",
+          "text": "pol",
+          "delay": 90
+        }
+      ],
+      "roi": "[role=\"listbox\"]",
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200
+    },
+    {
+      "id": "Q3-elegir-con-teclado",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "form[aria-label] input[role=\"combobox\"]",
+          "wait": 600
+        },
+        {
+          "op": "type",
+          "text": "pol",
+          "wait": 1200
+        }
+      ],
+      "action": [
+        {
+          "op": "key",
+          "key": "ArrowDown"
+        },
+        {
+          "op": "wait",
+          "ms": 200
+        },
+        {
+          "op": "key",
+          "key": "Enter"
+        }
+      ],
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "Q4-validacion",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "form[aria-label] button[type=\"submit\"]"
+        }
+      ],
+      "roi": "#quote-widget-error",
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "Q5-morph-hero-tarifas",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "form[aria-label] button[type=\"submit\"]"
+        }
+      ],
+      "track": [
+        "form[aria-label]",
+        "form[aria-labelledby=\"quote-form-title\"]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500
+    },
+    {
+      "id": "Q6-hoja-movil",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "form[aria-label] input"
+        }
+      ],
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "Q7-elegir-en-hoja",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "form[aria-label] input",
+          "wait": 900
+        },
+        {
+          "op": "type",
+          "text": "pol",
+          "wait": 1200
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "[role=\"dialog\"] [role=\"option\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "T1-invertir",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "button[aria-label=\"Invertir origen y destino\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500
+    },
+    {
+      "id": "T2-ida-y-vuelta-on",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#cotizar label:has(input[role=\"switch\"])"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500
+    },
+    {
+      "id": "T3-ida-y-vuelta-off",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": true,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#cotizar label:has(input[role=\"switch\"])"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500
+    },
+    {
+      "id": "T4-pasajero-mas",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "button[aria-label=\"Agregar un pasajero\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500
+    },
+    {
+      "id": "T5-maleta-menos",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 2,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "button[aria-label=\"Quitar una maleta\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500
+    },
+    {
+      "id": "T6-nivel",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#cotizar label:has(input[name=\"quote-level\"][value=\"premium\"])"
+        }
+      ],
+      "roi": "article[aria-labelledby=\"quote-result-title\"]",
+      "track": [
+        "#cotizar label:has(input[name=\"quote-level\"]:checked)"
+      ],
+      "expect": {
+        "animated": true,
+        "minMs": 150,
+        "maxMs": 900
+      },
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "resultado sin aria-busy",
+          "expr": "document.querySelector('[aria-labelledby=quote-result-title]')?.getAttribute('aria-busy')",
+          "equals": "false"
+        }
+      ]
+    },
+    {
+      "id": "T7-vacio-a-precio",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": null,
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        },
+        {
+          "op": "click",
+          "selector": "#cotizar input[role=\"combobox\"]",
+          "nth": 1,
+          "wait": 1000
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "[role=\"option\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 3000,
+      "settleMs": 500
+    },
+    {
+      "id": "T8-cambio-de-hora",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "eval",
+          "expr": "(()=>{const s=document.querySelector('#cotizar select');const o=[...s.options].find(x=>x.value==='12:00')??s.options[s.selectedIndex+4];s.value=o.value;s.dispatchEvent(new Event('change',{bubbles:true}));return s.value})()"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500
+    },
+    {
+      "id": "T9-especial-gdl",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "auditoria-gdl",
+              "label": "Guadalajara, Jal.",
+              "lat": 20.67,
+              "lng": -103.35,
+              "kind": "address"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        }
+      ],
+      "action": [
+        {
+          "op": "reload"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 700,
+      "maxMs": 4000
+    },
+    {
+      "id": "T10a-error-de-red",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        },
+        {
+          "op": "intercept",
+          "pattern": "*/api/estimate*",
+          "mode": "fail"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "button[aria-label=\"Agregar un pasajero\"]"
+        }
+      ],
+      "roi": "article[aria-labelledby=\"quote-result-title\"]",
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500
+    },
+    {
+      "id": "T10b-reintento",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        },
+        {
+          "op": "intercept",
+          "pattern": "*/api/estimate*",
+          "mode": "fail"
+        },
+        {
+          "op": "click",
+          "selector": "button[aria-label=\"Agregar un pasajero\"]",
+          "wait": 2000
+        },
+        {
+          "op": "intercept",
+          "off": true
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "article button:has(.lucide-rotate-cw)"
+        }
+      ],
+      "roi": "article[aria-labelledby=\"quote-result-title\"]",
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500
+    },
+    {
+      "id": "T11-campo-de-vuelo",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "click",
+          "selector": "#cotizar input[role=\"combobox\"]",
+          "wait": 600
+        },
+        {
+          "op": "type",
+          "text": "aicm",
+          "wait": 1200
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "[role=\"option\"]"
+        }
+      ],
+      "track": [
+        "#cotizar input[maxlength=\"10\"]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500
+    },
+    {
+      "id": "T12-error-de-fecha",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": true,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "eval",
+          "expr": "(()=>{const ds=document.querySelectorAll('#cotizar input[type=date]');const r=ds[ds.length-1];const set=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;set.call(r,r.min||ds[0].value);r.dispatchEvent(new Event('input',{bubbles:true}));r.dispatchEvent(new Event('change',{bubbles:true}));const d=ds[0];const t=new Date(Date.now()+5*864e5).toISOString().slice(0,10);set.call(d,t);d.dispatchEvent(new Event('input',{bubbles:true}));d.dispatchEvent(new Event('change',{bubbles:true}));return [d.value,r.value]})()"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "aparece el error de fecha",
+          "expr": "!!document.querySelector('[id^=\"quote-err-\"]')",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "T13a-barra-movil-entra",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "y": 1400
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000
+    },
+    {
+      "id": "T13b-barra-movil-sale",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        },
+        {
+          "op": "scroll",
+          "y": 1400,
+          "wait": 1200
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "y": 0
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000
+    },
+    {
+      "id": "T14-whatsapp-sin-parpadeo",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "button[aria-label=\"Agregar un pasajero\"]"
+        }
+      ],
+      "track": [
+        "article a[href^=\"https://wa.me\"]",
+        "article [aria-disabled]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500
+    },
+    {
+      "id": "T15a-reducido-navegacion",
+      "vp": [
+        "d"
+      ],
+      "reduced": "only",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "header nav a[href=\"/servicios\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200
+    },
+    {
+      "id": "T15b-reducido-nivel",
+      "vp": [
+        "d"
+      ],
+      "reduced": "only",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#cotizar label:has(input[name=\"quote-level\"][value=\"premium\"])"
+        }
+      ],
+      "roi": "article[aria-labelledby=\"quote-result-title\"]",
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500
+    },
+    {
+      "id": "T15c-reducido-faq",
+      "vp": [
+        "d"
+      ],
+      "reduced": "only",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "section[aria-labelledby=\"preguntas\"] h3 button"
+        }
+      ],
+      "roi": "section[aria-labelledby=\"preguntas\"]",
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "E1-404-a-inicio",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/x"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "main a[href=\"/\"]"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 700,
+      "maxMs": 4000
+    }
+  ]
+}
