@@ -1,6 +1,6 @@
 // "Qué incluye tu tarifa" (terminos-condiciones.md, § 6 a 9). Espera y capacidad salen de la config.
 import Link from "next/link";
-import { Reveal, Stagger, StaggerItem } from "@/components/motion";
+import { Reveal, RevealGroup } from "@/components/motion";
 import { Button, RouteLine, Section, SectionHeader } from "@/components/ui";
 import { fill } from "@/content";
 import type { Locale } from "@/i18n/config";
@@ -43,10 +43,12 @@ export function Includes({ lang, t, tone = "bg", id = "que-incluye" }: IncludesP
         <Section tone={tone} aria-labelledby={id}>
             <SectionHeader id={id} title={t.title} text={t.text} />
             {/* Escritorio: tres arriba y dos abajo (rejilla de 6); tableta: 2 + 2 + 1 a todo lo ancho. Sin huecos. */}
-            <Stagger className="grid gap-x-10 md:grid-cols-2 lg:grid-cols-6">
+            <RevealGroup className="grid gap-x-10 md:grid-cols-2 lg:grid-cols-6">
                 {items.map((item, i) => (
-                    <StaggerItem
+                    <Reveal
                         key={item.key}
+                        variant="item"
+                        index={i}
                         className={cn(
                             "border-t border-line py-8",
                             i < 3 ? "lg:col-span-2" : "lg:col-span-3",
@@ -64,9 +66,9 @@ export function Includes({ lang, t, tone = "bg", id = "que-incluye" }: IncludesP
                             </ul>
                         ) : null}
                         <p className="type-small mt-3 max-w-[24rem] text-fg-subtle">{item.text}</p>
-                    </StaggerItem>
+                    </Reveal>
                 ))}
-            </Stagger>
+            </RevealGroup>
 
             <Reveal className="mt-section-sm grid gap-10 border-t border-line-strong pt-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16 lg:pt-12">
                 <div className="flex flex-col items-start gap-3">

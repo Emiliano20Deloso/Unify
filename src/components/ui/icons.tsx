@@ -35,9 +35,16 @@ export const CheckIcon = (p: IconProps) => (
     </Icon>
 );
 
-export const MenuIcon = (p: IconProps) => (
-    <Icon {...p}>
-        <path d="M4 9h16M4 15h16" />
+/**
+ * Hamburguesa que se transforma en X: los dos trazos giran cuando el botón padre lleva
+ * data-state="open" (disparador de Radix) o el icono lleva data-open. Con movimiento reducido, la X
+ * (tercer trazo) aparece con un fundido cruzado. CSS en globals.css § Icono de menú.
+ */
+export const MenuIcon = ({ className, ...p }: IconProps & { "data-open"?: boolean }) => (
+    <Icon className={cn("menu-icon", className)} {...p}>
+        <path className="menu-icon__a" d="M4 9h16" />
+        <path className="menu-icon__b" d="M4 15h16" />
+        <path className="menu-icon__x" d="M6 6l12 12M18 6L6 18" />
     </Icon>
 );
 

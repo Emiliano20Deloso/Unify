@@ -10,7 +10,7 @@ interface Props {
     t: AboutDictionary;
 }
 
-/** Portada a sangre (pedido de Nosotros.md): el menú transparente encima, texto al pie. */
+/** Portada a sangre (pedido de Nosotros.md): el menú transparente encima, texto al pie. Entra con data-enter. */
 export function AboutHero({ t }: Props) {
     return (
         <header className="relative flex min-h-[560px] flex-col justify-end md:h-[min(820px,92svh)] md:min-h-[640px]">
@@ -24,10 +24,15 @@ export function AboutHero({ t }: Props) {
                 fade
                 sizes="100vw"
                 preload
+                enter
             />
             <Container className="relative pb-section-md pt-header">
-                <h1 className="type-display">{t.title}</h1>
-                <p className="type-lead mt-5 max-w-[34rem] text-fg-soft">{t.lead}</p>
+                <h1 data-enter="1" className="type-display">
+                    {t.title}
+                </h1>
+                <p data-enter="2" className="type-lead mt-5 max-w-[34rem] text-fg-soft">
+                    {t.lead}
+                </p>
             </Container>
         </header>
     );

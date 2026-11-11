@@ -95,6 +95,14 @@ export function OverlaysDemo() {
                     </SheetDescription>
                 </SheetContent>
             </Sheet>
+            <Sheet>
+                <SheetTrigger asChild>
+                    <Button variant="secondary">Abrir hoja inferior</Button>
+                </SheetTrigger>
+                <SheetContent variant="bottom" closeLabel="Cerrar" header={<SheetTitle>Origen</SheetTitle>}>
+                    <SheetDescription className="mt-2">Hoja inferior (lugares en móvil): entra y sale por abajo.</SheetDescription>
+                </SheetContent>
+            </Sheet>
             <Button variant="ghost" onClick={() => toast("Tarifa copiada", { description: "Polanco ●—○ AICM · $450 MXN" })}>
                 Mostrar aviso
             </Button>

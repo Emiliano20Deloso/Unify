@@ -3,7 +3,7 @@
 // Los dos paneles comparten QUOTE_PANEL_VT para el morph hero → /tarifas.
 import { ViewTransition } from "react";
 import type { Dictionary, Locale } from "@/i18n/types";
-import { QUOTE_PANEL_VT } from "@/lib/motion";
+import { QUOTE_PANEL_SHARE, QUOTE_PANEL_VT } from "@/lib/motion";
 import { fromPrice } from "@/lib/pricing";
 import { LEVELS, type Level } from "@/lib/quote/types";
 import { QuoteCalculatorClient } from "./quote-calculator-client";
@@ -17,7 +17,7 @@ interface QuoteProps {
 /** Barra del cotizador en el hero de la portada. */
 export function QuoteWidget({ lang, dict }: QuoteProps) {
     return (
-        <ViewTransition name={QUOTE_PANEL_VT} share="morph" default="none">
+        <ViewTransition name={QUOTE_PANEL_VT} share={QUOTE_PANEL_SHARE} default="none">
             <QuoteWidgetForm lang={lang} dict={dict} />
         </ViewTransition>
     );

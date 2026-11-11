@@ -153,7 +153,275 @@
   }
 }
 
+/* ══ Movimiento v2 (design/MOVIMIENTO.md §B) ═══════════════════════════════
+   Atributos que escribe el script de arranque (src/lib/motion/boot.ts): html[data-motion],
+   html[data-fonts], html[data-scrolled], [data-shown], [data-instant], [data-loaded].
+   Todo lo que se oculta depende de html[data-motion]: sin JS o si el script falla, nada queda oculto.
+   Movimiento reducido: se quitan los desplazamientos y quedan los fundidos. */
+
+@keyframes m-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes m-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+/* Desplazamiento con las propiedades individuales translate/scale: se suman al transform del
+   elemento (p. ej. el centrado de un diálogo) en vez de sustituirlo. */
+@keyframes m-move-in {
+  from {
+    translate: var(--from-x, 0) var(--from-y, 0);
+    scale: var(--from-s, 1);
+  }
+}
+@keyframes m-move-out {
+  to {
+    translate: var(--to-x, 0) var(--to-y, 0);
+    scale: var(--to-s, 1);
+  }
+}
+
+/* ── Aparición al hacer scroll (Reveal / RevealGroup) ─────────────────── */
+[data-reveal] {
+  --reveal-delay: calc(var(--i, 0) * var(--stagger) + var(--d, 0ms));
+  transition:
+    opacity var(--dur-ui) var(--ease-out) var(--reveal-delay),
+    translate var(--spring-layout-dur) var(--spring-layout) var(--reveal-delay),
+    scale var(--spring-layout-dur) var(--spring-layout) var(--reveal-delay);
+}
+html[data-motion] [data-reveal]:not([data-shown]),
+html[data-motion] [data-reveal-group]:not([data-shown]) [data-reveal] {
+  opacity: 0;
+  translate: 0 14px;
+}
+html[data-motion] [data-reveal="media"]:not([data-shown]),
+html[data-motion] [data-reveal-group]:not([data-shown]) [data-reveal="media"] {
+  translate: none;
+  scale: 1.03;
+}
+html[data-motion] [data-reveal="title"]:not([data-shown]),
+html[data-motion] [data-reveal-group]:not([data-shown]) [data-reveal="title"] {
+  translate: 0 18px;
+}
+/* Ya estaba en pantalla en la primera pintura (recarga a media página): sin animación. */
+[data-reveal][data-instant],
+[data-reveal-group][data-instant] [data-reveal] {
+  transition: none;
+}
+
+/* ── Entrada de cabecera (data-enter): solo CSS, desde la primera pintura ── */
+/* 0 foto · 1 antetítulo y título · 2 texto · 3 botones o cotizador. Al cargar: 40 ms + n·70 ms.
+   Al llegar navegando (data-enter-late, lo pone el script de arranque) la secuencia espera a que la
+   página nueva sea visible en la transición: 150 ms + n·50 ms, con el resorte layout (asentada < 1 s).
+   Relleno "backwards": al terminar no queda ningún translate vivo en el ancestro (si quedara, sería el
+   bloque contenedor de sus descendientes fixed, p. ej. la barra móvil del cotizador). */
+@keyframes m-enter-rise {
+  from {
+    translate: 0 16px;
+  }
+}
+@keyframes m-enter-zoom {
+  from {
+    scale: 1.03;
+  }
+}
+[data-enter] {
+  --enter-base: 40ms;
+  --enter-step: 70ms;
+  --enter-n: 0;
+  --enter-rise: var(--spring-page);
+  --enter-rise-dur: var(--spring-page-dur);
+  --enter-delay: calc(var(--enter-base) + var(--enter-n) * var(--enter-step));
+  animation:
+    m-fade-in 450ms var(--ease-out) var(--enter-delay) backwards,
+    m-enter-rise var(--enter-rise-dur) var(--enter-rise) var(--enter-delay) backwards;
+}
+[data-enter][data-enter-late] {
+  --enter-base: 150ms;
+  --enter-step: 50ms;
+  --enter-rise: var(--spring-layout);
+  --enter-rise-dur: var(--spring-layout-dur);
+}
+[data-enter="1"] {
+  --enter-n: 1;
+}
+[data-enter="2"] {
+  --enter-n: 2;
+}
+[data-enter="3"] {
+  --enter-n: 3;
+}
+/* La foto no sube: se funde y su encuadre se asienta (dentro de su caja, sin desbordar). Lo mismo
+   para un bloque que contiene algo fixed (data-enter-still): solo fundido. */
+[data-enter="0"],
+[data-enter][data-enter-still] {
+  animation: m-fade-in 450ms var(--ease-out) var(--enter-delay) backwards;
+}
+[data-enter="0"] [data-media-frame] {
+  animation: m-enter-zoom var(--spring-layout-dur) var(--spring-layout) var(--enter-delay) backwards;
+}
+/* El título espera a las fuentes (máx. 700 ms) para que nunca se vea el reacomodo de font-stretch. */
+/* Contenido que se reacomoda entero al cambiar la fuente (data-enter-fonts): además de pausar su
+   entrada, el contenedor queda transparente hasta entonces; sus hijos siguen en su estado inicial
+   oculto al reanudarse, así que el cambio no se ve. */
+html[data-motion]:not([data-fonts]) [data-enter-fonts] {
+  opacity: 0;
+}
+html[data-motion]:not([data-fonts]) [data-enter="1"],
+html[data-motion]:not([data-fonts]) [data-enter-fonts] [data-enter],
+html[data-motion]:not([data-fonts]) [data-enter-fonts] [data-enter] [data-media-frame] {
+  animation-play-state: paused;
+}
+
+/* ── Fotos (Media): la nítida se funde sobre la versión borrosa ───────── */
+[data-media-sharp] {
+  transition: opacity 500ms var(--ease-out);
+}
+html[data-motion] [data-media]:not([data-loaded]) [data-media-sharp] {
+  opacity: 0;
+}
+/* Cuando ya se ve la nítida, la borrosa deja de pintarse (sin cambio visible: queda debajo). */
+[data-media][data-loaded] [data-media-blur] {
+  visibility: hidden;
+  transition: visibility 0s 600ms;
+}
+
+/* ── Menú: fondo al hacer scroll, pastilla de hover y punto de página ── */
+[data-site-header] {
+  transition:
+    background-color var(--dur-page-out) var(--ease),
+    border-color var(--dur-page-out) var(--ease);
+}
+html[data-scrolled] [data-site-header] {
+  background-color: rgb(var(--c-bg));
+  border-color: var(--line);
+}
+
+/* SlidingIndicator: un solo elemento que se desliza (--x, --w o --y los pone JS o se calculan). */
+.sliding-indicator {
+  translate: var(--x, 0) var(--y, 0);
+  width: var(--w, auto);
+  transition:
+    translate var(--spring-ui-dur) var(--spring-ui),
+    width var(--spring-ui-dur) var(--spring-ui),
+    opacity var(--dur-micro) var(--ease);
+}
+.sliding-indicator[data-snap] {
+  transition: opacity var(--dur-micro) var(--ease);
+}
+
+/* ── Icono de menú que se transforma en cerrar ────────────────────────── */
+/* Dos trazos que giran a X; con movimiento reducido, fundido cruzado entre los dos dibujos. */
+.menu-icon path {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.menu-icon .menu-icon__x {
+  opacity: 0;
+}
+[data-state="open"] > .menu-icon .menu-icon__a,
+.menu-icon[data-open] .menu-icon__a {
+  transform: translateY(3px) rotate(45deg);
+}
+[data-state="open"] > .menu-icon .menu-icon__b,
+.menu-icon[data-open] .menu-icon__b {
+  transform: translateY(-3px) rotate(-45deg);
+}
+.menu-icon .menu-icon__a,
+.menu-icon .menu-icon__b {
+  transition: transform var(--spring-ui-dur) var(--spring-ui);
+}
+/* Dentro de la hoja: el botón de cerrar nace como hamburguesa y se vuelve X; al cerrar, regresa. */
+@keyframes m-menu-a {
+  from {
+    transform: none;
+  }
+  to {
+    transform: translateY(3px) rotate(45deg);
+  }
+}
+@keyframes m-menu-b {
+  from {
+    transform: none;
+  }
+  to {
+    transform: translateY(-3px) rotate(-45deg);
+  }
+}
+.sheet-full[data-state="open"] .menu-icon .menu-icon__a {
+  animation: m-menu-a var(--spring-ui-dur) var(--spring-ui) 40ms both;
+}
+.sheet-full[data-state="open"] .menu-icon .menu-icon__b {
+  animation: m-menu-b var(--spring-ui-dur) var(--spring-ui) 40ms both;
+}
+.sheet-full[data-state="closed"] .menu-icon .menu-icon__a {
+  animation: m-menu-a var(--dur-exit) var(--ease-exit) reverse both;
+}
+.sheet-full[data-state="closed"] .menu-icon .menu-icon__b {
+  animation: m-menu-b var(--dur-exit) var(--ease-exit) reverse both;
+}
+
+/* ── Diálogos y hojas (Radix espera a animationend de una animación CSS) ── */
+.motion-overlay[data-state="open"] {
+  animation: m-fade-in var(--dur-ui) var(--ease-out) backwards;
+}
+.motion-overlay[data-state="closed"] {
+  animation: m-fade-out var(--dur-exit) var(--ease-exit) both;
+}
+/* Abrir: relleno "backwards" (el estado final es el natural; nada queda aplicado al terminar). */
+.motion-panel[data-state="open"] {
+  animation:
+    m-fade-in var(--dur-ui) var(--ease-out) backwards,
+    m-move-in var(--spring-ui-dur) var(--spring-ui) backwards;
+}
+/* Las dos animaciones de salida duran lo mismo: Radix desmonta con la primera que termina. */
+.motion-panel[data-state="closed"] {
+  animation:
+    m-fade-out var(--dur-exit) var(--ease-exit) both,
+    m-move-out var(--dur-exit) var(--ease-exit) both;
+}
+.dialog-center {
+  --from-s: 0.97;
+  --to-s: 0.97;
+  --to-y: 4px;
+}
+.sheet-side {
+  --from-x: 32px;
+  --to-x: 32px;
+}
+/* Menú: la fila de cabecera (logo y cerrar) solo se funde en su sitio, encima del menú fijo; el
+   desplazamiento lo lleva el cuerpo. */
+.sheet-full {
+  --from-y: 0px;
+  --to-y: 0px;
+}
+.sheet-full[data-state="open"] > [data-sheet-body] {
+  --from-y: -16px;
+  animation: m-move-in var(--spring-ui-dur) var(--spring-ui) backwards;
+}
+.sheet-full[data-state="closed"] > [data-sheet-body] {
+  --to-y: -8px;
+  animation: m-move-out var(--dur-exit) var(--ease-exit) both;
+}
+.sheet-bottom {
+  --from-y: 24px;
+  --to-y: 24px;
+}
+/* Contenido escalonado de una hoja (enlaces del menú): --i es su posición. */
+.motion-panel[data-state="open"] [data-stagger] {
+  --from-y: 10px;
+  animation:
+    m-fade-in var(--dur-ui) var(--ease-out) backwards,
+    m-move-in var(--spring-ui-dur) var(--spring-ui) backwards;
+  animation-delay: calc(60ms + var(--i, 0) * var(--stagger-tight));
+}
+
 /* ── Transiciones entre páginas (React ViewTransition) ───────────────── */
+/* Fundido con desplazamiento: la página que sale se desvanece y sube 10 px; la nueva entra con
+   fundido y su cabecera hace la secuencia data-enter. Total ≤ 600 ms. */
 ::view-transition {
   pointer-events: none;
 }
@@ -174,29 +442,167 @@
   animation: none;
 }
 ::view-transition-old(.page) {
-  animation: vt-fade-out var(--dur-fast) var(--ease-out) both;
+  animation: m-vt-out var(--dur-page-out) var(--ease-page-out) both;
 }
 ::view-transition-new(.page) {
-  animation: vt-fade-in var(--dur-base) var(--ease-out) 80ms both;
+  animation: m-fade-in var(--dur-page-in) var(--ease-out) var(--page-in-delay) both;
 }
-/* Morph del panel del cotizador (QUOTE_PANEL_VT) entre el hero y /tarifas. */
-::view-transition-group(.morph) {
-  animation-duration: var(--dur-slow);
-  animation-timing-function: var(--ease-out);
-}
-@keyframes vt-fade-out {
+@keyframes m-vt-out {
   to {
     opacity: 0;
+    transform: translateY(-10px);
   }
 }
-@keyframes vt-fade-in {
+/* El punto rojo viaja del enlace viejo al nuevo; a la portada (sin enlace activo) se desvanece y encoge. */
+::view-transition-group(nav-dot) {
+  animation-duration: var(--spring-layout-dur);
+  animation-timing-function: var(--spring-layout);
+  z-index: 101;
+}
+::view-transition-old(nav-dot):only-child {
+  animation: m-dot-out var(--dur-exit) var(--ease-exit) both;
+}
+::view-transition-new(nav-dot):only-child {
+  animation: m-dot-in var(--dur-ui) var(--ease-out) var(--page-in-delay) both;
+}
+@keyframes m-dot-out {
+  to {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+}
+@keyframes m-dot-in {
   from {
     opacity: 0;
+    transform: scale(0.4);
   }
 }
+/* El pie vive en el layout: se desvanece y aparece con la página. */
+::view-transition-group(site-footer) {
+  animation: none;
+}
+::view-transition-old(site-footer) {
+  animation: m-vt-out var(--dur-page-out) var(--ease-page-out) both;
+}
+::view-transition-new(site-footer) {
+  animation: m-fade-in var(--dur-page-in) var(--ease-out) var(--page-in-delay) both;
+}
+/* La hoja del menú se retira encima mientras la página cambia debajo (su propia salida, en vivo).
+   Va sobre el menú fijo: la hoja lo cubre mientras está abierta. */
+::view-transition-group(site-sheet) {
+  animation: none;
+  z-index: 110;
+}
+::view-transition-old(site-sheet) {
+  display: none;
+}
+::view-transition-new(site-sheet) {
+  animation: none;
+}
+/* Cambio de idioma: fundido de paso sin desplazamiento, también del menú (cambian sus textos). La
+   transición es propia (src/lib/motion/transition.ts): React no nombra la página y el contenido viaja
+   en root. */
+::view-transition-old(.page-fade),
+html:active-view-transition-type(locale)::view-transition-old(root),
+html:active-view-transition-type(locale)::view-transition-old(site-header),
+html:active-view-transition-type(locale)::view-transition-old(site-footer),
+html:active-view-transition-type(locale)::view-transition-old(site-sheet) {
+  display: block;
+  animation: m-fade-out var(--dur-page-out) var(--ease-page-out) both;
+}
+::view-transition-new(.page-fade),
+html:active-view-transition-type(locale)::view-transition-new(root),
+html:active-view-transition-type(locale)::view-transition-new(site-header),
+html:active-view-transition-type(locale)::view-transition-new(site-footer) {
+  animation: m-fade-in var(--dur-page-in) var(--ease-out) var(--page-in-delay) both;
+}
+/* Morph del panel del cotizador (QUOTE_PANEL_VT): solo con el tipo quote-panel. */
+/* La caja cambia de forma (barra → panel) y el contenido no se escala: cada imagen queda anclada arriba
+   a la izquierda, recortada por la caja, y se cruzan con un fundido. */
+::view-transition-group(.morph) {
+  animation-duration: var(--spring-page-dur);
+  animation-timing-function: var(--spring-page);
+  overflow: clip;
+  border-radius: var(--radius-card);
+  /* La página nueva solo existe en el estado nuevo y su grupo se apila al final: sin esto la tapa. */
+  z-index: 50;
+}
+::view-transition-old(.morph),
+::view-transition-new(.morph) {
+  width: auto;
+  height: auto;
+  object-fit: none;
+  object-position: left top;
+}
+::view-transition-old(.morph) {
+  animation: m-fade-out var(--dur-page-out) var(--ease-page-out) both;
+}
+::view-transition-new(.morph) {
+  animation: m-fade-in var(--dur-page-in) var(--ease-out) var(--page-in-delay) both;
+}
+
+/* ── Movimiento reducido: quedan los fundidos ─────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  ::view-transition-group(.morph) {
-    animation-duration: 0s;
+  html[data-motion] [data-reveal]:not([data-shown]),
+  html[data-motion] [data-reveal-group]:not([data-shown]) [data-reveal] {
+    translate: none;
+    scale: none;
+  }
+  [data-reveal] {
+    transition: opacity var(--dur-ui) var(--ease-out) var(--reveal-delay);
+  }
+  [data-enter],
+  [data-enter="0"] {
+    animation: m-fade-in var(--dur-ui) var(--ease-out) var(--enter-delay) backwards;
+  }
+  [data-enter="0"] [data-media-frame] {
+    animation: none;
+  }
+  .sliding-indicator {
+    transition: opacity var(--dur-micro) var(--ease);
+  }
+  .menu-icon .menu-icon__a,
+  .menu-icon .menu-icon__b,
+  .menu-icon .menu-icon__x {
+    transform: none !important;
+    animation: none !important;
+    transition: opacity var(--dur-micro) var(--ease);
+  }
+  [data-state="open"] > .menu-icon .menu-icon__a,
+  [data-state="open"] > .menu-icon .menu-icon__b,
+  .sheet-full[data-state="open"] .menu-icon .menu-icon__a,
+  .sheet-full[data-state="open"] .menu-icon .menu-icon__b {
+    opacity: 0;
+  }
+  [data-state="open"] > .menu-icon .menu-icon__x,
+  .sheet-full[data-state="open"] .menu-icon .menu-icon__x {
+    opacity: 1;
+  }
+  .motion-panel[data-state="open"],
+  .motion-panel[data-state="open"] [data-stagger] {
+    animation-name: m-fade-in;
+    animation-duration: var(--dur-ui);
+    animation-timing-function: var(--ease-out);
+  }
+  .motion-panel[data-state="closed"] {
+    animation: m-fade-out var(--dur-exit) var(--ease-exit) both;
+  }
+  .sheet-full > [data-sheet-body] {
+    animation: none !important;
+  }
+  ::view-transition-old(.page),
+  ::view-transition-old(site-footer) {
+    animation-name: m-fade-out;
+  }
+  /* Los grupos no cambian de posición ni de tamaño (la página, el punto, el morph): solo fundidos. */
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+  }
+  ::view-transition-old(nav-dot):only-child {
+    animation-name: m-fade-out;
+  }
+  ::view-transition-new(nav-dot):only-child {
+    animation-name: m-fade-in;
   }
 }
 
@@ -213,5 +619,16 @@
   }
   main {
     padding-top: 0 !important;
+  }
+  /* Nada queda oculto por una aparición pendiente, una entrada o una foto sin fundir. */
+  [data-reveal],
+  [data-enter],
+  [data-enter] [data-media-frame],
+  [data-media-sharp] {
+    opacity: 1 !important;
+    translate: none !important;
+    scale: none !important;
+    animation: none !important;
+    transition: none !important;
   }
 }

@@ -49,7 +49,7 @@ function SummaryCards({ lang, id, tone }: { lang: Locale; id: string; tone: "bg"
     return (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {levels[lang].map((level, i) => (
-                <Reveal key={level.id} delay={i * 0.06} className={i === 2 ? "md:col-span-2 lg:col-span-1" : undefined}>
+                <Reveal key={level.id} variant="item" index={i} className={i === 2 ? "md:col-span-2 lg:col-span-1" : undefined}>
                     <Card
                         as="article"
                         tone={tone === "surface" ? "elevated" : "surface"}

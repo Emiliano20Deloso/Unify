@@ -2,9 +2,9 @@
 // Fuera del sitemap, noindex y bloqueado en robots. Guía: design/SISTEMA.md.
 import type { Metadata } from "next";
 import Link from "next/link";
-import { interiorAsientosDelanteros, teslaGrisAnochecer } from "@/assets/images";
+import { interiorAsientosDelanteros, rutaCosta, teslaGrisAnochecer } from "@/assets/images";
 import { Logo, LogoMark } from "@/components/brand";
-import { PageTransition, Reveal, Stagger, StaggerItem } from "@/components/motion";
+import { PageTransition, Reveal, RevealGroup } from "@/components/motion";
 import {
     Accordion,
     AccordionContent,
@@ -28,6 +28,7 @@ import {
     Textarea,
 } from "@/components/ui";
 import { OverlaysDemo, QuoteControlsDemo } from "./demos";
+import { MotionDemos } from "./motion-demos";
 
 export const metadata: Metadata = {
     title: { absolute: "Muestrario · Unify" },
@@ -255,18 +256,26 @@ export default function UiPage() {
                         <p className="max-w-md text-fg-soft">Velo inferior para leer texto encima. Nada de texto atenuado sobre fotos.</p>
                     </div>
                 </div>
-                <Stagger className="mt-10 grid gap-4 sm:grid-cols-3">
-                    {["Puntual", "Silencioso", "Precio fijo"].map((word) => (
-                        <StaggerItem key={word}>
+            </Block>
+
+            <Block title="Movimiento">
+                <MotionDemos />
+                {/* RevealGroup: aparece al entrar en pantalla, escalonado (60 ms), una sola vez. */}
+                <RevealGroup id="mov-reveal" className="mt-section-md grid gap-4 sm:grid-cols-3">
+                    {["Puntual", "Silencioso", "Precio fijo"].map((word, i) => (
+                        <Reveal key={word} variant="item" index={i}>
                             <Card>
                                 <p className="type-heading">{word}</p>
                             </Card>
-                        </StaggerItem>
+                        </Reveal>
                     ))}
-                </Stagger>
-                <Reveal className="mt-4">
+                </RevealGroup>
+                <Reveal id="mov-reveal-media" variant="media" className="mt-4">
+                    <Media src={rutaCosta} alt="" sizes="(min-width: 1440px) 1280px, 100vw" className="aspect-[21/9]" />
+                </Reveal>
+                <Reveal id="mov-reveal-text" className="mt-4">
                     <Card tone="elevated">
-                        <p>Reveal: aparece una vez al entrar en pantalla, 12 px y fundido.</p>
+                        <p>Reveal: aparece una vez al entrar en pantalla, 14 px y fundido; la foto, con escala 1.03 → 1.</p>
                     </Card>
                 </Reveal>
             </Block>

@@ -1,66 +1,45 @@
-"use client";
+// Aparición al entrar en pantalla, sin motion ni JS de React: el Server Component pinta atributos y
+// el script de arranque (src/lib/motion/boot.ts) marca data-shown con un IntersectionObserver.
+// CSS en src/styles/globals.css (§ Aparición al hacer scroll). Funciona antes de hidratar y en cada
+// navegación suave. Sin JS (o si el script falla) todo se ve desde el principio.
+import type { CSSProperties, ElementType, HTMLAttributes } from "react";
 
-import * as m from "motion/react-m";
-import type { HTMLMotionProps } from "motion/react";
-import { DURATION, EASE_OUT, REVEAL_OFFSET, STAGGER_STEP } from "@/lib/motion";
+/** title: sube 18 px · text e item: 14 px · media: escala 1.03 → 1 · figure: como text (las cifras ruedan aparte). */
+export type RevealVariant = "title" | "text" | "media" | "item" | "figure";
 
-// Se dispara en cuanto asoma el borde superior (amount: 0) con un margen pequeño, no por proporción:
-// con un umbral relativo, los bloques más altos que la pantalla tardaban en aparecer y dejaban huecos.
-const VIEWPORT = { once: true, amount: 0, margin: "0px 0px -6% 0px" } as const;
-
-const item = {
-    hidden: { opacity: 0, y: REVEAL_OFFSET },
-    shown: { opacity: 1, y: 0, transition: { duration: DURATION.slow, ease: EASE_OUT } },
-};
-
-type DivProps = Omit<HTMLMotionProps<"div">, "initial" | "whileInView" | "viewport" | "variants">;
-
-interface RevealProps extends DivProps {
-    /** Retraso en segundos (para escalonar a mano dos o tres bloques). */
+interface RevealProps extends HTMLAttributes<HTMLElement> {
+    /** Etiqueta (div por defecto). */
+    as?: ElementType;
+    variant?: RevealVariant;
+    /** Posición dentro de un escalonado: retraso index × 60 ms. */
+    index?: number;
+    /** Retraso extra en milisegundos. */
     delay?: number;
 }
 
+type Vars = CSSProperties & Record<`--${string}`, string | number>;
+
+function vars(style: CSSProperties | undefined, index?: number, delay?: number): CSSProperties | undefined {
+    if (index === undefined && delay === undefined) return style;
+    const next: Vars = { ...style };
+    if (index !== undefined) next["--i"] = index;
+    if (delay !== undefined) next["--d"] = `${delay}ms`;
+    return next;
+}
+
 /**
- * Aparece al entrar en pantalla, una sola vez (opacidad + 12 px). Los hijos pueden ser de servidor.
- * No envolver el título principal ni la imagen del hero: el contenido arriba del pliegue ya se ve.
+ * Aparece una vez al entrar en pantalla (opacidad + desplazamiento corto). Los hijos siguen siendo
+ * de servidor. Lo que ya está en pantalla en la primera pintura se queda visible sin animar.
+ * No usar en cabeceras (para eso, data-enter) ni en el cotizador.
  */
-export function Reveal({ delay = 0, children, ...props }: RevealProps) {
-    return (
-        <m.div
-            initial="hidden"
-            whileInView="shown"
-            viewport={VIEWPORT}
-            variants={{
-                hidden: item.hidden,
-                shown: { ...item.shown, transition: { ...item.shown.transition, delay } },
-            }}
-            {...props}
-        >
-            {children}
-        </m.div>
-    );
+export function Reveal({ as: Tag = "div", variant = "text", index, delay, style, ...props }: RevealProps) {
+    return <Tag data-reveal={variant} suppressHydrationWarning style={vars(style, index, delay)} {...props} />;
 }
 
-/** Contenedor que escalona a sus StaggerItem (60 ms entre cada uno) al entrar en pantalla. */
-export function Stagger({ children, ...props }: DivProps) {
-    return (
-        <m.div
-            initial="hidden"
-            whileInView="shown"
-            viewport={VIEWPORT}
-            variants={{ hidden: {}, shown: { transition: { staggerChildren: STAGGER_STEP } } }}
-            {...props}
-        >
-            {children}
-        </m.div>
-    );
-}
-
-/** Hijo directo de Stagger. Acepta `as` implícito de div; para listas usa className en un <li> interior. */
-export function StaggerItem({ children, ...props }: DivProps) {
-    return (
-        <m.div variants={item} {...props}>
-            {children}
-        </m.div>
-    );
+/**
+ * Revela a todos sus `<Reveal index={i}>` a la vez, escalonados (60 ms entre cada uno), cuando el
+ * grupo asoma. Los Reveal dentro de un grupo no se observan por separado.
+ */
+export function RevealGroup({ as: Tag = "div", ...props }: HTMLAttributes<HTMLElement> & { as?: ElementType }) {
+    return <Tag data-reveal-group="" suppressHydrationWarning {...props} />;
 }

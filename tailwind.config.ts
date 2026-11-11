@@ -76,11 +76,24 @@ export default {
 				base: "var(--dur-base)",
 				slow: "var(--dur-slow)",
 				slower: "var(--dur-slower)",
+				// Movimiento v2 (design/MOVIMIENTO.md §B1)
+				micro: "var(--dur-micro)",
+				ui: "var(--dur-ui)",
+				exit: "var(--dur-exit)",
+				layout: "var(--dur-layout)",
 			},
 			transitionTimingFunction: {
 				out: "var(--ease-out)",
 				"in-out": "var(--ease-in-out)",
 				DEFAULT: "var(--ease)",
+				exit: "var(--ease-exit)",
+				"spring-micro": "var(--spring-micro)",
+				"spring-ui": "var(--spring-ui)",
+				"spring-layout": "var(--spring-layout)",
+			},
+			transitionProperty: {
+				// Todo lo que cambia al interactuar, foco incluido (anima aunque el componente fije otra propiedad).
+				interactive: "background-color, border-color, color, opacity, transform, outline-color, outline-offset",
 			},
 		},
 	},

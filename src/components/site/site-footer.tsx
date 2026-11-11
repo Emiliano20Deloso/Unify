@@ -17,10 +17,14 @@ const SITE_LINKS = ["home", "services", "pricing", "about"] as const satisfies r
 const link = "inline-flex min-h-11 items-center rounded-sm text-fg-muted transition-colors duration-fast ease hover:text-fg md:min-h-9";
 const heading = "type-label mb-3 text-fg-subtle";
 
+/**
+ * Pie del sitio. Vive en el layout, pero entra en la transición de página con nombre propio
+ * (site-footer): se desvanece y vuelve a aparecer con la página nueva (globals.css).
+ */
 export function SiteFooter({ lang, t }: SiteFooterProps) {
     const year = new Date().getFullYear();
     return (
-        <footer data-site-chrome className="bg-bg">
+        <footer data-site-chrome className="bg-bg" style={{ viewTransitionName: "site-footer" }}>
             <Container>
                 <RouteLine draw />
                 <div className="grid gap-12 py-section-sm md:grid-cols-2 lg:grid-cols-12 lg:gap-8">

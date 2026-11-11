@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { ArrowIcon, RouteLine } from "@/components/ui";
 import type { Dictionary, Locale } from "@/i18n/types";
 import { localizedHref } from "@/i18n/routes";
+import { QUOTE_PANEL_TYPE } from "@/lib/motion";
 import { cn } from "@/lib";
 import { draftIssues } from "@/lib/quote/draft";
 import { updateDraft, useQuoteDraft } from "@/lib/quote/store";
@@ -42,7 +43,7 @@ export function QuoteWidgetForm({ lang, dict }: Props) {
         if (next[0] === "origin") return originRef.current?.focus();
         if (next[0] === "destination") return destinationRef.current?.focus();
         updateDraft({}); // asegura la copia en sessionStorage antes de navegar
-        router.push(localizedHref(lang, "pricing", "cotizar"), { transitionTypes: ["quote-panel"] });
+        router.push(localizedHref(lang, "pricing", "cotizar"), { transitionTypes: [QUOTE_PANEL_TYPE] });
     };
 
     const message =

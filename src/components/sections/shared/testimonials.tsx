@@ -1,4 +1,4 @@
-import { Stagger, StaggerItem } from "@/components/motion";
+import { Reveal, RevealGroup } from "@/components/motion";
 import { Section, SectionHeader } from "@/components/ui";
 import { fill, testimonials, testimonialsCopy } from "@/content";
 import type { Locale } from "@/i18n/config";
@@ -17,11 +17,11 @@ export function Testimonials({ lang, tone = "surface", id = "testimonios" }: Tes
     return (
         <Section tone={tone} aria-labelledby={id}>
             <SectionHeader id={id} title={t.title} />
-            <Stagger className="grid gap-x-16 md:grid-cols-2">
-                {testimonials[lang].map((item) => {
+            <RevealGroup className="grid gap-x-16 md:grid-cols-2">
+                {testimonials[lang].map((item, i) => {
                     const rating = numberFormat.format(item.rating);
                     return (
-                        <StaggerItem key={item.id} className="border-t border-line py-8 md:py-10">
+                        <Reveal key={item.id} variant="item" index={i} className="border-t border-line py-8 md:py-10">
                             <figure className="flex h-full flex-col gap-6">
                                 <blockquote className="type-lead text-fg-soft lg:text-xl lg:leading-relaxed">
                                     <p>{item.text}</p>
@@ -34,10 +34,10 @@ export function Testimonials({ lang, tone = "surface", id = "testimonios" }: Tes
                                     </span>
                                 </figcaption>
                             </figure>
-                        </StaggerItem>
+                        </Reveal>
                     );
                 })}
-            </Stagger>
+            </RevealGroup>
         </Section>
     );
 }

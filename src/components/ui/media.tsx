@@ -1,4 +1,8 @@
 // Envoltura de next/image: caja con proporción y radio del sistema, imagen en modo fill.
+// Carga: debajo se pinta la versión borrosa (blurDataURL, unos 8 px ampliados: el suavizado al escalar
+// ya la difumina; sin filter: blur, que es caro de pintar) y la foto nítida se funde encima cuando el
+// script de arranque marca data-loaded (src/lib/motion/boot.ts; CSS en globals.css § Fotos). Sin JS,
+// la nítida se ve directamente.
 import Image, { type StaticImageData } from "next/image";
 import { cn } from "@/lib";
 
@@ -38,6 +42,8 @@ export interface MediaProps {
     /** Solo para la foto LCP arriba del pliegue (hero): la precarga en <head>. */
     preload?: boolean;
     quality?: 60 | 75 | 85;
+    /** Primer paso de la entrada de una cabecera (data-enter="0"): fundido y el encuadre se asienta. */
+    enter?: boolean;
     className?: string;
 }
 
@@ -52,10 +58,15 @@ export function Media({
     position,
     preload,
     quality,
+    enter,
     className,
 }: MediaProps) {
     return (
         <div
+            data-media=""
+            data-enter={enter ? "0" : undefined}
+            // El script de arranque añade data-loaded antes de hidratar.
+            suppressHydrationWarning
             className={cn(
                 "overflow-hidden bg-elevated",
                 fill ? "absolute inset-0" : "relative",
@@ -63,17 +74,27 @@ export function Media({
                 className,
             )}
         >
-            <Image
-                src={src}
-                alt={alt}
-                fill
-                sizes={sizes}
-                preload={preload}
-                quality={quality}
-                placeholder="blur"
-                className="object-cover"
-                style={position ? { objectPosition: position } : undefined}
-            />
+            <div data-media-frame="" className="absolute inset-0">
+                {src.blurDataURL ? (
+                    <div
+                        data-media-blur=""
+                        aria-hidden="true"
+                        className="absolute inset-0 bg-cover"
+                        style={{ backgroundImage: `url("${src.blurDataURL}")`, backgroundPosition: position ?? "center" }}
+                    />
+                ) : null}
+                <Image
+                    data-media-sharp=""
+                    src={src}
+                    alt={alt}
+                    fill
+                    sizes={sizes}
+                    preload={preload}
+                    quality={quality}
+                    className="object-cover"
+                    style={position ? { objectPosition: position } : undefined}
+                />
+            </div>
             {veil ? <div aria-hidden="true" className={cn("absolute inset-0", VEIL[veil])} /> : null}
             {fade ? <div aria-hidden="true" className={cn("absolute inset-0", FADE, fade === "mobile" && "lg:hidden")} /> : null}
         </div>

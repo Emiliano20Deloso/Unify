@@ -5,9 +5,10 @@ import { fontVariables } from "@/styles/fonts";
 import { htmlLang, locales } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { resolveLocale } from "@/i18n/params";
-import { Providers } from "@/components/motion";
+import { InlineScript, Providers } from "@/components/motion";
 import { SiteFooter, SiteHeader } from "@/components/site";
 import { site } from "@/lib/site";
+import { BOOT_SCRIPT, NOSCRIPT_CSS } from "@/lib/motion/boot";
 
 // Solo "es" y "en": cualquier otro primer segmento (p. ej. /admin/x) no entra a este layout.
 export const dynamicParams = false;
@@ -38,7 +39,15 @@ export default async function LangLayout({ children, params }: LayoutProps<"/[la
     const t = await getDictionary(lang, "common");
 
     return (
-        <html lang={htmlLang[lang]} className={fontVariables}>
+        // suppressHydrationWarning: el script de arranque escribe atributos en <html> antes de hidratar.
+        // data-scroll-behavior: Next quita el scroll suave mientras navega (la subida al inicio no se anima).
+        <html lang={htmlLang[lang]} className={fontVariables} data-scroll-behavior="smooth" suppressHydrationWarning>
+            <head>
+                <InlineScript html={BOOT_SCRIPT} />
+                <noscript>
+                    <style>{NOSCRIPT_CSS}</style>
+                </noscript>
+            </head>
             <body>
                 <a
                     data-site-chrome

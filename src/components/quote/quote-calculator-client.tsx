@@ -6,7 +6,7 @@ import { useEffect, useMemo, ViewTransition } from "react";
 import { ArrowUpDown } from "lucide-react";
 import { Field, Input, RouteLine, Stepper } from "@/components/ui";
 import type { Dictionary, Locale } from "@/i18n/types";
-import { QUOTE_PANEL_VT } from "@/lib/motion";
+import { QUOTE_PANEL_SHARE, QUOTE_PANEL_VT } from "@/lib/motion";
 import { cn } from "@/lib";
 import { draftToRequest } from "@/lib/quote/api";
 import { draftIssues, involvesAirport, parseQuoteParams, type FieldKey } from "@/lib/quote/draft";
@@ -62,7 +62,7 @@ export function QuoteCalculatorClient({ lang, dict, fromPrices }: Props) {
 
     return (
         <div id="cotizar" className="grid items-start gap-6 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)]">
-            <ViewTransition name={QUOTE_PANEL_VT} share="morph" default="none">
+            <ViewTransition name={QUOTE_PANEL_VT} share={QUOTE_PANEL_SHARE} default="none">
                 <form
                     noValidate
                     aria-labelledby="quote-form-title"

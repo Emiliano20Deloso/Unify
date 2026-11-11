@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Logo } from "@/components/brand";
@@ -18,13 +19,22 @@ interface MobileMenuProps {
     className?: string;
 }
 
-/** Móvil y tablet: hoja a pantalla completa con enlaces grandes, idioma y contacto. */
+type Stagger = React.CSSProperties & { "--i": number };
+const stagger = (i: number): Stagger => ({ "--i": i });
+
+/**
+ * Móvil y tablet: hoja a pantalla completa con enlaces grandes, idioma y contacto.
+ * Movimiento: la hamburguesa gira a X (también la del botón de cerrar de la hoja, en el mismo sitio);
+ * la hoja entra con fundido + 16 px y sus enlaces escalonados (40 ms); al navegar, la hoja se cierra
+ * encima mientras la página cambia debajo (site-sheet). El cambio de idioma también la cierra.
+ */
 export function MobileMenu({ lang, t, className }: MobileMenuProps) {
     const current = stripLocale(usePathname() ?? "/");
     const keys = ["home", ...NAV_KEYS] as const;
+    const [open, setOpen] = useState(false);
 
     return (
-        <Sheet>
+        <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" aria-label={t.a11y.openMenu} className={className}>
                     <MenuIcon className="size-[22px]" />
@@ -45,10 +55,10 @@ export function MobileMenu({ lang, t, className }: MobileMenuProps) {
                 <SheetTitle className="sr-only">{t.a11y.menu}</SheetTitle>
                 <nav aria-label={t.a11y.mainNav} className="pt-6">
                     <ul className="flex flex-col">
-                        {keys.map((key) => {
+                        {keys.map((key, i) => {
                             const active = current === routes[key];
                             return (
-                                <li key={key} className="border-b border-line">
+                                <li key={key} data-stagger style={stagger(i)} className="border-b border-line">
                                     <SheetClose asChild>
                                         <Link
                                             href={localizedHref(lang, key)}
@@ -69,12 +79,20 @@ export function MobileMenu({ lang, t, className }: MobileMenuProps) {
                 </nav>
 
                 <SheetClose asChild>
-                    <Button asChild size="lg" className="mt-8 w-full">
+                    <Button asChild size="lg" data-stagger style={stagger(keys.length)} className="mt-8 w-full">
                         <Link href={localizedHref(lang, "pricing", "cotizar")}>{t.actions.quote}</Link>
                     </Button>
                 </SheetClose>
 
-                <div className="mt-auto flex flex-col gap-6 pt-12">
+                <div
+                    data-stagger
+                    style={stagger(keys.length + 1)}
+                    className="mt-auto flex flex-col gap-6 pt-12"
+                    onClickCapture={(event) => {
+                        // Cambio de idioma (navegación suave): la hoja se cierra con su salida.
+                        if ((event.target as HTMLElement).closest("a[hreflang]")) setOpen(false);
+                    }}
+                >
                     <LocaleSwitch lang={lang} labels={t.languages} ariaLabel={t.a11y.languageSwitcher} variant="full" className="font-medium" />
                     <ul className="flex flex-col gap-1 text-fg-muted">
                         <li>

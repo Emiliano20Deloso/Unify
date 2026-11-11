@@ -13,6 +13,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Copias de trabajo temporales de agentes (git worktrees).
     ".claude/**",
+    // Capturas, informes y pasos sueltos de revisión visual (carpeta ignorada por git).
+    ".shots/**",
   ]),
 ]);
 

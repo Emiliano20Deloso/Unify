@@ -14,7 +14,7 @@ interface HomeHeroProps {
 /**
  * Hero a sangre de la portada (maqueta B-Nocturno). Escritorio: texto arriba, bajo el menú, y el
  * cotizador montado sobre el borde inferior de la foto. Móvil: texto al pie de la foto y el
- * cotizador debajo. Sin animaciones de entrada: el contenido arriba del pliegue ya se ve.
+ * cotizador debajo. Entrada en secuencia con data-enter: foto → antetítulo y título → texto → cotizador.
  */
 export function HomeHero({ lang, t, quote }: HomeHeroProps) {
     return (
@@ -33,11 +33,12 @@ export function HomeHero({ lang, t, quote }: HomeHeroProps) {
                         position="64% 60%"
                         className="lg:[&_img]:![object-position:50%_60%]"
                         preload
+                        enter
                     />
                 </div>
                 <Container className="relative pt-[22rem] sm:pt-[30.5rem] lg:pt-[calc(var(--header-h)+4rem)]">
-                    <p className="type-label lg:text-[0.9375rem]">{t.eyebrow}</p>
-                    <h1 id="inicio-titulo" className="type-display mt-3 max-w-4xl lg:mt-5">
+                    <p data-enter="1" className="type-label lg:text-[0.9375rem]">{t.eyebrow}</p>
+                    <h1 id="inicio-titulo" data-enter="1" className="type-display mt-3 max-w-4xl lg:mt-5">
                         {t.title.map((line, i) => (
                             <Fragment key={line}>
                                 {i > 0 ? <br /> : null}
@@ -45,10 +46,10 @@ export function HomeHero({ lang, t, quote }: HomeHeroProps) {
                             </Fragment>
                         ))}
                     </h1>
-                    <p className="type-lead mt-5 max-w-[34rem] text-fg-subtle lg:text-fg-soft">{t.text}</p>
+                    <p data-enter="2" className="type-lead mt-5 max-w-[34rem] text-fg-subtle lg:text-fg-soft">{t.text}</p>
                 </Container>
             </div>
-            <Container className="relative z-10 mt-6 sm:mt-8 lg:-mt-[60px]">
+            <Container data-enter="3" className="relative z-10 mt-6 sm:mt-8 lg:-mt-[60px]">
                 <QuoteWidget lang={lang} dict={quote} />
                 <p className="type-label mt-4 text-center text-fg-subtle lg:mt-6 lg:pl-8 lg:text-left lg:text-sm">
                     {t.trust.map((item, i) => (

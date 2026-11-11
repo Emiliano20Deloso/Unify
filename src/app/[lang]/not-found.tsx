@@ -16,10 +16,17 @@ export default async function NotFound() {
     const dict = await getDictionary(lang, "not-found");
     return (
         <Container className="flex min-h-[80svh] flex-col justify-center pb-section-md pt-[calc(var(--header-h)+var(--section-sm))]">
-            <BrokenRoute />
-            <h1 className="type-display mt-10 max-w-3xl">{dict.title}</h1>
-            <p className="type-lead mt-5 max-w-[36rem] text-fg-subtle">{dict.body}</p>
-            <Button asChild className="mt-10 self-start">
+            {/* Entrada en secuencia (data-enter): la línea rota → título → texto → botón. */}
+            <div data-enter="0">
+                <BrokenRoute />
+            </div>
+            <h1 data-enter="1" className="type-display mt-10 max-w-3xl">
+                {dict.title}
+            </h1>
+            <p data-enter="2" className="type-lead mt-5 max-w-[36rem] text-fg-subtle">
+                {dict.body}
+            </p>
+            <Button asChild data-enter="3" className="mt-10 self-start">
                 <Link href={localizedHref(lang, "home")}>{dict.backHome}</Link>
             </Button>
         </Container>

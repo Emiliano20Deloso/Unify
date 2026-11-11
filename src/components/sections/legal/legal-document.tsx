@@ -36,16 +36,22 @@ export function LegalDocument({ lang, doc, title, text, ui, related }: LegalDocu
             <header className="pb-section-sm pt-[calc(var(--header-h)+var(--section-sm))] print:pt-0">
                 <Container>
                     <div className="flex max-w-4xl flex-col gap-5">
-                        <h1 className="type-display">{title}</h1>
-                        <p className="type-lead max-w-[36rem] text-fg-soft">{text}</p>
-                        <p className="type-small text-fg-subtle">
+                        <h1 data-enter="1" className="type-display">
+                            {title}
+                        </h1>
+                        <p data-enter="2" className="type-lead max-w-[36rem] text-fg-soft">
+                            {text}
+                        </p>
+                        <p data-enter="2" className="type-small text-fg-subtle">
                             {ui.updated}{" "}
                             <time dateTime={doc.updated} className="text-fg-muted">
                                 {formatDate(doc.updated, lang)}
                             </time>
                         </p>
                     </div>
-                    <RouteLine className="mt-10 md:mt-14 print:hidden" />
+                    <div data-enter="3" className="mt-10 md:mt-14 print:hidden">
+                        <RouteLine />
+                    </div>
                 </Container>
             </header>
 
