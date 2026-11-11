@@ -69,7 +69,7 @@ Regla del dueño: **cada acción tiene su reacción animada**, sin cortes, brinc
 - Contenido bajo el pliegue: `Reveal` / `RevealGroup` (servidor, CSS). Cabecera de página: `data-enter="0|1|2|3"`. Página entera: `PageTransition`.
 - Algo que aparece y desaparece: `Collapse` si empuja lo de abajo (alto + fundido), `Presence preset="fade|rise|drop|sheet-bottom"` si flota. Contenido que cambia en el mismo sitio: `Swap` dentro de `AutoHeight` (`Swap inline` para texto).
 - Elegir entre opciones o resaltar una: un solo elemento `sliding-indicator` (columnas iguales: `--x` por índice; posiciones libres: `slideIndicatorTo`).
-- Cifras: `Price` / NumberFlow con `SPRING_CSS.ui`. Diálogos, hojas y acordeón: keyframes CSS (Radix desmonta al terminar la animación, no la transición).
+- Cifras: `Price` / NumberFlow con `SPRING_CSS.ui`. Diálogos y hojas: keyframes CSS (Radix desmonta al terminar la animación, no la transición). Acordeón: contenido siempre montado y transiciones (alto con `grid-template-rows`), para poder interrumpirlo.
 - Controles nuevos: clase `ctl` (color, borde, opacidad y anillo de foco con transición) y `ctl-press` (`scale .97` al presionar, regreso con resorte; `[--press-scale:…]` para otro valor). El anillo de foco entra animado en todo el sitio sin hacer nada.
 - Deshabilitar algo que se pulsa en serie (topes): `aria-disabled` en vez de `disabled`, así no pierde el foco.
 - Cambios rápidos seguidos: transiciones (se redirigen desde donde van), no keyframes; si tiene que ser keyframe, parte del estado actual (ver `Accordion`).
