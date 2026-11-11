@@ -1,4 +1,5 @@
 {
+    "version": "2026-11",
     "currency": "MXN",
     "timezone": "America/Mexico_City",
     "base": {
@@ -10,6 +11,11 @@
         "practico": 10,
         "select": 10,
         "premium": 10
+    },
+    "min_fare": {
+        "practico": 249,
+        "select": 399,
+        "premium": 599
     },
     "multipliers": {
         "normal": 1.0,
@@ -28,6 +34,29 @@
         "passenger_fee_amount": 50,
         "luggage_fee_from": 3,
         "luggage_fee_amount": 25
+    },
+    "capacity": {
+        "max_passengers": 4,
+        "max_luggage": 2
+    },
+    "booking": {
+        "min_notice_hours": 12,
+        "max_advance_days": 365
+    },
+    "service_area": {
+        "center": { "lat": 19.4326, "lng": -99.1332 },
+        "radius_km": 45,
+        "max_leg_km": 90
+    },
+    "approx": {
+        "road_factor": 1.35,
+        "min_km": 2,
+        "speed_kmh": { "peak": 18, "normal": 28, "night": 40 }
+    },
+    "waiting": {
+        "city_min": 15,
+        "airport_min": 30,
+        "excess_per_15min": 60
     },
     "holidays_mx": []
 }
