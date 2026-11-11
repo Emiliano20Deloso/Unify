@@ -1,6 +1,6 @@
 // Cierre de /tarifas: lo que no se cotiza en línea va por WhatsApp (buildSpecialQuoteUrl).
-import { ArrowIcon, Button, Section, WhatsAppIcon } from "@/components/ui";
-import { customQuoteKinds, fill } from "@/content";
+import { ArrowIcon, Button, Media, Section } from "@/components/ui";
+import { customQuoteKinds, fill, photos } from "@/content";
 import type { Locale } from "@/i18n/config";
 import type { PricingDictionary } from "@/i18n/types";
 import { pricingConfig } from "@/lib/pricing";
@@ -25,14 +25,20 @@ export function CustomQuote({ lang, t, tone = "surface", id = "a-la-medida" }: C
                     <p className="type-lead mt-5 max-w-[30rem] text-fg-subtle">{t.text}</p>
                     <Button asChild size="lg" className="mt-10 w-full sm:w-auto">
                         <a href={buildSpecialQuoteUrl({ kind: "general", lang })} target="_blank" rel="noopener noreferrer">
-                            <WhatsAppIcon />
                             {t.cta}
                             <span className="sr-only"> {t.external}</span>
                         </a>
                     </Button>
                     <p className="type-small mt-4 text-fg-subtle">{t.note}</p>
                 </div>
-                <ul aria-label={t.listLabel} className="border-t border-line lg:mt-2">
+                <Media
+                    src={photos.pricingCustomQuote}
+                    alt={t.imageAlt}
+                    position="50% 55%"
+                    sizes="(min-width: 1280px) 720px, (min-width: 1024px) 56vw, 100vw"
+                    className="aspect-[16/10] lg:aspect-[4/3]"
+                />
+                <ul aria-label={t.listLabel} className="border-t border-line lg:col-span-2">
                     {customQuoteKinds.map((kind) => {
                         const item = t.items[kind];
                         const text = fill(item.text, { passengers: capacity.max_passengers, luggage: capacity.max_luggage });

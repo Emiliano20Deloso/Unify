@@ -2,7 +2,7 @@
 // alternadas, al cotizador) y tres a la medida (una foto y una lista, a WhatsApp).
 import Link from "next/link";
 import { Reveal } from "@/components/motion";
-import { Button, CheckIcon, Media, RouteLine, Section, SectionHeader, WhatsAppIcon } from "@/components/ui";
+import { Button, CheckIcon, Media, RouteLine, Section, SectionHeader } from "@/components/ui";
 import { CUSTOM_SERVICES, fill, ONLINE_SERVICES, servicesImages } from "@/content";
 import type { Locale } from "@/i18n/config";
 import type { ServicesDictionary } from "@/i18n/types";
@@ -103,7 +103,6 @@ export function ServiceTypes({ lang, t, tone = "bg", id = "tipos-de-servicio" }:
                                     </div>
                                     <Button asChild variant="ghost" className="-ml-4 shrink-0 sm:ml-0">
                                         <a href={buildSpecialQuoteUrl({ kind: service.kind, lang })} target="_blank" rel="noopener noreferrer">
-                                            <WhatsAppIcon />
                                             {t.whatsappCta}
                                             <span className="sr-only">
                                                 {" "}

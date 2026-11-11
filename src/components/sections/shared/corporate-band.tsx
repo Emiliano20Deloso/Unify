@@ -1,5 +1,5 @@
-import { teslaNegroArquitectura } from "@/assets/images";
-import { Button, CheckIcon, Media, Section, WhatsAppIcon } from "@/components/ui";
+import type { StaticImageData } from "next/image";
+import { Button, CheckIcon, Media, Section } from "@/components/ui";
 import { corporateCopy } from "@/content";
 import type { Locale } from "@/i18n/config";
 import { buildSpecialQuoteUrl } from "@/lib/whatsapp";
@@ -8,22 +8,26 @@ interface CorporateBandProps {
     lang: Locale;
     tone?: "bg" | "surface";
     id?: string;
+    /** Foto opcional junto al texto; sin ella la banda va solo con texto. */
+    image?: StaticImageData;
 }
 
-/** Empresas: foto a la izquierda, puntos reales y cotización personalizada por WhatsApp. */
-export function CorporateBand({ lang, tone = "bg", id = "empresas" }: CorporateBandProps) {
+/** Empresas: foto opcional a la izquierda, puntos reales y cotización personalizada por WhatsApp. */
+export function CorporateBand({ lang, tone = "bg", id = "empresas", image }: CorporateBandProps) {
     const t = corporateCopy[lang];
     return (
         <Section tone={tone} aria-labelledby={id}>
-            <div className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
-                <Media
-                    src={teslaNegroArquitectura}
-                    alt={t.imageAlt}
-                    position="50% 62%"
-                    sizes="(min-width: 1280px) 616px, (min-width: 1024px) 50vw, 100vw"
-                    className="aspect-[4/3] lg:aspect-[5/4]"
-                />
-                <div className="flex flex-col">
+            <div className={image ? "grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16" : undefined}>
+                {image ? (
+                    <Media
+                        src={image}
+                        alt={t.imageAlt}
+                        position="50% 50%"
+                        sizes="(min-width: 1280px) 616px, (min-width: 1024px) 50vw, 100vw"
+                        className="aspect-[4/3] lg:aspect-[5/4]"
+                    />
+                ) : null}
+                <div className={image ? "flex flex-col" : "flex max-w-2xl flex-col"}>
                     <h2 id={id} className="type-title">
                         {t.title}
                     </h2>
@@ -43,7 +47,6 @@ export function CorporateBand({ lang, tone = "bg", id = "empresas" }: CorporateB
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                <WhatsAppIcon />
                                 {t.cta}
                             </a>
                         </Button>

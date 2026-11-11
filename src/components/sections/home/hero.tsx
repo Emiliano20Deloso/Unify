@@ -1,7 +1,7 @@
 import { Fragment } from "react";
-import { teslaGrisAnochecer } from "@/assets/images";
 import { QuoteWidget } from "@/components/quote";
 import { Container, Media } from "@/components/ui";
+import { photos } from "@/content";
 import type { Locale } from "@/i18n/config";
 import type { HomeDictionary, QuoteDictionary } from "@/i18n/types";
 
@@ -23,7 +23,7 @@ export function HomeHero({ lang, t, quote }: HomeHeroProps) {
                 {/* Móvil y tableta: la foto ocupa la parte de arriba y el texto de apoyo cae sobre el fondo. */}
                 <div className="absolute inset-x-0 top-0 h-[26.5rem] sm:h-[38rem] lg:h-full">
                     <Media
-                        src={teslaGrisAnochecer}
+                        src={photos.homeHero}
                         alt={t.imageAlt}
                         fill
                         radius="none"

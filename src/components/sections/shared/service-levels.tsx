@@ -47,14 +47,16 @@ export function ServiceLevels({ lang, variant = "summary", tone = "bg", id = "ni
                             tone={tone === "surface" ? "elevated" : "surface"}
                             padding="none"
                             className="h-full" aria-labelledby={`${id}-${level.id}`}>
-                            <Media
-                                src={level.image.src}
-                                alt={level.image.alt}
-                                position={level.image.position}
-                                radius="none"
-                                sizes="(min-width: 1024px) 400px, (min-width: 768px) 50vw, 100vw"
-                                className="aspect-[16/7] shrink-0 md:aspect-[16/6]"
-                            />
+                            {full ? null : (
+                                <Media
+                                    src={level.image.src}
+                                    alt={level.image.alt}
+                                    position={level.image.position}
+                                    radius="none"
+                                    sizes="(min-width: 1024px) 400px, (min-width: 768px) 50vw, 100vw"
+                                    className="aspect-[16/7] shrink-0 md:aspect-[16/6]"
+                                                                />
+                            )}
                             <CardBody>
                                 <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                                     <h3 id={`${id}-${level.id}`} className="type-heading">

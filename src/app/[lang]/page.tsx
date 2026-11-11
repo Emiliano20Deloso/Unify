@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { resolveLocale } from "@/i18n/params";
+import { finalCtaCopy, photos } from "@/content";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { PageTransition } from "@/components/motion";
 import { BusinessJsonLd, Experience, HomeHero } from "@/components/sections/home";
@@ -35,10 +36,14 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
             <Experience t={dict.experience} />
             <ServiceLevels lang={lang} variant="summary" tone="surface" />
             <PopularRoutes lang={lang} variant="teaser" tone="bg" />
-            <CorporateBand lang={lang} tone="surface" />
+            <CorporateBand lang={lang} tone="surface" image={photos.homeCorporate} />
             <Testimonials lang={lang} tone="bg" />
             <Faq lang={lang} topic="general" tone="surface" />
-            <FinalCta lang={lang} />
+            <FinalCta
+                lang={lang}
+                offset
+                image={{ src: photos.homeFinalCta, alt: finalCtaCopy[lang].imageAlt, position: "62% 50%" }}
+            />
         </PageTransition>
     );
 }

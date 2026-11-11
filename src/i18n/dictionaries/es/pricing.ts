@@ -133,6 +133,7 @@ const pricing = {
         text: "Servicio por horas, eventos, viajes fuera de la ciudad o grupos grandes: escríbenos y te enviamos una cotización a la medida.",
         cta: "Cotizar por WhatsApp",
         note: "Atención de lunes a sábado, de 8:00 a 22:00.",
+        imageAlt: "Tesla Model 3 gris en una vía rápida al atardecer, junto a un paso elevado",
         listLabel: "Servicios con cotización personalizada",
         items: {
             hourly: { title: "Por horas", text: "El chofer a tu disposición durante el tiempo que contrates." },

@@ -120,6 +120,7 @@ const pricing: PricingDictionary = {
         text: "Hourly service, events, trips outside the city or large groups: message us and we'll send you a tailored quote.",
         cta: "Get a quote on WhatsApp",
         note: "Support Monday to Saturday, 8:00 a.m. to 10:00 p.m.",
+        imageAlt: "Grey Tesla Model 3 on an expressway at dusk, next to an overpass",
         listLabel: "Services with a custom quote",
         items: {
             hourly: { title: "By the hour", text: "A driver at your disposal for the time you book." },

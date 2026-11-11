@@ -59,15 +59,3 @@ export const MinusIcon = (p: IconProps) => (
     </Icon>
 );
 
-export const WhatsAppIcon = (p: IconProps) => (
-    <Icon {...p}>
-        <path d="M20 11.5a8 8 0 0 1-11.6 7.1L4 20l1.4-4.2A8 8 0 1 1 20 11.5z" />
-    </Icon>
-);
-
-export const MailIcon = (p: IconProps) => (
-    <Icon {...p}>
-        <rect x="3.5" y="5.5" width="17" height="13" rx="2.5" />
-        <path d="M4 7.5l8 5.5 8-5.5" />
-    </Icon>
-);

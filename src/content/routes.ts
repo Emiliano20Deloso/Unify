@@ -2,8 +2,6 @@
 // Las rutas dentro de zona NO llevan km escritos: se calculan con las coordenadas del catálogo y el
 // mismo aproximado que usa el cotizador sin Google, para que tarjeta y cotizador digan lo mismo.
 // Las foráneas no tienen precio (se cotizan aparte, términos sección 4) y conservan km de referencia.
-import type { StaticImageData } from "next/image";
-import { rutaAutopista, rutaBosque, rutaPuente, teslaRojoCiudad, teslaRojoTunel } from "@/assets/images";
 import type { Locale } from "@/i18n/config";
 import { approxKm } from "@/lib/distance/approx";
 import { catalogId, getCatalogPlace } from "@/lib/places/catalog";
@@ -18,7 +16,6 @@ type RouteDefinition = {
     slug: string;
     origin: Place;
     destination: Place;
-    image: { src: StaticImageData; alt: Record<Locale, string>; position?: string };
 } & (
     /** Dentro de la zona: precio del motor, distancia calculada (ver approxKm). */
     | { zone: "in" }
@@ -45,11 +42,6 @@ const definitions: readonly RouteDefinition[] = [
         origin: { id: catalogId("polanco"), name: { es: "Polanco", en: "Polanco" } },
         destination: { id: catalogId("aicm-t1"), name: { es: "AICM Terminal 1", en: "MEX Airport Terminal 1" } },
         zone: "in",
-        image: {
-            src: rutaAutopista,
-            alt: { es: "Tesla gris en una vía rápida al amanecer", en: "Grey Tesla on an expressway at dawn" },
-            position: "55% 60%",
-        },
     },
     {
         slug: "santa-fe-autodromo",
@@ -59,22 +51,12 @@ const definitions: readonly RouteDefinition[] = [
             name: { es: "Autódromo Hermanos Rodríguez", en: "Autódromo Hermanos Rodríguez" },
         },
         zone: "in",
-        image: {
-            src: rutaPuente,
-            alt: { es: "Tesla negro cruzando un puente atirantado", en: "Black Tesla crossing a cable-stayed bridge" },
-            position: "50% 60%",
-        },
     },
     {
         slug: "condesa-perisur",
         origin: { id: catalogId("condesa"), name: { es: "Condesa", en: "Condesa" } },
         destination: { id: catalogId("perisur"), name: { es: "Perisur", en: "Perisur" } },
         zone: "in",
-        image: {
-            src: teslaRojoCiudad,
-            alt: { es: "Tesla rojo frente a edificios de la ciudad", en: "Red Tesla in front of city buildings" },
-            position: "70% 70%",
-        },
     },
     {
         slug: "roma-tepoztlan",
@@ -82,11 +64,6 @@ const definitions: readonly RouteDefinition[] = [
         destination: { id: null, name: { es: "Tepoztlán", en: "Tepoztlán" } },
         zone: "out",
         referenceKm: 100,
-        image: {
-            src: rutaBosque,
-            alt: { es: "Tesla plateado en una carretera entre árboles", en: "Silver Tesla on a road through the trees" },
-            position: "50% 55%",
-        },
     },
     {
         slug: "lomas-toluca",
@@ -100,11 +77,6 @@ const definitions: readonly RouteDefinition[] = [
         },
         zone: "out",
         referenceKm: 75,
-        image: {
-            src: teslaRojoTunel,
-            alt: { es: "Tesla rojo saliendo de un túnel iluminado", en: "Red Tesla driving out of a lit tunnel" },
-            position: "55% 65%",
-        },
     },
 ];
 

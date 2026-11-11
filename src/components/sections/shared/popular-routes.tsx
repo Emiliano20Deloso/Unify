@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Reveal } from "@/components/motion";
-import { ArrowIcon, Button, Media, RouteLine, Section, SectionHeader, WhatsAppIcon } from "@/components/ui";
+import { ArrowIcon, Button, RouteLine, Section, SectionHeader } from "@/components/ui";
 import { fill, popularRoutes, routesCopy, type PopularRoute } from "@/content";
 import type { Locale } from "@/i18n/config";
 import { localizedHref } from "@/i18n/routes";
@@ -20,7 +20,7 @@ interface PopularRoutesProps {
 const REFERENCE_LEVEL = "practico" as const;
 
 /**
- * Rutas frecuentes como filas: foto, origen ●——○ destino, km y "Desde $X" en Práctico.
+ * Rutas frecuentes como filas: origen ●——○ destino, km y "Desde $X" en Práctico.
  * Dentro de zona, km y precio salen del mismo cálculo que el cotizador sin Google (content/routes).
  */
 export function PopularRoutes({ lang, variant = "teaser", tone = "bg", id = "rutas" }: PopularRoutesProps) {
@@ -62,14 +62,6 @@ function RouteRow({ route, lang }: { route: PopularRoute; lang: Locale }) {
 
     const body = (
         <>
-            <Media
-                src={route.image.src}
-                alt=""
-                position={route.image.position}
-                radius="card"
-                sizes="(min-width: 1024px) 208px, (min-width: 640px) 144px, 96px"
-                className="row-span-2 aspect-[4/3] self-start lg:row-span-1"
-            />
             <div className="min-w-0 self-center">
                 <h3 className="type-subheading flex flex-wrap items-center gap-x-3 gap-y-1 transition-colors duration-fast ease group-hover:text-white">
                     <span>{origin}</span>
@@ -89,10 +81,7 @@ function RouteRow({ route, lang }: { route: PopularRoute; lang: Locale }) {
                         {t.level}
                     </p>
                 ) : (
-                    <p className="flex items-center gap-2 font-medium">
-                        <WhatsAppIcon className="text-fg-subtle" />
-                        {t.outOfZone}
-                    </p>
+                    <p className="font-medium">{t.outOfZone}</p>
                 )}
                 <ArrowIcon className="size-5 text-fg-subtle transition-transform duration-fast ease-out group-hover:translate-x-1" />
             </div>
@@ -100,7 +89,7 @@ function RouteRow({ route, lang }: { route: PopularRoute; lang: Locale }) {
     );
 
     const rowClass =
-        "group grid grid-cols-[6rem_minmax(0,1fr)] gap-x-4 gap-y-3 py-6 sm:grid-cols-[9rem_minmax(0,1fr)] sm:gap-x-6 lg:grid-cols-[13rem_minmax(0,1fr)_auto] lg:gap-x-10 lg:py-7";
+        "group grid grid-cols-1 gap-y-3 py-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-x-10 lg:py-7";
 
     if (inZone) {
         return (

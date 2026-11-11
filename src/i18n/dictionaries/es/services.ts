@@ -43,7 +43,7 @@ const services = {
                     "Indica tu número de vuelo al reservar",
                     "Ida, regreso o ambos",
                 ],
-                imageAlt: "Vista hacia arriba a través del techo de cristal de un Tesla, con palmeras y cielo despejado",
+                imageAlt: "Tesla Model Y negro cruzando un puente de arquitectura blanca",
             },
             hourly: {
                 title: "Servicio por horas",

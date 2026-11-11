@@ -27,4 +27,4 @@ export { Divider } from "./divider";
 export { Media, type MediaProps } from "./media";
 export { Price } from "./price";
 export { RouteLine } from "./route-line";
-export { ArrowIcon, CheckIcon, CloseIcon, MailIcon, MenuIcon, MinusIcon, PlusIcon, WhatsAppIcon } from "./icons";
+export { ArrowIcon, CheckIcon, CloseIcon, MenuIcon, MinusIcon, PlusIcon } from "./icons";

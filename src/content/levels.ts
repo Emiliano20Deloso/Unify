@@ -1,9 +1,9 @@
 // Niveles de servicio. Fuente: textos del sitio anterior (pricing.tiers en español, que manda sobre el inglés).
 // Los precios NO viven aquí: salen del motor (fromPrice).
 import type { StaticImageData } from "next/image";
-import { interiorAsientosTraseros, interiorFrenteDia, interiorPantallaTrasera } from "@/assets/images";
 import type { Locale } from "@/i18n/config";
 import type { Level } from "@/lib/pricing/config";
+import { photos } from "./photos";
 
 export type Amenities = {
     drink: string;
@@ -22,9 +22,9 @@ export type LevelContent = {
 };
 
 const IMAGES = {
-    practico: { src: interiorFrenteDia, position: "50% 55%" },
-    select: { src: interiorPantallaTrasera, position: "50% 40%" },
-    premium: { src: interiorAsientosTraseros, position: "50% 60%" },
+    practico: { src: photos.levelPractico, position: "50% 55%" },
+    select: { src: photos.levelSelect, position: "50% 40%" },
+    premium: { src: photos.levelPremium, position: "50% 60%" },
 } as const;
 
 const es: LevelContent[] = [

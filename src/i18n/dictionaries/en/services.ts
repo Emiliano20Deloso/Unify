@@ -40,7 +40,7 @@ const services: ServicesDictionary = {
                     "Give us your flight number when you book",
                     "Arrival, departure or both",
                 ],
-                imageAlt: "Looking up through a Tesla's glass roof at palm trees and a clear sky",
+                imageAlt: "Black Tesla Model Y crossing a bridge of white architecture",
             },
             hourly: {
                 title: "Hourly service",

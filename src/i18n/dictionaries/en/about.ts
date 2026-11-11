@@ -43,7 +43,7 @@ const about: AboutDictionary = {
     care: {
         title: "How we take care of you",
         text: "The vehicle is only one part. What makes Unify different is how we take care of every detail of your trip.",
-        imageAlt: "White rear seats of a Tesla, roomy and in natural light",
+        imageAlt: "Body structure and battery of a Tesla Model 3 on a black background",
         items: [
             {
                 title: "Professional chauffeurs",

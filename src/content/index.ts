@@ -9,6 +9,7 @@ export { TAGLINE, finalCtaCopy, howItWorksCopy, statsCopy } from "./sections";
 export { CUSTOM_SERVICES, ONLINE_SERVICES, servicesImages } from "./services";
 export { customQuoteKinds, pricingExample } from "./pricing-page";
 export { aboutImages } from "./about";
+export { photos } from "./photos";
 
 /** Sustituye {clave} en una plantilla de texto (la misma función que usa el cotizador). */
 export { fill } from "@/lib/quote/format";

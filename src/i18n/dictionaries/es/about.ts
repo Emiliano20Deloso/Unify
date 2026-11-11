@@ -42,7 +42,7 @@ const about = {
     care: {
         title: "Cómo te cuidamos",
         text: "El vehículo es solo una parte. Lo que hace diferente a Unify es la forma en que cuidamos cada detalle de tu viaje.",
-        imageAlt: "Asientos traseros blancos de un Tesla, amplios y con luz natural",
+        imageAlt: "Estructura de la carrocería y la batería de un Tesla Model 3 sobre fondo negro",
         items: [
             {
                 title: "Choferes profesionales",

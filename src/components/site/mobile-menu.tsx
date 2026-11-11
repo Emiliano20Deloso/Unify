@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Logo } from "@/components/brand";
 import { LocaleSwitch } from "@/components/i18n/locale-switch";
-import { Button, MailIcon, MenuIcon, Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger, WhatsAppIcon } from "@/components/ui";
+import { Button, MenuIcon, Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui";
 import type { Locale } from "@/i18n/config";
 import { localizedHref, routes, stripLocale } from "@/i18n/routes";
 import type { CommonDictionary } from "@/i18n/types";
@@ -79,15 +79,13 @@ export function MobileMenu({ lang, t, className }: MobileMenuProps) {
                     <ul className="flex flex-col gap-1 text-fg-muted">
                         <li>
                             <a href={site.whatsapp.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-3 rounded-sm hover:text-fg">
-                                <WhatsAppIcon className="text-fg-subtle" />
-                                <span className="sr-only">{t.contact.whatsappLabel}: </span>
+                                <span className="text-fg-subtle">{t.contact.whatsappLabel}</span>
                                 <span className="tabular">{site.whatsapp.display}</span>
                             </a>
                         </li>
                         <li>
                             <a href={`mailto:${site.email}`} className="inline-flex min-h-11 items-center gap-3 rounded-sm hover:text-fg">
-                                <MailIcon className="text-fg-subtle" />
-                                <span className="sr-only">{t.contact.emailLabel}: </span>
+                                <span className="text-fg-subtle">{t.contact.emailLabel}</span>
                                 {site.email}
                             </a>
                         </li>

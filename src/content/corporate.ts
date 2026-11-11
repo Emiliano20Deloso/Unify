@@ -14,7 +14,7 @@ const copy = {
         cta: "Cotizar plan corporativo",
         note: "Atención de lunes a sábado, de 8:00 a 22:00.",
         whatsappContext: "Me interesa una cuenta corporativa para mi empresa.",
-        imageAlt: "Tesla negro bajo una estructura arquitectónica blanca, reflejado en el piso",
+        imageAlt: "Tesla Model 3 rojo dentro de un túnel iluminado",
     },
     en: {
         title: "Executive mobility for your company",
@@ -27,7 +27,7 @@ const copy = {
         cta: "Quote a corporate plan",
         note: "Support Monday to Saturday, 8:00 a.m. to 10:00 p.m.",
         whatsappContext: "I'm interested in a corporate account for my company.",
-        imageAlt: "Black Tesla under a white architectural structure, reflected on the floor",
+        imageAlt: "Red Tesla Model 3 inside a lit tunnel",
     },
 } satisfies Record<Locale, unknown>;
 

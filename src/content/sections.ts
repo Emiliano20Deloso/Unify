@@ -67,12 +67,14 @@ const finalCta = {
         text: "Solo necesitas un viaje a tu altura.",
         cta: "Cotizar tu viaje",
         imageAlt: "Silueta de un Tesla iluminada en la oscuridad",
+        servicesImageAlt: "Tesla plateado de frente en una carretera entre árboles, con el fondo en movimiento",
     },
     en: {
         title: "Your mornings can start better.",
         text: "All it takes is a ride that matches your standards.",
         cta: "Get a quote",
         imageAlt: "Silhouette of a Tesla lit in the dark",
+        servicesImageAlt: "Silver Tesla seen head-on on a road through the trees, with a motion-blurred background",
     },
 } satisfies Record<Locale, unknown>;
 

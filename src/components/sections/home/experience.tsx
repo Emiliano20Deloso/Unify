@@ -1,5 +1,5 @@
-import { interiorAsientosDelanteros, interiorTechoCristal } from "@/assets/images";
 import { Media, Section } from "@/components/ui";
+import { photos } from "@/content";
 import type { HomeDictionary } from "@/i18n/types";
 
 interface ExperienceProps {
@@ -27,14 +27,14 @@ export function Experience({ t }: ExperienceProps) {
                 </div>
                 <div className="grid grid-cols-5 items-start gap-4 lg:col-span-7 lg:gap-6">
                     <Media
-                        src={interiorAsientosDelanteros}
+                        src={photos.homeExperienceMain}
                         alt={t.images.main}
                         position="28% 50%"
                         sizes="(min-width: 1280px) 440px, (min-width: 1024px) 34vw, 60vw"
                         className="col-span-3 aspect-[3/4]"
                     />
                     <Media
-                        src={interiorTechoCristal}
+                        src={photos.homeExperienceDetail}
                         alt={t.images.detail}
                         position="50% 40%"
                         sizes="(min-width: 1280px) 290px, (min-width: 1024px) 23vw, 40vw"

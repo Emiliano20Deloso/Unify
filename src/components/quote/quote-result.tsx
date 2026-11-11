@@ -4,7 +4,7 @@
 // estados —vacío, cargando, precio, especial, error— para que llegar el precio no mueva la página.
 import { useEffect, useRef, useState } from "react";
 import { RotateCw } from "lucide-react";
-import { Button, Price, RouteLine, Segmented, WhatsAppIcon } from "@/components/ui";
+import { Button, Price, RouteLine, Segmented } from "@/components/ui";
 import type { Dictionary, Locale } from "@/i18n/types";
 import { cn } from "@/lib";
 import type { EstimateRequest, EstimateResponse } from "@/lib/estimate/schema";
@@ -206,14 +206,12 @@ export function QuoteResult({ lang, dict, draft, fromPrices, estimate, hasFieldE
                 {view.kind === "special" ? null : waUrl ? (
                     <Button asChild size="lg" className="w-full">
                         <a href={waUrl} target="_blank" rel="noopener noreferrer">
-                            <WhatsAppIcon />
                             {dict.cta.book}
                             <span className="sr-only"> {dict.cta.newTab}</span>
                         </a>
                     </Button>
                 ) : (
                     <Button size="lg" className="w-full" disabled>
-                        <WhatsAppIcon />
                         {dict.cta.book}
                     </Button>
                 )}
@@ -234,7 +232,6 @@ export function QuoteResult({ lang, dict, draft, fromPrices, estimate, hasFieldE
                     </p>
                     <Button asChild size="md" className="px-5">
                         <a href={waUrl} target="_blank" rel="noopener noreferrer">
-                            <WhatsAppIcon />
                             {dict.cta.book}
                             <span className="sr-only"> {dict.cta.newTab}</span>
                         </a>
@@ -336,7 +333,6 @@ function SpecialPanel({ lang, dict, draft, data }: { lang: Locale; dict: Dict; d
             <p className="type-small max-w-prose text-fg-subtle">{copy.text}</p>
             <Button asChild size="md" className="mt-auto">
                 <a href={url} target="_blank" rel="noopener noreferrer">
-                    <WhatsAppIcon />
                     {dict.special.cta}
                     <span className="sr-only"> {dict.cta.newTab}</span>
                 </a>

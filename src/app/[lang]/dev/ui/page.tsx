@@ -26,7 +26,6 @@ import {
     SectionHeader,
     Stat,
     Textarea,
-    WhatsAppIcon,
 } from "@/components/ui";
 import { OverlaysDemo, QuoteControlsDemo } from "./demos";
 
@@ -141,7 +140,6 @@ export default function UiPage() {
                         <Button size="sm">Pequeño 44</Button>
                         <Button size="md">Mediano 52</Button>
                         <Button size="lg">
-                            <WhatsAppIcon />
                             Reservar por WhatsApp
                         </Button>
                         <Button disabled>Deshabilitado</Button>
