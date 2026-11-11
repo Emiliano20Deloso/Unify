@@ -56,6 +56,9 @@ importers:
       resend:
         specifier: ^6.32.1
         version: 6.32.1(@react-email/render@2.1.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))
+      server-only:
+        specifier: ^0.0.1
+        version: 0.0.1
       sonner:
         specifier: ^1.7.2
         version: 1.7.2(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -90,6 +93,9 @@ importers:
       postcss:
         specifier: ^8
         version: 8.5.1
+      sharp:
+        specifier: ^0.35.5
+        version: 0.35.5(@types/node@20.17.14)
       tailwindcss:
         specifier: ^3.4.1
         version: 3.4.17
@@ -2787,6 +2793,9 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
+  server-only@0.0.1:
+    resolution: {integrity: sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==}
+
   set-function-length@1.2.2:
     resolution: {integrity: sha512-pgRc4hJ4/sNjWCSS9AmnS40x3bNMDTknHgL5UaMBTMyJnU90EgWh1Rz+MC9eFu4BuN/UwZjKQuY/1v3rM7HMfg==}
     engines: {node: '>= 0.4'}
@@ -3496,8 +3505,7 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
-  '@img/colour@1.1.0':
-    optional: true
+  '@img/colour@1.1.0': {}
 
   '@img/sharp-darwin-arm64@0.35.5':
     optionalDependencies:
@@ -5861,6 +5869,8 @@ snapshots:
 
   semver@7.8.6: {}
 
+  server-only@0.0.1: {}
+
   set-function-length@1.2.2:
     dependencies:
       define-data-property: 1.1.4
@@ -5915,7 +5925,6 @@ snapshots:
       '@img/sharp-win32-ia32': 0.35.5
       '@img/sharp-win32-x64': 0.35.5
       '@types/node': 20.17.14
-    optional: true
 
   shebang-command@2.0.0:
     dependencies:
