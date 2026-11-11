@@ -1,4 +1,4 @@
-import { Inter, DM_Sans, Instrument_Serif } from "next/font/google";
+import { Inter, Instrument_Serif } from "next/font/google";
 import localFont from "next/font/local";
 
 export const heading = localFont({

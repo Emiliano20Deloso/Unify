@@ -16,6 +16,8 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
 
     useEffect(() => {
         const stored = localStorage.getItem("unify-lang") as Lang | null;
+        // Lectura de localStorage tras montar para no romper la hidratación. Se reemplaza con el enrutado por idioma.
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         if (stored === "en" || stored === "es") setLangState(stored);
     }, []);
 

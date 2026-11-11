@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { quoteRequestSchema } from "@/lib/validation";
 import { getDistance, MapsError } from "@/lib/maps";
 import { calculatePrice } from "@/lib/pricing";
-import { getServiceClient } from "@/lib/supabase";
+import { getServiceClient, isServiceClientConfigured } from "@/lib/supabase";
 
 export const runtime = "nodejs";
 
@@ -22,6 +22,10 @@ export async function POST(req: Request) {
         );
     }
     const q = parsed.data;
+
+    if (!isServiceClientConfigured()) {
+        return NextResponse.json({ error: "not_configured" }, { status: 503 });
+    }
 
     let distanceKm: number | null = null;
     let durationMin: number | null = null;

@@ -48,22 +48,23 @@ export const generateMetadata = ({
         "movilidad ejecutiva",
         "servicio de transporte personalizado"
     ],
-    author = process.env.NEXT_PUBLIC_AUTHOR_NAME,
+    author = process.env.NEXT_PUBLIC_AUTHOR_NAME || "Unify Luxury",
     type = "website",
 }: MetadataProps = {}): Metadata => {
     const metadataBase = new URL(process.env.NEXT_PUBLIC_APP_URL || "https://unify-eight.vercel.app");
+    const appName = process.env.NEXT_PUBLIC_APP_NAME || "Unify Luxury";
 
     return {
         metadataBase,
         title: {
-            template: `%s | ${process.env.NEXT_PUBLIC_APP_NAME}`,
+            template: `%s | ${appName}`,
             default: title
         },
         description,
         keywords,
         authors: [{ name: author }],
         creator: author,
-        publisher: process.env.NEXT_PUBLIC_APP_NAME,
+        publisher: appName,
         formatDetection: {
             email: false,
             address: false,

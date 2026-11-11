@@ -4,7 +4,7 @@ import { useLanguage } from "@/contexts/language-context";
 import { WHATSAPP_LINK } from "@/constants";
 import { cn } from "@/lib";
 import { CheckIcon, ZapIcon, CupSodaIcon, CandyIcon, NutIcon } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Container from "../global/container";

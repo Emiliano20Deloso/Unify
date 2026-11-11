@@ -14,7 +14,7 @@ export function AdminTopbar({ email }: Props) {
 
     const handleLogout = async () => {
         const supabase = getBrowserSupabase();
-        await supabase.auth.signOut();
+        await supabase?.auth.signOut();
         router.push("/admin/login");
         router.refresh();
     };
