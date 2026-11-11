@@ -223,6 +223,8 @@ export function samplerMain() {
                 let easing = "";
                 try {
                     easing = a.effect.getTiming().easing;
+                    // En una animación CSS la curva (animation-timing-function) va en los fotogramas clave.
+                    if (!a.transitionProperty && easing === "linear") easing = a.effect.getKeyframes()[0]?.easing ?? easing;
                 } catch {}
                 push({
                     k: "an",
@@ -488,6 +490,17 @@ export function samplerMain() {
                         v: e.value,
                         rec: e.hadRecentInput,
                         src: (e.sources || []).map((s) => desc(s.node)).slice(0, 4),
+                        // Opacidad efectiva de lo que se movió: lo invisible (p. ej. una cabecera que aún no
+                        // entra) puede reacomodarse sin que nadie lo vea.
+                        vis: Math.max(
+                            0,
+                            ...(e.sources || []).map((s) => {
+                                const el = s.node && (s.node.nodeType === 1 ? s.node : s.node.parentElement);
+                                if (!el || !el.isConnected) return 1;
+                                const c = chain(el, new Map());
+                                return c.hidden ? 0 : c.op;
+                            }),
+                        ),
                     });
             });
             po.observe({ type: "layout-shift", buffered: false });

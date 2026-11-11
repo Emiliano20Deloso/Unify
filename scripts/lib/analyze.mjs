@@ -307,10 +307,18 @@ export async function analyze(rec, { vp, scenario: sc, reduced }) {
     }
 
     // BRINCO: layout-shift en un cuadro, o rect seguido que salta sin animación.
-    for (const ls of rec.shifts.filter((x) => x.t >= rec.t0 - 20 && x.t <= rec.tEnd + 60)) {
-        if (ls.v > TH.shift) res.brincos.push({ kind: "layout-shift", t: Math.round(ls.t - rec.t0), v: +ls.v.toFixed(3), sel: ls.src.join(" | ") });
+    // Un salto es movimiento concentrado en un cuadro. Un alto animado (resorte) reparte el desplazamiento en
+    // muchos cuadros y no cuenta, aunque alguno pase del umbral: se exige la misma concentración que al corte
+    // por píxeles (un cuadro con >= 60 % de todo lo que se movió).
+    // Se descartan los reacomodos de contenido invisible (opacidad < 0.05 cuando ocurrieron).
+    const shifts = rec.shifts.filter((x) => x.t >= rec.t0 - 20 && x.t <= rec.tEnd + 60 && !(x.vis != null && x.src.length && x.vis < 0.05));
+    const shiftSum = shifts.reduce((a, x) => a + x.v, 0);
+    for (const ls of shifts) {
+        if (ls.v > TH.shift && ls.v >= TH.cutRatio * shiftSum)
+            res.brincos.push({ kind: "layout-shift", t: Math.round(ls.t - rec.t0), v: +ls.v.toFixed(3), share: +(ls.v / shiftSum).toFixed(2), sel: ls.src.join(" | ") });
     }
     const bySel = new Map();
+    const moved = new Map(); // por elemento seguido: todo lo que se desplazó y los cuadros candidatos a salto
     for (const smp of samples.filter((x) => x.t >= rec.t0 - 20)) {
         for (const r of smp.tr) {
             const key = `${r[0]}:${r[1]}`;
@@ -318,11 +326,25 @@ export async function analyze(rec, { vp, scenario: sc, reduced }) {
             if (prev) {
                 const dv = Math.max(Math.abs(r[2] - prev.r[2]), Math.abs(r[3] - prev.r[3]), Math.abs(r[4] - prev.r[4]), Math.abs(r[5] - prev.r[5]));
                 const dd = Math.max(Math.abs(r[2] + smp.sx - prev.r[2] - prev.sx), Math.abs(r[3] + smp.sy - prev.r[3] - prev.sy), Math.abs(r[4] - prev.r[4]), Math.abs(r[5] - prev.r[5]));
+                const step = Math.min(dv, dd);
+                const m = moved.get(key) ?? { total: 0, hits: [] };
+                if (step >= 0.5) m.total += step;
                 if (dv > TH.jumpPx && dd > TH.jumpPx && !r[7] && !prev.r[7] && smp.f === prev.f + 1)
-                    res.brincos.push({ kind: "rect", t: Math.round(smp.t - rec.t0), px: Math.round(Math.min(dv, dd)), sel: `${(sc.track ?? [])[r[0]]}${r[1] ? ` [${r[1]}]` : ""}` });
+                    m.hits.push({ t: Math.round(smp.t - rec.t0), px: Math.round(step), sel: `${(sc.track ?? [])[r[0]]}${r[1] ? ` [${r[1]}]` : ""}` });
+                moved.set(key, m);
             }
             bySel.set(key, { r, sx: smp.sx, sy: smp.sy, f: smp.f });
         }
+    }
+    for (const m of moved.values())
+        for (const h of m.hits) if (h.px >= TH.cutRatio * m.total) res.brincos.push({ kind: "rect", ...h, share: +(h.px / m.total).toFixed(2) });
+
+    // Scroll que no debía verse: el escenario declara cuántos cuadros con desplazamiento admite (p. ej. atrás
+    // del navegador: como mucho el cuadro en que cambia la página). Más que eso es un scroll animado a la vista.
+    if (sc.expect?.maxScrollFrames != null) {
+        const sf = ser.filter((x) => x.i > 0 && x.scroll);
+        if (sf.length > sc.expect.maxScrollFrames)
+            res.brincos.push({ kind: "scroll", t: sf[0].t, v: `${sf.length} cuadros con scroll (máx. ${sc.expect.maxScrollFrames})`, sel: "window" });
     }
 
     // FLASHAZO.
@@ -368,7 +390,7 @@ export async function analyze(rec, { vp, scenario: sc, reduced }) {
 
     // Movimiento reducido: solo se permite opacidad.
     if (reduced) {
-        for (const a of animsRec) if (a.move && !a.inf) res.rmMoves.push({ kind: a.type, sel: a.sel, props: a.props.join(",") });
+        for (const a of animsRec) if (a.move && !a.inf && a.dur !== 0) res.rmMoves.push({ kind: a.type, sel: a.sel, props: a.props.join(",") });
         const mvs = new Map();
         for (const m of rec.moves.filter((x) => x.t >= rec.t0 - 20)) mvs.set(m.sel, (mvs.get(m.sel) ?? 0) + 1);
         for (const [sel, n] of mvs) if (n >= 2) res.rmMoves.push({ kind: "style por rAF", sel, props: `${n} cuadros` });
@@ -378,6 +400,11 @@ export async function analyze(rec, { vp, scenario: sc, reduced }) {
     const flags = [];
     if (noChange && !res.domCuts.length) {
         flags.push(sc.expect?.animated ? "SIN REACCIÓN" : "SIN CAMBIO");
+    } else if (reduced) {
+        if (res.domCuts.length) flags.push("CORTE");
+        if (res.pxCuts.length && !res.domCuts.length) res.notes.push(`movimiento reducido: ${res.pxCuts.length} cambio(s) de posición o tamaño al instante (permitido; solo se exigen fundidos)`);
+        if (res.brincos.length) res.notes.push(`movimiento reducido: ${res.brincos.length} desplazamiento(s) al instante (permitido)`);
+        if (res.flashes.length) flags.push("FLASHAZO");
     } else {
         if (res.domCuts.length || (res.pxCuts.length && !res.lowCadence)) flags.push("CORTE");
         else if (res.pxCuts.length) flags.push("CORTE?");
@@ -393,7 +420,7 @@ export async function analyze(rec, { vp, scenario: sc, reduced }) {
     if (rec.timedOut) res.notes.push("no se asentó antes de maxMs (animación continua o carga lenta)");
     res.flags = flags;
     res.verdict = flags.length ? flags.join(" + ") : "OK";
-    res.failing = flags.some((f) => ["CORTE", "FLASHAZO", "SIN REACCIÓN", "RM-MOVIMIENTO", "POST FALLÓ"].includes(f));
+    res.failing = flags.some((f) => ["CORTE", "BRINCO", "FLASHAZO", "SIN REACCIÓN", "RM-MOVIMIENTO", "POST FALLÓ"].includes(f));
     res.imgsMeta = { W, H, s };
     return res;
 }

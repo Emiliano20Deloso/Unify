@@ -4,7 +4,7 @@
 //   node scripts/motion-audit.mjs --selftest [--repeat 3]
 //
 // Cómo leerlo y cómo agregar escenarios: scripts/motion/README.md.
-// Código de salida: 1 si algún escenario da CORTE, FLASHAZO, SIN REACCIÓN, RM-MOVIMIENTO o POST FALLÓ;
+// Código de salida: 1 si algún escenario da CORTE, BRINCO, FLASHAZO, SIN REACCIÓN, RM-MOVIMIENTO o POST FALLÓ;
 // 2 si no hubo nada de eso pero algún escenario no se pudo medir (ERROR); 0 si todo pasó.
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { createServer } from "node:http";
@@ -333,6 +333,72 @@ const CASES = [
         want: ["FLASHAZO"],
     },
     {
+        // Un hermano empujado por un alto animado se mueve muchos px por cuadro, pero repartidos: no es brinco.
+        id: "w-hermano-con-alto-animado",
+        html: page(
+            `<div id="list">${[1, 2, 3, 4].map((i) => `<div class="item">Fila ${i}</div>`).join("")}</div>`,
+            `b.onclick=()=>{const d=document.createElement('div');d.className='item grow';d.style.height='0px';d.style.padding='0';d.style.transition='height 380ms cubic-bezier(.22,1,.36,1), opacity 380ms ease';d.style.opacity='0';d.textContent='Nuevo bloque';list.prepend(d);d.offsetHeight;d.style.height='260px';d.style.opacity='1'}`,
+        ),
+        track: ["#list .item:last-child"],
+        expect: { animated: true },
+        not: ["CORTE", "CORTE?", "BRINCO", "FLASHAZO"],
+    },
+    {
+        id: "x-hermano-empujado-de-golpe",
+        html: page(`<div id="list">${[1, 2, 3, 4].map((i) => `<div class="item">Fila ${i}</div>`).join("")}</div>`, `b.onclick=()=>{const d=document.createElement('div');d.className='item grow';d.style.height='260px';d.textContent='Nuevo bloque';list.prepend(d)}`),
+        track: ["#list .item:last-child"],
+        want: ["BRINCO"],
+    },
+    {
+        // Lo invisible puede reacomodarse (una cabecera que todavía no entra): no es un brinco a la vista.
+        id: "x2-reacomodo-invisible",
+        html: page(
+            `<div id="list" style="opacity:0">${[1, 2, 3, 4].map((i) => `<div class="item">Fila ${i}</div>`).join("")}</div><div class="panel" id="p" style="left:980px;width:300px;height:200px;opacity:0;transition:opacity 300ms ease">Visible</div>`,
+            `b.onclick=()=>{const d=document.createElement('div');d.className='item grow';d.style.height='260px';d.textContent='Nuevo bloque';list.prepend(d);p.style.opacity=1}`,
+        ),
+        expect: { animated: true },
+        not: ["BRINCO", "CORTE", "CORTE?", "FLASHAZO"],
+    },
+    {
+        // React pone animaciones de duración 0 en ::view-transition: no mueven nada.
+        id: "y-reducido-duracion-cero",
+        reduced: true,
+        html: page(`<div class="panel" id="p" style="opacity:0;transition:opacity 260ms ease">${PANEL_TXT}</div>`, `b.onclick=()=>{p.style.opacity=1;p.animate([{transform:'translateY(40px)'},{transform:'none'}],{duration:0,fill:'forwards'})}`),
+        expect: { animated: true },
+        not: ["RM-MOVIMIENTO", "CORTE", "CORTE?", "FLASHAZO"],
+    },
+    {
+        // Con movimiento reducido el alto cambia al instante y el contenido se funde: permitido.
+        id: "z1-reducido-alto-al-instante-con-fundido",
+        reduced: true,
+        html: page(
+            `<div id="list">${[1, 2, 3, 4].map((i) => `<div class="item">Fila ${i}</div>`).join("")}</div>`,
+            `b.onclick=()=>{const d=document.createElement('div');d.className='item grow';d.style.height='220px';d.style.opacity='0';d.style.transition='opacity 280ms ease';d.textContent='Nuevo bloque';list.prepend(d);d.offsetHeight;d.style.opacity='1'}`,
+        ),
+        track: ["#list .item:last-child"],
+        expect: { animated: true },
+        not: ["CORTE", "CORTE?", "BRINCO", "RM-MOVIMIENTO", "FLASHAZO", "SIN REACCIÓN"],
+    },
+    {
+        // …pero algo que aparece sin fundido sigue siendo un corte, también con movimiento reducido.
+        id: "z2-reducido-aparece-de-golpe",
+        reduced: true,
+        html: page(`<div class="panel" id="p" hidden>${PANEL_TXT}</div>`, `b.onclick=()=>{p.hidden=false}`),
+        want: ["CORTE"],
+    },
+    {
+        id: "sc1-scroll-animado-no-permitido",
+        html: page(`<div style="height:2600px"></div>${[0, 1, 2, 3].map((i) => `<div class="panel" style="position:absolute;top:${200 + i * 480}px;height:400px">Bloque ${i}</div>`).join("")}`, `b.onclick=()=>{window.scrollTo({top:900,behavior:'smooth'})}`),
+        expect: { maxScrollFrames: 1 },
+        want: ["BRINCO"],
+    },
+    {
+        id: "sc2-scroll-de-un-cuadro",
+        html: page(`<div style="height:2600px"></div>${[0, 1, 2, 3].map((i) => `<div class="panel" style="position:absolute;top:${200 + i * 480}px;height:400px">Bloque ${i}</div>`).join("")}`, `b.onclick=()=>{window.scrollTo({top:900,behavior:'instant'})}`),
+        expect: { maxScrollFrames: 1 },
+        not: ["BRINCO", "CORTE", "FLASHAZO"],
+    },
+    {
         id: "u-movil-aparece-de-golpe",
         vp: "m",
         html: page(`<div class="panel" id="p" hidden style="left:20px;top:120px;width:340px;height:300px">${PANEL_TXT}</div>`, `b.onclick=()=>{p.hidden=false}`),
@@ -373,6 +439,7 @@ async function selftest() {
                 setup: [{ op: "goto", url: `/${c.id}`, wait: 300 }, ...(c.setup ?? [])],
                 action: c.action ?? [{ op: "click", selector: "#b" }],
                 expect: c.expect ?? {},
+                track: c.track,
                 settleMs: 300,
                 maxMs: 1500,
             };

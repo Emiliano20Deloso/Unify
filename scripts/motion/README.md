@@ -17,7 +17,7 @@ node scripts/motion-audit.mjs scripts/motion/escenarios.json --check  # solo ver
 - `--only` acepta prefijos separados por coma (`N`, `T6`, `Q5-morph`).
 - `--out <carpeta>` cambia la salida (por defecto `.shots/motion/<fecha_hora>/`).
 - Cada corrida lanza un Chrome sin cabeza nuevo (perfil temporal, puerto libre): no choca con `shot.mjs`.
-- Código de salida: **1** si algo da `CORTE`, `FLASHAZO`, `SIN REACCIÓN`, `RM-MOVIMIENTO` o `POST FALLÓ`; **2** si nada de eso pero algún escenario no se pudo medir (`ERROR`); **0** si todo pasó. Un `ERROR` nunca cuenta como aprobado.
+- Código de salida: **1** si algo da `CORTE`, `BRINCO`, `FLASHAZO`, `SIN REACCIÓN`, `RM-MOVIMIENTO` o `POST FALLÓ`; **2** si nada de eso pero algún escenario no se pudo medir (`ERROR`); **0** si todo pasó. Un `ERROR` nunca cuenta como aprobado.
 
 **Antes de aceptar trabajo de animación, corre primero la autoprueba.** Si no pasa, la herramienta no es de fiar en esa máquina.
 
@@ -30,13 +30,15 @@ node scripts/motion-audit.mjs scripts/motion/escenarios.json --check  # solo ver
 | `OK` | Hubo cambio y todo fue animado. |
 | `CORTE` | Un cambio visible ocurrió en un solo cuadro. Por píxeles (`global`: el peor cuadro concentra ≥ 60 % de todo el cambio del ROI y toca ≥ 0.5 % del ROI; `bloque`: en una zona de ~90 px el cambio se concentra en un cuadro, aunque en otra parte haya un fundido largo) o por DOM (un elemento se insertó, se quitó, se mostró, se ocultó o cambió su texto sin animación en él ni en sus ancestros, confirmado con los píxeles de su rect). La columna *culpable* da el selector. |
 | `CORTE?` | Solo los píxeles ven un corte y la cadencia fue baja (mediana > 34 ms): revisar la tira. |
-| `BRINCO` | `layout-shift` > 0.01 en un cuadro, o un selector de `track` saltó > 8 px en un cuadro sin animación. |
+| `BRINCO` | Movimiento concentrado en un cuadro: un `layout-shift` > 0.01 o un selector de `track` que salta > 8 px, cuando ese cuadro se lleva ≥ 60 % de todo lo que se movió en la grabación (un alto animado reparte el desplazamiento en muchos cuadros y no cuenta). También un scroll a la vista que el escenario no admite (`expect.maxScrollFrames`). No cuentan los reacomodos de contenido invisible (opacidad < 0.05). |
 | `FLASHAZO` | Luminancia que sube/baja > 0.06 y regresa en ≤ 4 cuadros (≤ 150 ms), patrón A→B→A, o un cuadro claro (Y > 0.6) sobre una página oscura. |
 | `SIN REACCIÓN` | Se esperaba animación (`expect.animated`) y no cambió nada en el ROI. |
 | `SIN CAMBIO` | No cambió nada y tampoco se esperaba. |
-| `RM-MOVIMIENTO` | Pasada con `prefers-reduced-motion: reduce`: hubo transform/desplazamiento/alto animado (solo se permite opacidad). |
+| `RM-MOVIMIENTO` | Pasada con `prefers-reduced-motion: reduce`: hubo transform/desplazamiento/alto animado (solo se permite opacidad). Las animaciones de duración 0 no cuentan (no mueven nada; React las usa en `::view-transition`). |
 | `POST FALLÓ` | Una comprobación `post` no dio lo esperado (p. ej. N8: el cambio de idioma recargó la página). |
 | `ERROR` | No se pudo medir (selector inexistente, página caída…). |
+
+**Pasada con movimiento reducido:** posición y tamaño cambian al instante por diseño (solo quedan los fundidos), así que ahí un `BRINCO` o un corte visto solo en píxeles se anotan pero no reprueban. Sí reprueban un elemento que aparece o desaparece sin fundido (corte por DOM), un `FLASHAZO` y cualquier `RM-MOVIMIENTO`.
 
 Columnas: *cuadros* (del screencast después de la acción), *fps* (por la mediana del intervalo entre cuadros activos), *inicio ms* (primer cuadro con cambio), *duración ms* (del primer al último cuadro con cambio), *salto máx %* (mayor fracción del ROI que cambió en un solo cuadro).
 
@@ -66,6 +68,8 @@ En `escenarios.json`, dentro de `scenarios`:
 - **Selectores semánticos**: roles, `aria-label`, `aria-labelledby`, ids de sección, `href`. Nada de clases de Tailwind ni ids generados por React (`_R_…`, `radix-…`). Verifica con `--check`.
 - `setup` deja la página lista y **todo lo que desplaza va aquí**; si el primer objetivo de la acción está fuera de pantalla, la herramienta lo centra antes de grabar. Dentro de `action`, `click`/`hover`/`press` no desplazan ni esperan.
 - `roi`: zona donde se miden los píxeles (por defecto, el viewport). Los cortes por bloques y por DOM se buscan en todo el viewport de todos modos.
+- `expect.maxScrollFrames: n`: cuántos cuadros con desplazamiento de la página admite el escenario. Sin esta clave el scroll no se juzga (los escenarios de scroll lo provocan a propósito). Úsala donde un scroll animado sería un defecto, p. ej. atrás/adelante del navegador (`1`: como mucho el cuadro en que cambia la página).
+- Un escenario debe **ejercitar de verdad** su interacción: agrega un `post` que compruebe el estado final (que el panel existe, que la barra quedó pegada al borde, que el idioma cambió). Un `OK` solo dice que lo que cambió no cortó.
 - `expect.load: true` para escenarios con navegación completa: se ignora el cuadro en que el documento nuevo reemplaza al anterior (y lo que pasa antes de su first-contentful-paint), pero sigue contando todo lo que salte después y cualquier destello.
 - `maxMs` es cuánto se graba como máximo después de la acción; la grabación termina antes si pasan `settleMs` sin cuadros nuevos ni actividad del muestreador.
 
@@ -88,6 +92,7 @@ El borrador del cotizador vive en **sessionStorage** (`unify.quote.v1`), no en l
 ## Limitaciones
 
 - Una animación en un **ancestro** cuenta como animación del elemento: si un panel aparece de golpe dentro de un contenedor que está haciendo fundido, el DOM no lo marca (los píxeles sí, si el cambio se concentra en un cuadro).
+- Las curvas de las animaciones (`anims.list[].easing` en `report.json`) se leen de la transición o, en animaciones CSS, del primer fotograma clave. Sirve para revisar que nada vaya en `linear`.
 - Los cambios de **color/sombra/transform** sin mutación del DOM (hover, `:focus`) solo se ven por píxeles: si afectan menos de ~0.4 % del viewport (o del ROI con la regla global), pasan como `SIN CAMBIO`/`OK`. Para esos casos usa un `roi` ajustado al elemento.
 - Una transición **muy rápida** (≤ 50 ms) o con curva que concentra ≥ 60 % del cambio en el primer cuadro se marca `CORTE` aunque técnicamente sea una transición: a 60 fps eso se percibe como corte.
 - Las **animaciones infinitas** (spinners, pulsos) no cuentan como animación; enmascáralas con `mask` si están dentro del ROI o la grabación no se asienta.
