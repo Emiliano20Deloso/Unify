@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { resolveLocale } from "@/i18n/params";
 import { buildMetadata } from "@/lib/seo/metadata";
+import { PageTransition } from "@/components/motion";
+import { PageHero } from "@/components/ui";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/servicios">): Promise<Metadata> {
     const lang = await resolveLocale(params);
@@ -14,8 +16,8 @@ export default async function ServicesPage({ params }: PageProps<"/[lang]/servic
     const lang = await resolveLocale(params);
     const dict = await getDictionary(lang, "services");
     return (
-        <section className="px-6 py-16">
-            <h1 className="text-4xl font-bold">{dict.title}</h1>
-        </section>
+        <PageTransition>
+            <PageHero title={dict.title} />
+        </PageTransition>
     );
 }

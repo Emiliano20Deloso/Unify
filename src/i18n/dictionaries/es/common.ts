@@ -15,7 +15,8 @@ const common = {
         bookWhatsApp: "Reservar por WhatsApp",
     },
     footer: {
-        tagline: "Unify. Move beyond.",
+        /** Lema de marca: va en inglés en ambos idiomas (lang="en"). */
+        tagline: "The luxury of travelling green",
         navTitle: "Sitio",
         legalTitle: "Legal",
         contactTitle: "Contacto",
@@ -31,6 +32,8 @@ const common = {
         openMenu: "Abrir menú",
         closeMenu: "Cerrar menú",
         home: "Unify, ir al inicio",
+        close: "Cerrar",
+        menu: "Menú",
     },
     languages: {
         es: "Español",

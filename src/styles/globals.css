@@ -1,158 +1,201 @@
+@import "./tokens.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  .dark {
-    --background: 0 0% 0%; /* black */
-    --foreground: 180 10% 96%;
-    --card: 180 20% 5%;
-    --card-foreground: 180 10% 96%;
-    --popover: 180 20% 5%;
-    --popover-foreground: 180 10% 96%;
-    --primary: 180 97% 52%; /* #08fefe */
-    --primary-foreground: 0 0% 5%;
-    --secondary: 180 20% 10%;
-    --secondary-foreground: 180 10% 96%;
-    --muted: 180 20% 10%;
-    --muted-foreground: 180 8% 70%;
-    --accent: 180 97% 52%; /* #08fefe */
-    --accent-foreground: 0 0% 5%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 180 10% 20%;
-    --input: 180 10% 20%;
-    --ring: 180 97% 52%;
-    --chart-1: 180 97% 52%;
-    --chart-2: 180 80% 40%;
-    --chart-3: 180 60% 30%;
-    --chart-4: 180 40% 20%;
-    --chart-5: 180 20% 15%;
-    --radius: 0.5rem;
-    --sidebar-background: 180 20% 5%;
-    --sidebar-foreground: 180 10% 96%;
-    --sidebar-primary: 180 97% 52%;
-    --sidebar-primary-foreground: 0 0% 5%;
-    --sidebar-accent: 180 20% 10%;
-    --sidebar-accent-foreground: 180 10% 96%;
-    --sidebar-border: 180 10% 20%;
-    --sidebar-ring: 180 97% 52%;
-  }
-
-  :root {
-    --background: 0 0% 0%; /* black */
-    --foreground: 180 10% 96%;
-    --card: 180 20% 5%;
-    --card-foreground: 180 10% 96%;
-    --popover: 180 20% 5%;
-    --popover-foreground: 180 10% 96%;
-    --primary: 180 97% 52%; /* #08fefe */
-    --primary-foreground: 0 0% 5%;
-    --secondary: 180 20% 10%;
-    --secondary-foreground: 180 10% 96%;
-    --muted: 180 20% 10%;
-    --muted-foreground: 180 8% 70%;
-    --accent: 180 97% 52%;
-    --accent-foreground: 0 0% 5%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 180 10% 20%;
-    --input: 180 10% 20%;
-    --ring: 180 97% 52%;
-    --radius: 0.6rem;
-    --chart-1: 180 97% 52%;
-    --chart-2: 180 80% 40%;
-    --chart-3: 180 60% 30%;
-    --chart-4: 180 40% 20%;
-    --chart-5: 180 20% 15%;
-    --sidebar-background: 180 20% 5%;
-    --sidebar-foreground: 180 10% 96%;
-    --sidebar-primary: 180 97% 52%;
-    --sidebar-primary-foreground: 0 0% 5%;
-    --sidebar-accent: 180 20% 10%;
-    --sidebar-accent-foreground: 180 10% 96%;
-    --sidebar-border: 180 10% 20%;
-    --sidebar-ring: 180 97% 52%;
-  }
-}
-
-@media (min-width: 1024px) {
   html {
-    font-size: 18px;
+    background: rgb(var(--c-bg));
+    color: rgb(var(--c-fg));
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-bg font-sans text-fg antialiased;
+    font-size: var(--fs-body);
+    line-height: 1.6;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: var(--selection);
+    color: rgb(var(--c-white));
+  }
+
+  /* Foco visible en todo: un anillo del color del texto, separado del borde. */
+  :focus-visible {
+    outline: 2px solid rgb(var(--c-fg));
+    outline-offset: 3px;
+  }
+
+  /* El menú es fijo: las anclas no quedan debajo. */
+  [id] {
+    scroll-margin-top: calc(var(--header-h) + 1.5rem);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html:focus-within {
+      scroll-behavior: smooth;
+    }
   }
 }
 
-::-webkit-scrollbar {
-  width: 4px;
+/* Escala tipográfica: una clase por papel (familia, tamaño, interlineado y tracking juntos). */
+@layer components {
+  .type-display,
+  .type-title,
+  .type-heading,
+  .type-subheading {
+    font-family: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+    font-weight: 500;
+    font-stretch: 122%;
+    text-wrap: balance;
+  }
+  .type-display {
+    font-size: var(--fs-display);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+  }
+  .type-title {
+    font-size: var(--fs-title);
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+  }
+  .type-heading {
+    font-size: var(--fs-heading);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+  }
+  .type-subheading {
+    font-size: var(--fs-subheading);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    font-stretch: 118%;
+  }
+  .type-figure {
+    font-size: var(--fs-figure);
+    font-weight: 500;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+  .type-lead {
+    font-size: var(--fs-lead);
+    line-height: 1.6;
+  }
+  .type-body {
+    font-size: var(--fs-body);
+    line-height: 1.6;
+  }
+  .type-small {
+    font-size: var(--fs-small);
+    line-height: 1.6;
+  }
+  .type-label {
+    font-size: var(--fs-label);
+    font-weight: 500;
+    line-height: 1.4;
+  }
 }
 
-::-webkit-scrollbar-thumb {
-  background: hsl(var(--foreground)/0.1);
-  border-radius: 10px;
+@layer utilities {
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
 }
 
-::-webkit-scrollbar-track {
-  background: hsl(var(--background));
+/* ── La línea (RouteLine) ─────────────────────────────────────────────── */
+.route-line[data-draw] .route-line__track {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-slower) var(--ease-out) 120ms;
+}
+.route-line[data-draw][data-orientation="vertical"] .route-line__track {
+  transform: scaleY(0);
+  transform-origin: center top;
+}
+.route-line[data-draw] .route-line__end {
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity var(--dur-base) var(--ease-out) calc(var(--dur-slower) - 80ms),
+    transform var(--dur-base) var(--ease-out) calc(var(--dur-slower) - 80ms);
+}
+.route-line[data-draw][data-inview] .route-line__track {
+  transform: none;
+}
+.route-line[data-draw][data-inview] .route-line__end {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .route-line[data-draw] .route-line__track,
+  .route-line[data-draw] .route-line__end {
+    transform: none;
+    transition: opacity var(--dur-slow) var(--ease-out);
+  }
+  .route-line[data-draw] .route-line__track {
+    opacity: 0;
+  }
+  .route-line[data-draw][data-inview] .route-line__track {
+    opacity: 1;
+  }
 }
 
-img {
-  user-select: none;
+/* ── Transiciones entre páginas (React ViewTransition) ───────────────── */
+::view-transition {
   pointer-events: none;
 }
-
-.link {
-  position: relative;
-  transition: color 0.3s ease-in-out;
+/* El documento no se anima entero: solo la página (PageTransition) y los elementos con nombre. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
 }
-
-.link::after {
-  content: "";
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background-color: hsl(var(--foreground));
-  transition: width 0.3s ease-in-out;
-  cursor: pointer;
-  border-radius: 10px;
+/* El menú se queda quieto. */
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 100;
 }
-
-.link:hover::after {
-  width: 100%;
+::view-transition-old(site-header) {
+  display: none;
 }
-
-.companies::before {
-  content: "";
-  position: absolute;
-  top: 0%;
-  left: 0;
-  height: 1px;
-  width: 100%;
-  color: rgb(48, 48, 48);
-  background: radial-gradient(50% 56400% at 50% 100%, rgb(34, 41, 57) 0%, rgba(169, 163, 194, 0) 100%);
+::view-transition-new(site-header) {
+  animation: none;
 }
-
-.companies::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  height: 20px;
-  width: 70%;
-  border-radius: 100%;
-  filter: blur(6rem);
-  background: rgba(255, 49, 49, 0.15);
+::view-transition-old(.page) {
+  animation: vt-fade-out var(--dur-fast) var(--ease-out) both;
 }
-
-.footer::before {
-  background: radial-gradient(50% 56400% at 50% 100%, rgb(34, 44, 57) 0%, rgba(169, 163, 194, 0) 100%);
-  top: 0;
-  content: "";
-  height: 1px;
-  left: 0;
-  position: absolute;
-  width: 100%;
-  color: rgb(23, 23, 23);
+::view-transition-new(.page) {
+  animation: vt-fade-in var(--dur-base) var(--ease-out) 80ms both;
+}
+/* Morph del panel del cotizador (QUOTE_PANEL_VT) entre el hero y /tarifas. */
+::view-transition-group(.morph) {
+  animation-duration: var(--dur-slow);
+  animation-timing-function: var(--ease-out);
+}
+@keyframes vt-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(.morph) {
+    animation-duration: 0s;
+  }
 }

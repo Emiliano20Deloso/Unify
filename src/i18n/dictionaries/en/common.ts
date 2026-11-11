@@ -13,7 +13,7 @@ const common: CommonDictionary = {
         bookWhatsApp: "Book on WhatsApp",
     },
     footer: {
-        tagline: "Unify. Move beyond.",
+        tagline: "The luxury of travelling green",
         navTitle: "Site",
         legalTitle: "Legal",
         contactTitle: "Contact",
@@ -29,6 +29,8 @@ const common: CommonDictionary = {
         openMenu: "Open menu",
         closeMenu: "Close menu",
         home: "Unify, go to home page",
+        close: "Close",
+        menu: "Menu",
     },
     languages: {
         es: "Español",
