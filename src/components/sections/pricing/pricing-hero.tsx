@@ -17,10 +17,7 @@ interface PricingHeroProps {
 export function PricingHero({ lang, t, quote }: PricingHeroProps) {
     return (
         <section aria-labelledby="tarifas-titulo" className="bg-bg pb-section-md pt-[calc(var(--header-h)+var(--section-sm))]">
-            {/* Provisional: el enlace "Cotización personalizada…" del cotizador lleva whitespace-nowrap y en
-                móvil desborda la página (también en /dev/cotizador). Se deja envolver mientras se corrige
-                en src/components/quote/quote-result.tsx. */}
-            <Container className="[&_#cotizar_a]:max-w-full [&_#cotizar_a]:whitespace-normal">
+            <Container>
                 <div className="mb-8 flex flex-col gap-4 md:mb-10 lg:flex-row lg:items-end lg:justify-between lg:gap-16">
                     <h1 id="tarifas-titulo" className="type-display">
                         {t.title}

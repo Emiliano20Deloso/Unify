@@ -72,7 +72,8 @@ const pricing = {
             /** {level}: nivel del ejemplo. */
             text: "En {level}, entre semana y en horario normal. El cálculo completo, línea por línea:",
             to: "a",
-            km: "km",
+            /** {km}: distancia redondeada (aproximada, como en el cotizador sin Google). */
+            km: "≈ {km} km",
             base: "Tarifa base",
             /** {km} y {rate}. */
             distance: "{km} km × {rate}",

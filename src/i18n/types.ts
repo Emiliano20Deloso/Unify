@@ -27,12 +27,6 @@ export type Namespace = keyof Dictionaries;
 /** Diccionario de un namespace. A un componente cliente se le pasa solo su trozo (p. ej. `Dictionary<"quote">`). */
 export type Dictionary<N extends Namespace> = Dictionaries[N];
 
-/** Texto con forma de metadata que todos los namespaces de página tienen. */
-export interface MetaCopy {
-    title: string;
-    description: string;
-}
-
 export type {
     AboutDictionary,
     CommonDictionary,

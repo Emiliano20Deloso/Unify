@@ -24,6 +24,7 @@ export function HeaderFrame({ children }: { children: React.ReactNode }) {
         <>
             <div ref={sentinel} aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-2" />
             <header
+                data-site-chrome
                 data-scrolled={scrolled ? "" : undefined}
                 style={{ viewTransitionName: "site-header" }}
                 className={cn(

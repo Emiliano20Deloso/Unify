@@ -11,7 +11,7 @@ const services = {
     hero: {
         title: "Servicios",
         text: "Transporte privado con chofer en Tesla, en la Ciudad de México y su área metropolitana. Elige el viaje; nosotros cuidamos el resto.",
-        imageAlt: "Tres Tesla, blanco, rojo y azul, en una avenida entre edificios de cristal al atardecer",
+        imageAlt: "Tesla rojo estacionado frente a edificios modernos y palmeras",
     },
     types: {
         title: "Cinco formas de viajar con Unify",

@@ -37,10 +37,6 @@ function subscribe(cb: () => void): () => void {
     return () => listeners.delete(cb);
 }
 
-export function readDraft(): QuoteDraft {
-    return getSnapshot();
-}
-
 /** Mezcla cambios en el borrador, lo guarda y avisa a los suscriptores. */
 export function updateDraft(patch: Partial<QuoteDraft> | ((d: QuoteDraft) => Partial<QuoteDraft>)): void {
     const prev = getSnapshot();

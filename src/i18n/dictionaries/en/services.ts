@@ -10,7 +10,7 @@ const services: ServicesDictionary = {
     hero: {
         title: "Services",
         text: "Private chauffeured rides in a Tesla, across Mexico City and its metropolitan area. You choose the ride; we take care of the rest.",
-        imageAlt: "Three Teslas, white, red and blue, on an avenue between glass buildings at sunset",
+        imageAlt: "Red Tesla parked in front of modern buildings and palm trees",
     },
     types: {
         title: "Five ways to ride with Unify",

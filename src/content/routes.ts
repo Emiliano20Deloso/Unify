@@ -1,10 +1,12 @@
-// Rutas populares (las 5 del sitio anterior, legacy/app/(marketing)/tarifas, con sus km).
-// Origen y destino usan ids del catálogo (cat:<slug>) cuando el lugar existe. Las foráneas no tienen
-// precio: salen de la zona de servicio y se cotizan aparte (términos, sección 4).
+// Rutas populares (las 5 del sitio anterior). Origen y destino usan ids del catálogo (cat:<slug>).
+// Las rutas dentro de zona NO llevan km escritos: se calculan con las coordenadas del catálogo y el
+// mismo aproximado que usa el cotizador sin Google, para que tarjeta y cotizador digan lo mismo.
+// Las foráneas no tienen precio (se cotizan aparte, términos sección 4) y conservan km de referencia.
 import type { StaticImageData } from "next/image";
 import { rutaAutopista, rutaBosque, rutaPuente, teslaRojoCiudad, teslaRojoTunel } from "@/assets/images";
 import type { Locale } from "@/i18n/config";
-import { catalogId } from "@/lib/places/catalog";
+import { approxKm } from "@/lib/distance/approx";
+import { catalogId, getCatalogPlace } from "@/lib/places/catalog";
 
 type Place = {
     /** Id del catálogo (cat:<slug>) o null si el lugar no está en el catálogo. */
@@ -12,22 +14,36 @@ type Place = {
     name: Record<Locale, string>;
 };
 
-export type PopularRoute = {
+type RouteDefinition = {
     slug: string;
     origin: Place;
     destination: Place;
-    km: number;
-    /** "in": dentro de la zona, con precio del motor. "out": foránea, cotización personalizada. */
-    zone: "in" | "out";
     image: { src: StaticImageData; alt: Record<Locale, string>; position?: string };
+} & (
+    /** Dentro de la zona: precio del motor, distancia calculada (ver approxKm). */
+    | { zone: "in" }
+    /** Foránea: cotización personalizada, km de referencia. */
+    | { zone: "out"; referenceKm: number }
+);
+
+export type PopularRoute = RouteDefinition & {
+    /** km: calculados (zona "in", aproximados) o de referencia (zona "out"). */
+    km: number;
 };
 
-export const popularRoutes: readonly PopularRoute[] = [
+/** Distancia que verá el cotizador sin llave de Google para dos lugares del catálogo. */
+export function catalogRouteKm(originId: string, destinationId: string): number {
+    const origin = getCatalogPlace(originId);
+    const destination = getCatalogPlace(destinationId);
+    if (!origin || !destination) throw new Error(`Ruta fuera del catálogo: ${originId} → ${destinationId}`);
+    return approxKm(origin, destination);
+}
+
+const definitions: readonly RouteDefinition[] = [
     {
         slug: "polanco-aicm",
         origin: { id: catalogId("polanco"), name: { es: "Polanco", en: "Polanco" } },
         destination: { id: catalogId("aicm-t1"), name: { es: "AICM Terminal 1", en: "MEX Airport Terminal 1" } },
-        km: 25,
         zone: "in",
         image: {
             src: rutaAutopista,
@@ -42,7 +58,6 @@ export const popularRoutes: readonly PopularRoute[] = [
             id: catalogId("autodromo"),
             name: { es: "Autódromo Hermanos Rodríguez", en: "Autódromo Hermanos Rodríguez" },
         },
-        km: 22,
         zone: "in",
         image: {
             src: rutaPuente,
@@ -54,7 +69,6 @@ export const popularRoutes: readonly PopularRoute[] = [
         slug: "condesa-perisur",
         origin: { id: catalogId("condesa"), name: { es: "Condesa", en: "Condesa" } },
         destination: { id: catalogId("perisur"), name: { es: "Perisur", en: "Perisur" } },
-        km: 15,
         zone: "in",
         image: {
             src: teslaRojoCiudad,
@@ -66,8 +80,8 @@ export const popularRoutes: readonly PopularRoute[] = [
         slug: "roma-tepoztlan",
         origin: { id: catalogId("roma"), name: { es: "Roma", en: "Roma" } },
         destination: { id: null, name: { es: "Tepoztlán", en: "Tepoztlán" } },
-        km: 100,
         zone: "out",
+        referenceKm: 100,
         image: {
             src: rutaBosque,
             alt: { es: "Tesla plateado en una carretera entre árboles", en: "Silver Tesla on a road through the trees" },
@@ -84,8 +98,8 @@ export const popularRoutes: readonly PopularRoute[] = [
             id: catalogId("aeropuerto-toluca"),
             name: { es: "Aeropuerto de Toluca", en: "Toluca Airport" },
         },
-        km: 75,
         zone: "out",
+        referenceKm: 75,
         image: {
             src: teslaRojoTunel,
             alt: { es: "Tesla rojo saliendo de un túnel iluminado", en: "Red Tesla driving out of a lit tunnel" },
@@ -94,6 +108,11 @@ export const popularRoutes: readonly PopularRoute[] = [
     },
 ];
 
+export const popularRoutes: readonly PopularRoute[] = definitions.map((route) => ({
+    ...route,
+    km: route.zone === "out" ? route.referenceKm : catalogRouteKm(route.origin.id ?? "", route.destination.id ?? ""),
+}));
+
 const copy = {
     es: {
         title: "Rutas frecuentes",
@@ -101,7 +120,9 @@ const copy = {
         to: "a",
         from: "Desde",
         level: "en Práctico",
-        km: "km",
+        /** {km}: distancia redondeada. "≈" porque sale del aproximado, no de una ruta real. */
+        approxKm: "≈ {km} km",
+        km: "{km} km",
         outOfZone: "Cotización personalizada",
         outOfZoneHint: "Fuera de la zona de servicio",
         /** "{origin}", "{destination}" y "{km}" se sustituyen. */
@@ -114,7 +135,8 @@ const copy = {
         to: "to",
         from: "From",
         level: "in Práctico",
-        km: "km",
+        approxKm: "≈ {km} km",
+        km: "{km} km",
         outOfZone: "Custom quote",
         outOfZoneHint: "Outside the service area",
         whatsappContext: "Route: {origin} → {destination} (approx. {km} km).",

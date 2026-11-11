@@ -5,6 +5,7 @@ import { fill, popularRoutes, routesCopy, type PopularRoute } from "@/content";
 import type { Locale } from "@/i18n/config";
 import { localizedHref } from "@/i18n/routes";
 import { formatMXN, routePrice } from "@/lib/pricing";
+import { formatKm } from "@/lib/quote/format";
 import { buildSpecialQuoteUrl } from "@/lib/whatsapp";
 import { quoteHref } from "./links";
 
@@ -18,7 +19,10 @@ interface PopularRoutesProps {
 
 const REFERENCE_LEVEL = "practico" as const;
 
-/** Rutas frecuentes como filas: foto, origen ●——○ destino, km y "Desde $X" en Práctico (del motor). */
+/**
+ * Rutas frecuentes como filas: foto, origen ●——○ destino, km y "Desde $X" en Práctico.
+ * Dentro de zona, km y precio salen del mismo cálculo que el cotizador sin Google (content/routes).
+ */
 export function PopularRoutes({ lang, variant = "teaser", tone = "bg", id = "rutas" }: PopularRoutesProps) {
     const t = routesCopy[lang];
     const routes = variant === "teaser" ? popularRoutes.filter((r) => r.zone === "in").slice(0, 3) : popularRoutes;
@@ -73,9 +77,7 @@ function RouteRow({ route, lang }: { route: PopularRoute; lang: Locale }) {
                     <span>{destination}</span>
                 </h3>
                 <p className="type-small mt-2 text-fg-subtle">
-                    <span className="tabular">
-                        {route.km} {t.km}
-                    </span>
+                    <span className="tabular">{fill(inZone ? t.approxKm : t.km, { km: formatKm(route.km) })}</span>
                     {inZone ? null : <span> · {t.outOfZoneHint}</span>}
                 </p>
             </div>
@@ -115,7 +117,7 @@ function RouteRow({ route, lang }: { route: PopularRoute; lang: Locale }) {
         <a
             href={buildSpecialQuoteUrl({
                 kind: "out_of_zone",
-                context: fill(t.whatsappContext, { origin, destination, km: route.km }),
+                context: fill(t.whatsappContext, { origin, destination, km: formatKm(route.km) }),
                 lang,
             })}
             target="_blank"

@@ -6,6 +6,7 @@ import { fill } from "@/content";
 import type { Locale } from "@/i18n/config";
 import { localizedHref } from "@/i18n/routes";
 import type { PricingDictionary } from "@/i18n/types";
+import { cn } from "@/lib";
 import { formatMXN, pricingConfig } from "@/lib/pricing";
 
 interface IncludesProps {
@@ -41,11 +42,16 @@ export function Includes({ lang, t, tone = "bg", id = "que-incluye" }: IncludesP
     return (
         <Section tone={tone} aria-labelledby={id}>
             <SectionHeader id={id} title={t.title} text={t.text} />
-            <Stagger className="grid gap-x-10 md:grid-cols-2 lg:grid-cols-3">
-                {items.map((item) => (
+            {/* Escritorio: tres arriba y dos abajo (rejilla de 6); tableta: 2 + 2 + 1 a todo lo ancho. Sin huecos. */}
+            <Stagger className="grid gap-x-10 md:grid-cols-2 lg:grid-cols-6">
+                {items.map((item, i) => (
                     <StaggerItem
                         key={item.key}
-                        className={item.key === "waiting" ? "border-t border-line py-8 md:row-span-2" : "border-t border-line py-8"}
+                        className={cn(
+                            "border-t border-line py-8",
+                            i < 3 ? "lg:col-span-2" : "lg:col-span-3",
+                            i === items.length - 1 && "md:col-span-2 lg:col-span-3",
+                        )}
                     >
                         <h3 className="type-subheading">{item.title}</h3>
                         {item.figures ? (

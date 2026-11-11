@@ -7,7 +7,7 @@ import { PageTransition } from "@/components/motion";
 import { ServiceTypes } from "@/components/sections/services";
 import { CorporateBand, FinalCta, HowItWorks, ServiceLevels } from "@/components/sections/shared";
 import { PageHero } from "@/components/ui";
-import { servicesImages } from "@/content/services";
+import { servicesImages } from "@/content";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/servicios">): Promise<Metadata> {
     const lang = await resolveLocale(params);
@@ -29,7 +29,7 @@ export default async function ServicesPage({ params }: PageProps<"/[lang]/servic
             <ServiceLevels lang={lang} variant="full" tone="bg" />
             <HowItWorks lang={lang} tone="surface" />
             <CorporateBand lang={lang} tone="bg" />
-            <FinalCta lang={lang} />
+            <FinalCta lang={lang} separated />
         </PageTransition>
     );
 }

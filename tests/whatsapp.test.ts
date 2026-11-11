@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildSpecialQuoteUrl, buildWhatsAppUrl, WHATSAPP_NUMBER } from "@/lib/whatsapp";
-import { WHATSAPP_LINK } from "@/constants/links";
+import { buildSpecialQuoteUrl, buildWhatsAppUrl, WHATSAPP_BASE_URL, WHATSAPP_NUMBER } from "@/lib/whatsapp";
 import type { EstimateRequest, EstimateResponse } from "@/lib/estimate/schema";
 
 const request: EstimateRequest = {
@@ -21,7 +20,7 @@ const estimate = {
 
 describe("whatsapp", () => {
     it("una sola constante del número", () => {
-        expect(WHATSAPP_LINK).toBe(`https://wa.me/${WHATSAPP_NUMBER}`);
+        expect(WHATSAPP_BASE_URL).toBe(`https://wa.me/${WHATSAPP_NUMBER}`);
         expect(WHATSAPP_NUMBER).toBe("525951076664");
     });
     it("mensaje en español", () => {

@@ -11,6 +11,9 @@ const VEIL = {
     both: "bg-[linear-gradient(180deg,rgb(var(--veil)/0.6)_0,rgb(var(--veil)/0.3)_240px,rgb(var(--veil)/0)_460px),linear-gradient(0deg,rgb(var(--veil)/0.7)_0,rgb(var(--veil)/0)_160px)]",
 } as const;
 
+/** Fundido a fondo sólido en el borde inferior: la foto termina en `bg` sin corte visible. */
+const FADE = "bg-[linear-gradient(0deg,rgb(var(--c-bg))_0,rgb(var(--c-bg)/0.8)_10%,rgb(var(--c-bg)/0)_30%)]";
+
 export interface MediaProps {
     src: StaticImageData;
     /** Describe la foto. Vacío ("") solo si es decorativa. */
@@ -25,6 +28,11 @@ export interface MediaProps {
     radius?: keyof typeof RADIUS;
     /** Velo para texto encima: arriba (menú), abajo (texto al pie) o ambos. */
     veil?: keyof typeof VEIL;
+    /**
+     * Funde el borde inferior con el fondo de la página (`bg`). Se puede combinar con `veil`.
+     * "mobile": solo por debajo de lg (p. ej. el hero de portada, donde en escritorio la foto llena la sección).
+     */
+    fade?: boolean | "mobile";
     /** object-position, p. ej. "50% 60%". */
     position?: string;
     /** Solo para la foto LCP arriba del pliegue (hero): la precarga en <head>. */
@@ -40,6 +48,7 @@ export function Media({
     fill = false,
     radius = "media",
     veil,
+    fade = false,
     position,
     preload,
     quality,
@@ -66,6 +75,7 @@ export function Media({
                 style={position ? { objectPosition: position } : undefined}
             />
             {veil ? <div aria-hidden="true" className={cn("absolute inset-0", VEIL[veil])} /> : null}
+            {fade ? <div aria-hidden="true" className={cn("absolute inset-0", FADE, fade === "mobile" && "lg:hidden")} /> : null}
         </div>
     );
 }

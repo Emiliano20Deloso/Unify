@@ -3,8 +3,7 @@
 import Link from "next/link";
 import { Reveal } from "@/components/motion";
 import { Button, CheckIcon, Media, RouteLine, Section, SectionHeader, WhatsAppIcon } from "@/components/ui";
-import { fill } from "@/content";
-import { CUSTOM_SERVICES, ONLINE_SERVICES, servicesImages } from "@/content/services";
+import { CUSTOM_SERVICES, fill, ONLINE_SERVICES, servicesImages } from "@/content";
 import type { Locale } from "@/i18n/config";
 import type { ServicesDictionary } from "@/i18n/types";
 import { cn } from "@/lib";

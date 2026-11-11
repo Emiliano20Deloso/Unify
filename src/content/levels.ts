@@ -1,7 +1,7 @@
-// Niveles de servicio. Fuente: legacy/translations (pricing.tiers en español, que manda sobre el inglés).
+// Niveles de servicio. Fuente: textos del sitio anterior (pricing.tiers en español, que manda sobre el inglés).
 // Los precios NO viven aquí: salen del motor (fromPrice).
 import type { StaticImageData } from "next/image";
-import { interiorAsientosDelanteros, interiorAsientosTraseros, interiorFrenteDia } from "@/assets/images";
+import { interiorAsientosTraseros, interiorFrenteDia, interiorPantallaTrasera } from "@/assets/images";
 import type { Locale } from "@/i18n/config";
 import type { Level } from "@/lib/pricing/config";
 
@@ -23,7 +23,7 @@ export type LevelContent = {
 
 const IMAGES = {
     practico: { src: interiorFrenteDia, position: "50% 55%" },
-    select: { src: interiorAsientosDelanteros, position: "50% 50%" },
+    select: { src: interiorPantallaTrasera, position: "50% 40%" },
     premium: { src: interiorAsientosTraseros, position: "50% 60%" },
 } as const;
 
@@ -42,7 +42,7 @@ const es: LevelContent[] = [
         description: "Una experiencia elevada, con detalles pensados para tu comodidad.",
         features: ["Tesla Model 3", "Conductor certificado", "Música a tu elección", "Bebida de bienvenida", "Snack ligero"],
         amenities: { drink: "Agua natural o mineral", sweet: "Mentas", savory: "Frutos secos o chips" },
-        image: { ...IMAGES.select, alt: "Asientos delanteros de un Tesla vistos desde atrás" },
+        image: { ...IMAGES.select, alt: "Pantalla trasera de un Tesla entre los asientos delanteros" },
     },
     {
         id: "premium",
@@ -80,7 +80,7 @@ const en: LevelContent[] = [
         description: "An elevated experience, with details designed for your comfort.",
         features: ["Tesla Model 3", "Certified driver", "Music of your choice", "Welcome drink", "Light snack"],
         amenities: { drink: "Still or sparkling water", sweet: "Mints", savory: "Nuts or chips" },
-        image: { ...IMAGES.select, alt: "Front seats of a Tesla seen from the back" },
+        image: { ...IMAGES.select, alt: "Rear screen of a Tesla between the front seats" },
     },
     {
         id: "premium",

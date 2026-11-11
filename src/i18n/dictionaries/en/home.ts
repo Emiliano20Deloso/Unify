@@ -40,8 +40,8 @@ const home: HomeDictionary = {
             },
         ],
         images: {
-            main: "Tesla dashboard at night, with the center screen on and the city in the background",
-            detail: "Rear screen of a Tesla between the front seats",
+            main: "White front seats of a Tesla in a dark cabin",
+            detail: "Glass roof of a Tesla with palm trees and sky overhead",
         },
     },
 };

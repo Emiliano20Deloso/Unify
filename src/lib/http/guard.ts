@@ -83,10 +83,10 @@ function hostsFor(req: Request): Set<string> {
     }
     add(req.headers.get("host"));
     add(req.headers.get("x-forwarded-host")?.split(",")[0]?.trim());
-    for (const env of [process.env.NEXT_PUBLIC_APP_URL, process.env.NEXT_PUBLIC_SITE_URL]) {
-        if (!env) continue;
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+    if (siteUrl) {
         try {
-            add(new URL(env).host);
+            add(new URL(siteUrl).host);
         } catch {
             /* valor inválido: se ignora */
         }

@@ -1,6 +1,6 @@
 // Secciones de /nosotros. Todo de servidor; el único movimiento es La línea de "Quiénes somos".
 import Link from "next/link";
-import { aboutImages } from "@/content/about";
+import { aboutImages } from "@/content";
 import { Button, Container, Media, RouteLine, Section, SectionHeader } from "@/components/ui";
 import type { Locale } from "@/i18n/config";
 import { localizedHref } from "@/i18n/routes";
@@ -21,6 +21,7 @@ export function AboutHero({ t }: Props) {
                 fill
                 radius="none"
                 veil="both"
+                fade
                 sizes="100vw"
                 preload
             />

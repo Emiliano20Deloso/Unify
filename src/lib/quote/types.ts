@@ -6,8 +6,8 @@ export type { Level };
 export const LEVELS = ["practico", "select", "premium"] as const satisfies readonly Level[];
 export const DEFAULT_LEVEL: Level = "select";
 
-/** Zona horaria del servicio (espejo de config/pricing.json, que no viaja al navegador). */
-export const SERVICE_TZ = "America/Mexico_City";
+/** Zona horaria del servicio (módulo sin dependencias; la config de precios no viaja al navegador). */
+export { SERVICE_TZ } from "../geo/mexico";
 
 /** Topes de los Stepper. Por encima de la capacidad (4 / 2) la API pide cotización especial. */
 export const MAX_PASSENGERS = 8;

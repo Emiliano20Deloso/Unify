@@ -3,9 +3,11 @@ import { haversineKm, type LatLng } from "../geo";
 import { computeRoute, type Waypoint } from "../google/routes";
 import { GoogleApiError, hasGoogleKey } from "../google/key";
 import { pricingConfig, type PricingConfig } from "../pricing/config";
-import { hourBand } from "../pricing/engine";
+import { hourBand, round2 } from "../pricing/engine";
 import { instantToWall } from "../pricing/time";
-import { round2 } from "../pricing/engine";
+import { approxKm } from "./approx";
+
+export { approxKm } from "./approx";
 
 export type LegDistance = {
     km: number;
@@ -25,8 +27,8 @@ export function approxLegDistance(
     departure: Date,
     config: PricingConfig = pricingConfig
 ): { km: number; min: number } {
-    const { road_factor, min_km, speed_kmh } = config.approx;
-    const km = round2(Math.max(min_km, haversineKm(origin, destination) * road_factor));
+    const { speed_kmh } = config.approx;
+    const km = approxKm(origin, destination, config);
     const band = hourBand(instantToWall(departure, config.timezone).time, config);
     const speed = band === "night" ? speed_kmh.night : band === "peak" ? speed_kmh.peak : speed_kmh.normal;
     return { km, min: Math.max(1, Math.round((km / speed) * 60)) };

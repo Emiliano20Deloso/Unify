@@ -41,6 +41,7 @@ export default async function LangLayout({ children, params }: LayoutProps<"/[la
         <html lang={htmlLang[lang]} className={fontVariables}>
             <body>
                 <a
+                    data-site-chrome
                     href="#main"
                     className="sr-only rounded-control bg-fg px-4 py-3 font-medium text-bg focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50"
                 >

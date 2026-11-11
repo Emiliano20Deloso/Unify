@@ -1,7 +1,6 @@
 // Cierre de /tarifas: lo que no se cotiza en línea va por WhatsApp (buildSpecialQuoteUrl).
 import { ArrowIcon, Button, Section, WhatsAppIcon } from "@/components/ui";
-import { fill } from "@/content";
-import { customQuoteKinds } from "@/content/pricing-page";
+import { customQuoteKinds, fill } from "@/content";
 import type { Locale } from "@/i18n/config";
 import type { PricingDictionary } from "@/i18n/types";
 import { pricingConfig } from "@/lib/pricing";

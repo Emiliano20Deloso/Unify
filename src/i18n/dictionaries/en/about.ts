@@ -63,10 +63,10 @@ const about: AboutDictionary = {
             },
             {
                 title: "Clear pricing",
-                text: "You quote and book online, and you know what you'll pay from the start.",
+                text: "You get a quote and book online, and you know what you'll pay from the start.",
             },
             {
-                title: "Direct attention",
+                title: "Direct support",
                 text: "A real person monitors every trip, prioritizing your comfort and safety at all times.",
             },
         ],

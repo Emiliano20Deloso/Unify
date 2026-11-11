@@ -1,5 +1,4 @@
 // Fotos de /nosotros y su encuadre. Los textos (y los alt) viven en el diccionario "about".
-// tresTeslasCiudad no se usa: se ve generada por IA.
 import { cargaMano, interiorAsientosTraseros, teslaBlancoConcreto, teslaTraseraAtardecer } from "@/assets/images";
 
 export const aboutImages = {

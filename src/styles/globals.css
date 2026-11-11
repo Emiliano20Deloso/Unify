@@ -199,3 +199,19 @@
     animation-duration: 0s;
   }
 }
+
+/* ── Impresión ───────────────────────────────────────────────────────── */
+/* Solo el contenido: sin menú fijo, pie, enlace de salto ni barras fijas; papel claro. */
+@media print {
+  [data-site-chrome] {
+    display: none !important;
+  }
+  html,
+  body {
+    background: Canvas !important;
+    color-scheme: light;
+  }
+  main {
+    padding-top: 0 !important;
+  }
+}

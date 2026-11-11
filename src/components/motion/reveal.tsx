@@ -4,7 +4,9 @@ import * as m from "motion/react-m";
 import type { HTMLMotionProps } from "motion/react";
 import { DURATION, EASE_OUT, REVEAL_OFFSET, STAGGER_STEP } from "@/lib/motion";
 
-const VIEWPORT = { once: true, amount: 0.2 } as const;
+// Se dispara en cuanto asoma el borde superior (amount: 0) con un margen pequeño, no por proporción:
+// con un umbral relativo, los bloques más altos que la pantalla tardaban en aparecer y dejaban huecos.
+const VIEWPORT = { once: true, amount: 0, margin: "0px 0px -6% 0px" } as const;
 
 const item = {
     hidden: { opacity: 0, y: REVEAL_OFFSET },

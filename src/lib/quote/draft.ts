@@ -1,5 +1,6 @@
 // Borrador del cotizador: valores por defecto, validación al leer y parámetros de URL.
 // Funciones puras (sin DOM): nada de lo que llega de sessionStorage o de la URL se usa sin validar.
+import { isInMexico, SERVICE_TZ } from "../geo/mexico";
 import { catalogId, getCatalogPlace } from "../places/catalog";
 import { addDays, instantToWall, isValidDate, isValidTime, todayInTz } from "../pricing/time";
 import {
@@ -7,7 +8,6 @@ import {
     LEVELS,
     MAX_LUGGAGE,
     MAX_PASSENGERS,
-    SERVICE_TZ,
     type Level,
     type PlaceKind,
     type QuoteDraft,
@@ -16,8 +16,6 @@ import {
 
 type Lang = "es" | "en";
 
-/** Caja aproximada de México (espejo de lib/geo, que arrastra la config de precios). */
-const MX = { minLat: 14.3, maxLat: 32.8, minLng: -118.6, maxLng: -86.5 } as const;
 const KINDS: readonly PlaceKind[] = ["airport", "zone", "venue", "address"];
 const FLIGHT_RE = /^[A-Za-z0-9 -]{0,10}$/;
 
@@ -72,7 +70,7 @@ export function sanitizePlace(v: unknown): QuotePlace | null {
     if (label.length < 1 || label.length > 200) return null;
     if (typeof p.lat !== "number" || typeof p.lng !== "number") return null;
     if (!Number.isFinite(p.lat) || !Number.isFinite(p.lng)) return null;
-    if (p.lat < MX.minLat || p.lat > MX.maxLat || p.lng < MX.minLng || p.lng > MX.maxLng) return null;
+    if (!isInMexico({ lat: p.lat, lng: p.lng })) return null;
     const kind = KINDS.includes(p.kind as PlaceKind) ? (p.kind as PlaceKind) : "address";
     return { id: p.id, label, lat: p.lat, lng: p.lng, kind };
 }

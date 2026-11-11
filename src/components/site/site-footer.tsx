@@ -20,7 +20,7 @@ const heading = "type-label mb-3 text-fg-subtle";
 export function SiteFooter({ lang, t }: SiteFooterProps) {
     const year = new Date().getFullYear();
     return (
-        <footer className="bg-bg">
+        <footer data-site-chrome className="bg-bg">
             <Container>
                 <RouteLine draw />
                 <div className="grid gap-12 py-section-sm md:grid-cols-2 lg:grid-cols-12 lg:gap-8">

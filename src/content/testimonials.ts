@@ -1,4 +1,4 @@
-// Testimonios del sitio anterior (legacy/translations), con su calificación original.
+// Testimonios del sitio anterior, con su calificación original.
 import type { Locale } from "@/i18n/config";
 
 export type Testimonial = {

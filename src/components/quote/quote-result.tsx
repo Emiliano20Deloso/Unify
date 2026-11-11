@@ -218,7 +218,7 @@ export function QuoteResult({ lang, dict, draft, fromPrices, estimate, hasFieldE
                     </Button>
                 )}
                 <p className="type-label text-center font-normal text-fg-subtle">{dict.cta.hours}</p>
-                <Button asChild variant="link" size="sm" className="self-center text-[0.9375rem]">
+                <Button asChild variant="link" size="sm" className="max-w-full self-center whitespace-normal text-center text-[0.9375rem]">
                     <a href={buildSpecialQuoteUrl({ kind: "general", lang })} target="_blank" rel="noopener noreferrer">
                         {dict.cta.custom}
                         <span className="sr-only"> {dict.cta.newTab}</span>
@@ -227,7 +227,7 @@ export function QuoteResult({ lang, dict, draft, fromPrices, estimate, hasFieldE
             </div>
 
             {showBar && tiers && waUrl ? (
-                <div className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-between gap-4 border-t border-line bg-bg px-gutter pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 duration-base animate-in fade-in-0 slide-in-from-bottom-2 lg:hidden">
+                <div data-site-chrome className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-between gap-4 border-t border-line bg-bg px-gutter pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 duration-base animate-in fade-in-0 slide-in-from-bottom-2 lg:hidden">
                     <p className="flex min-w-0 flex-col">
                         <span className="type-label font-normal text-fg-subtle">{fill(dict.mobileBar.label, { level: dict.levels[level] })}</span>
                         <Price value={tiers[level].total} currency className="text-xl font-medium" />

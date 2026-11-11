@@ -10,7 +10,6 @@ const common: CommonDictionary = {
     },
     actions: {
         quote: "Get a quote",
-        bookWhatsApp: "Book on WhatsApp",
     },
     footer: {
         tagline: "The luxury of travelling green",

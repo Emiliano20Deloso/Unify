@@ -127,3 +127,18 @@ describe("distancia", () => {
         expect(r).toMatchObject({ source: "approx", noRoute: true });
     });
 });
+
+describe("constantes compartidas y rutas frecuentes", () => {
+    it("la zona horaria del cliente coincide con la de la config", async () => {
+        const { SERVICE_TZ } = await import("@/lib/geo/mexico");
+        expect(SERVICE_TZ).toBe(pricingConfig.timezone);
+    });
+    it("las rutas dentro de zona usan la misma distancia que el cotizador sin Google", async () => {
+        const { popularRoutes } = await import("@/content/routes");
+        for (const route of popularRoutes.filter((r) => r.zone === "in")) {
+            const o = getCatalogPlace(route.origin.id!)!;
+            const d = getCatalogPlace(route.destination.id!)!;
+            expect(route.km).toBe(approxLegDistance(o, d, DEP).km);
+        }
+    });
+});

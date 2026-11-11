@@ -124,7 +124,7 @@ const quote: QuoteDictionary = {
     },
     cta: {
         book: "Book on WhatsApp",
-        hours: "We're available Monday to Saturday, 8:00 to 22:00.",
+        hours: "We're available Monday to Saturday, 8:00 a.m. to 10:00 p.m.",
         custom: "Custom quote: hourly, events or out of town",
         newTab: "(opens in a new tab)",
     },

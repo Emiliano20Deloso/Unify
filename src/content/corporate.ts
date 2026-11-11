@@ -1,4 +1,4 @@
-// Empresas. Fuente: legacy/translations (corpCta), sin "Disponibilidad prioritaria 24/7"
+// Empresas. Fuente: textos del sitio anterior (corpCta), sin "Disponibilidad prioritaria 24/7"
 // (la atención es de lunes a sábado, 8:00 a 22:00, según los términos).
 import type { Locale } from "@/i18n/config";
 

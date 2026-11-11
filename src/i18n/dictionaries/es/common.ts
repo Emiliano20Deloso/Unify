@@ -12,7 +12,6 @@ const common = {
     },
     actions: {
         quote: "Cotizar",
-        bookWhatsApp: "Reservar por WhatsApp",
     },
     footer: {
         /** Lema de marca: va en inglés en ambos idiomas (lang="en"). */

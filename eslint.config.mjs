@@ -11,8 +11,6 @@ const eslintConfig = defineConfig([
     "build/**",
     "coverage/**",
     "next-env.d.ts",
-    // Solo referencia de contenido; se borra en la Fase 3.
-    "legacy/**",
     // Copias de trabajo temporales de agentes (git worktrees).
     ".claude/**",
   ]),

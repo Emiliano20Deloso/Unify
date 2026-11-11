@@ -32,7 +32,7 @@ import { QuoteWidget, QuoteCalculator } from "@/components/quote"; // ({ lang, d
 - `<Segmented name legend options={[{ value, label, detail: <Price value={450} /> }]} value onValueChange selectedLabel="Elegido" />` (radios nativos).
 - `<Accordion type="single" collapsible>` → `AccordionItem value` → `AccordionTrigger` (es h3) + `AccordionContent`.
 - `<DialogContent closeLabel={t.a11y.close}>` con `DialogTitle`; `<SheetContent variant="side|full" header={…} closeLabel>`.
-- `<Media src={foto} alt="…" sizes="(min-width: 1024px) 50vw, 100vw" className="aspect-[4/3]" radius="media|card|none" veil="top|bottom|both" position="50% 60%" preload />` — `sizes` siempre pensado; `preload` solo en la foto LCP; `fill` para ocupar un padre `relative`.
+- `<Media src={foto} alt="…" sizes="(min-width: 1024px) 50vw, 100vw" className="aspect-[4/3]" radius="media|card|none" veil="top|bottom|both" fade position="50% 60%" preload />` — `fade` (o `fade="mobile"`) funde el borde inferior con el fondo; `sizes` siempre pensado; `preload` solo en la foto LCP; `fill` para ocupar un padre `relative`.
 - `<Price value={450} currency className="type-figure" />` — rueda al cambiar; formatea con `formatMXN`.
 - `<RouteLine className="w-24" label="a" />` horizontal · `orientation="vertical"` · `draw` (se dibuja al entrar). Sin `label` es decorativa.
 - `<Logo className="h-8" title={null} />` dentro de un enlace con `aria-label`.

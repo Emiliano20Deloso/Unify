@@ -64,7 +64,8 @@ const pricing: PricingDictionary = {
             title: "An example",
             text: "In {level}, on a weekday at regular hours. The full calculation, line by line:",
             to: "to",
-            km: "km",
+            /** {km}: distancia redondeada (aproximada, como en el cotizador sin Google). */
+            km: "≈ {km} km",
             base: "Base fare",
             distance: "{km} km × {rate}",
             minimum: "{level} minimum fare: {amount}",

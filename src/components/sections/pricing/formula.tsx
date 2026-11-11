@@ -2,12 +2,13 @@
 // Todas las cifras se leen de la config de precios en el servidor; nada viaja al cliente.
 import { Reveal } from "@/components/motion";
 import { Card, RouteLine, Section, SectionHeader } from "@/components/ui";
-import { fill, levels, popularRoutes } from "@/content";
-import { pricingExample } from "@/content/pricing-page";
+import { catalogRouteKm, fill, levels, pricingExample } from "@/content";
 import type { Locale } from "@/i18n/config";
 import type { PricingDictionary } from "@/i18n/types";
 import { cn } from "@/lib";
+import { getCatalogPlace } from "@/lib/places/catalog";
 import { formatMXN, priceLeg, pricingConfig, routePrice, SERVICE_LEVELS, type Level } from "@/lib/pricing";
+import { formatKm } from "@/lib/quote/format";
 import { formatHour, formatMultiplier, formatPercent, formatRange, windowSegments } from "./format";
 
 interface FormulaProps {
@@ -281,7 +282,7 @@ function Extras({ t }: { t: PricingDictionary["formula"] }) {
     );
 }
 
-/* Ejemplo trabajado con el motor: Polanco → AICM en Select, línea por línea, y la variante en hora pico. */
+/* Ejemplo trabajado con el motor (ruta de pricingExample), línea por línea, y la variante en hora pico. */
 function Example({
     lang,
     t,
@@ -293,22 +294,24 @@ function Example({
     names: Record<Level, string>;
     surfaceTone: "bg" | "surface";
 }) {
-    const route = popularRoutes.find((r) => r.slug === pricingExample.route);
-    if (!route) return null;
+    const origin = getCatalogPlace(pricingExample.origin);
+    const destination = getCatalogPlace(pricingExample.destination);
+    if (!origin || !destination) return null;
+    const km = catalogRouteKm(origin.slug, destination.slug);
     const e = t.example;
     const level = pricingExample.level;
     const config = { ...pricingConfig, holidays_mx: [] };
     const { windows, per_km } = config;
     const peakHour = Math.floor((windows.peak_morning.start + windows.peak_morning.end) / 2);
     const peakTime = `${String(peakHour).padStart(2, "0")}:00`;
-    const leg = priceLeg({ level, distanceKm: route.km, date: pricingExample.peakDate, time: "12:00", passengers: 1, luggage: 0 }, config);
-    const peak = priceLeg({ level, distanceKm: route.km, date: pricingExample.peakDate, time: peakTime, passengers: 1, luggage: 0 }, config);
-    const total = routePrice(level, route.km);
+    const leg = priceLeg({ level, distanceKm: km, date: pricingExample.peakDate, time: "12:00", passengers: 1, luggage: 0 }, config);
+    const peak = priceLeg({ level, distanceKm: km, date: pricingExample.peakDate, time: peakTime, passengers: 1, luggage: 0 }, config);
+    const total = routePrice(level, km);
     const minFare = config.min_fare?.[level] ?? 0;
 
     const ledger = [
         { key: "base", label: `${e.base} · ${names[level]}`, amount: formatMXN(leg.base) },
-        { key: "distance", label: fill(e.distance, { km: route.km, rate: formatMXN(per_km[level]) }), amount: formatMXN(leg.distanceCost) },
+        { key: "distance", label: fill(e.distance, { km: (Math.round(km * 10) / 10).toFixed(1), rate: formatMXN(per_km[level]) }), amount: formatMXN(leg.distanceCost) },
         ...(minFare > 0
             ? [
                   {
@@ -332,12 +335,12 @@ function Example({
                             {e.title}
                         </h3>
                         <p className="type-subheading mt-6 flex flex-wrap items-center gap-x-3 gap-y-1">
-                            <span>{route.origin.name[lang]}</span>
+                            <span>{origin.name[lang]}</span>
                             <RouteLine label={e.to} className="w-12 sm:w-16" />
-                            <span>{route.destination.name[lang]}</span>
+                            <span>{destination.name[lang]}</span>
                         </p>
                         <p className="type-small tabular mt-2 text-fg-subtle">
-                            {route.km} {e.km}
+                            {fill(e.km, { km: formatKm(km) })}
                         </p>
                         <p className="mt-6 max-w-[26rem] text-fg-subtle">{fill(e.text, { level: names[level] })}</p>
                     </div>
@@ -348,7 +351,7 @@ function Example({
                                 {SERVICE_LEVELS.map((l) => (
                                     <li key={l} className="flex flex-col gap-1">
                                         <span className={cn("type-small", l === level ? "text-fg" : "text-fg-subtle")}>{names[l]}</span>
-                                        <span className="tabular text-[1.25rem] font-medium">{formatMXN(routePrice(l, route.km))}</span>
+                                        <span className="tabular text-[1.25rem] font-medium">{formatMXN(routePrice(l, km))}</span>
                                     </li>
                                 ))}
                             </ul>
@@ -370,14 +373,15 @@ function Example({
                                 <dd className="type-figure">{formatMXN(total)}</dd>
                             </div>
                         </dl>
-                        <div className="mt-8 flex items-baseline justify-between gap-6 rounded-inner border border-line px-5 py-4">
-                            <p className="flex flex-col">
+                        {/* Título y precio en una fila; la explicación debajo, a todo lo ancho (no parte la línea en móvil). */}
+                        <div className="mt-8 rounded-inner border border-line px-5 py-4">
+                            <p className="flex items-baseline justify-between gap-6">
                                 <span className="font-medium">{fill(e.peakTitle, { time: formatHour(peakHour, lang) })}</span>
-                                <span className="type-small text-fg-subtle">
-                                    {e.peakText} · {formatMultiplier(peak.hourMultiplier, lang, t)}
-                                </span>
+                                <span className="tabular shrink-0 text-[1.375rem] font-medium">{formatMXN(peak.total)}</span>
                             </p>
-                            <p className="tabular shrink-0 text-[1.375rem] font-medium">{formatMXN(peak.total)}</p>
+                            <p className="type-small text-fg-subtle">
+                                {e.peakText} · <span className="tabular">{formatMultiplier(peak.hourMultiplier, lang, t)}</span>
+                            </p>
                         </div>
                     </div>
                 </div>

@@ -40,8 +40,8 @@ const home = {
             },
         ],
         images: {
-            main: "Tablero de un Tesla de noche, con la pantalla central encendida y la ciudad al fondo",
-            detail: "Pantalla trasera de un Tesla entre los asientos delanteros",
+            main: "Asientos delanteros blancos de un Tesla en una cabina oscura",
+            detail: "Techo de cristal de un Tesla con palmeras y cielo encima",
         },
     },
 };

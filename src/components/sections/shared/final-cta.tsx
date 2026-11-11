@@ -4,6 +4,7 @@ import { teslaSilueta } from "@/assets/images";
 import { Button, Container, Media } from "@/components/ui";
 import { finalCtaCopy } from "@/content";
 import type { Locale } from "@/i18n/config";
+import { cn } from "@/lib";
 import { quoteHref } from "./links";
 
 interface FinalCtaProps {
@@ -11,14 +12,22 @@ interface FinalCtaProps {
     /** Otra foto (con su alt) si la página ya usa la de por defecto. */
     image?: { src: StaticImageData; alt: string; position?: string };
     id?: string;
+    /** Línea superior: para cuando la sección anterior también va en `bg` (mismo fondo, sin cambio de tono). */
+    separated?: boolean;
 }
 
 /** Banda de cierre a sangre: foto oscura, frase y botón al cotizador. */
-export function FinalCta({ lang, image, id = "cierre" }: FinalCtaProps) {
+export function FinalCta({ lang, image, id = "cierre", separated = false }: FinalCtaProps) {
     const t = finalCtaCopy[lang];
     const photo = image ?? { src: teslaSilueta, alt: t.imageAlt, position: "62% 50%" };
     return (
-        <section aria-labelledby={id} className="relative flex flex-col overflow-hidden bg-bg lg:min-h-[640px] lg:justify-end">
+        <section
+            aria-labelledby={id}
+            className={cn(
+                "relative flex flex-col overflow-hidden bg-bg lg:min-h-[640px] lg:justify-end",
+                separated && "border-t border-line",
+            )}
+        >
             {/* Móvil y tableta: la foto arriba y el texto debajo, sobre el fondo. Escritorio: texto sobre la
                 foto; la foto por defecto se corre a la derecha para que el texto no pise el auto (su borde
                 izquierdo es casi el mismo negro del fondo). */}

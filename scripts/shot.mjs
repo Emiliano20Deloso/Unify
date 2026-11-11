@@ -7,6 +7,7 @@
 //
 // Pasos disponibles (un arreglo JSON de objetos con `op`):
 //   viewport {width,height,mobile?,dpr?}      goto {url,wait?}             wait {ms}
+//   media {reducedMotion: true|false}  (emula prefers-reduced-motion)
 //   sweep {}  (recorre la página para disparar las animaciones al entrar en pantalla)
 //   scroll {y} | {selector}                    click {selector} | {text}    type {text}
 //   key {key: Enter|Escape|Tab|ArrowDown|ArrowUp|Backspace}                 eval {expr,label?}
@@ -137,6 +138,10 @@ try {
                 mobile: !!s.mobile,
             });
             await send("Emulation.setTouchEmulationEnabled", { enabled: !!s.mobile });
+        } else if (s.op === "media") {
+            await send("Emulation.setEmulatedMedia", {
+                features: [{ name: "prefers-reduced-motion", value: s.reducedMotion ? "reduce" : "no-preference" }],
+            });
         } else if (s.op === "goto") {
             const loaded = new Promise((r) => (loadResolve = r));
             await send("Page.navigate", { url: s.url });
