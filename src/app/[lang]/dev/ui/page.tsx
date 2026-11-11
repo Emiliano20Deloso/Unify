@@ -27,6 +27,7 @@ import {
     Stat,
     Textarea,
 } from "@/components/ui";
+import { ControlsDemos } from "./controls-demos";
 import { OverlaysDemo, QuoteControlsDemo } from "./demos";
 import { MotionDemos } from "./motion-demos";
 
@@ -149,6 +150,14 @@ export default function UiPage() {
                         </Button>
                     </div>
                 </div>
+            </Block>
+
+            <Block title="Controles">
+                <p className="type-small mb-6 max-w-prose text-fg-subtle">
+                    Cada acción tiene su reacción animada: presión, foco con teclado, deshabilitar, deslizar, rodar, desplegar. Escenarios C* de
+                    scripts/motion/escenarios.json.
+                </p>
+                <ControlsDemos />
             </Block>
 
             <Block title="Tarjeta, chip, cifra y línea">

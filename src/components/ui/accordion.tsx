@@ -5,7 +5,12 @@ import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { cn } from "@/lib";
 import { PlusIcon } from "./icons";
 
-/** Preguntas frecuentes. <Accordion type="single" collapsible> con AccordionItem por pregunta. */
+/**
+ * Preguntas frecuentes. <Accordion type="single" collapsible> con AccordionItem por pregunta.
+ * Abrir: alto con resorte layout y fundido; cerrar: resorte ui; cambiar de pregunta: una se cierra
+ * mientras la otra se abre y lo de abajo se recorre con el alto. Transiciones CSS (globals.css
+ * § Acordeón): se redirigen a media animación y funcionan antes de hidratar.
+ */
 export const Accordion = React.forwardRef<
     React.ElementRef<typeof AccordionPrimitive.Root>,
     React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Root>
@@ -27,13 +32,13 @@ export const AccordionTrigger = React.forwardRef<
             <AccordionPrimitive.Trigger
                 ref={ref}
                 className={cn(
-                    "group flex min-h-16 w-full items-center justify-between gap-6 py-5 text-left text-lg font-medium text-fg transition-colors duration-fast ease hover:text-white",
+                    "ctl flex min-h-16 w-full items-center justify-between gap-6 rounded-sm py-5 text-left text-lg font-medium text-fg hover:text-white",
                     className,
                 )}
                 {...props}
             >
                 {children}
-                <PlusIcon className="size-5 text-fg-subtle transition-transform duration-base ease-out group-data-[state=open]:rotate-45" />
+                <PlusIcon className="accordion-icon size-5 text-fg-subtle" />
             </AccordionPrimitive.Trigger>
         </h3>
     </AccordionPrimitive.Header>
@@ -44,8 +49,14 @@ export const AccordionContent = React.forwardRef<
     React.ElementRef<typeof AccordionPrimitive.Content>,
     React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>
 >(({ className, children, ...props }, ref) => (
-    <AccordionPrimitive.Content ref={ref} className="data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-top-1 data-[state=open]:duration-base" {...props}>
-        <div className={cn("max-w-prose pb-6 pr-11 text-fg-subtle", className)}>{children}</div>
+    // Siempre montado (forceMount): el cierre es una transición que se puede interrumpir; cerrado
+    // queda con visibility hidden (sin Tab ni lector). La respuesta también está en el HTML.
+    <AccordionPrimitive.Content ref={ref} forceMount className="accordion-content" {...props}>
+        <div className="accordion-panel">
+            <div>
+                <div className={cn("accordion-content__inner max-w-prose pb-6 pr-11 text-fg-subtle", className)}>{children}</div>
+            </div>
+        </div>
     </AccordionPrimitive.Content>
 ));
 AccordionContent.displayName = "AccordionContent";

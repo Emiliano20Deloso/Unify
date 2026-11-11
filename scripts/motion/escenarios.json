@@ -866,20 +866,32 @@
       "setup": [
         {
           "op": "goto",
-          "url": "/"
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-botones",
+          "block": "center"
         }
       ],
       "action": [
         {
           "op": "press",
-          "selector": "form[aria-label] button[type=\"submit\"]",
+          "selector": "#ctl-primario",
           "ms": 150
         }
       ],
-      "roi": "form[aria-label] button[type=\"submit\"]",
+      "roi": "#ctl-primario",
       "expect": {
         "animated": true
-      }
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-primario').dataset.count",
+          "equals": "1"
+        }
+      ]
     },
     {
       "id": "B2-foco-tab",
@@ -2858,6 +2870,1098 @@
       },
       "settleMs": 700,
       "maxMs": 4000
+    },
+    {
+      "id": "C1-boton-presion-movil",
+      "vp": [
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-botones",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "press",
+          "selector": "#ctl-primario",
+          "ms": 150
+        }
+      ],
+      "roi": "#ctl-primario",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-primario').dataset.count",
+          "equals": "1"
+        }
+      ]
+    },
+    {
+      "id": "C2-boton-deshabilitar",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-botones",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-deshabilitar)"
+        }
+      ],
+      "roi": "#ctl-botones",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-objetivo').disabled",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "C3-boton-habilitar",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-botones",
+          "block": "center"
+        },
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-deshabilitar)",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-deshabilitar)"
+        }
+      ],
+      "roi": "#ctl-botones",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-objetivo').disabled",
+          "equals": false
+        }
+      ]
+    },
+    {
+      "id": "C4-foco-boton",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-botones",
+          "block": "center"
+        },
+        {
+          "op": "focus",
+          "selector": "#ctl-primario",
+          "wait": 600
+        }
+      ],
+      "action": [
+        {
+          "op": "key",
+          "key": "Tab"
+        }
+      ],
+      "roi": "#ctl-botones",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.activeElement.id + ':' + document.activeElement.matches(':focus-visible')",
+          "equals": "ctl-secundario:true"
+        }
+      ]
+    },
+    {
+      "id": "C5-enlace-hover",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-botones",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "hover",
+          "selector": "#ctl-enlace"
+        }
+      ],
+      "roi": "#ctl-enlace",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-enlace').matches(':hover')",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "C6-foco-enlace",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-botones",
+          "block": "center"
+        },
+        {
+          "op": "focus",
+          "selector": "#ctl-botones button:nth-of-type(3)",
+          "wait": 600
+        }
+      ],
+      "action": [
+        {
+          "op": "key",
+          "key": "Tab"
+        }
+      ],
+      "roi": "#ctl-botones",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.activeElement.id + ':' + document.activeElement.matches(':focus-visible')",
+          "equals": "ctl-enlace:true"
+        }
+      ]
+    },
+    {
+      "id": "C7-nivel",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-nivel",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#ctl-nivel label:has(input[value=\"premium\"])"
+        }
+      ],
+      "roi": "#ctl-nivel",
+      "track": [
+        "#ctl-nivel [data-indicator]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-nivel input:checked').value",
+          "equals": "premium"
+        }
+      ]
+    },
+    {
+      "id": "C8-nivel-dos-cambios-rapidos",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-nivel",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#ctl-nivel label:has(input[value=\"premium\"])"
+        },
+        {
+          "op": "wait",
+          "ms": 120
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-nivel label:has(input[value=\"practico\"])"
+        }
+      ],
+      "roi": "#ctl-nivel",
+      "track": [
+        "#ctl-nivel [data-indicator]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-nivel input:checked').value",
+          "equals": "practico"
+        }
+      ]
+    },
+    {
+      "id": "C9-contador-mas",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-contador",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#ctl-contador button[aria-label=\"Agregar un pasajero\"]"
+        }
+      ],
+      "roi": "#ctl-contador",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-contador [role=spinbutton]').getAttribute('aria-valuenow')",
+          "equals": "2"
+        }
+      ]
+    },
+    {
+      "id": "C10-contador-tope",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-contador",
+          "block": "center"
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-contador button[aria-label=\"Agregar un pasajero\"]",
+          "wait": 500
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-contador button[aria-label=\"Agregar un pasajero\"]",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#ctl-contador button[aria-label=\"Agregar un pasajero\"]"
+        }
+      ],
+      "roi": "#ctl-contador",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "[document.querySelector('#ctl-contador [role=spinbutton]').getAttribute('aria-valuenow'), document.querySelector('#ctl-contador button[aria-label=\\\"Agregar un pasajero\\\"]').getAttribute('aria-disabled')]",
+          "equals": [
+            "4",
+            "true"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C11-contador-clics-rapidos",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-contador",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#ctl-contador button[aria-label=\"Agregar un pasajero\"]"
+        },
+        {
+          "op": "wait",
+          "ms": 70
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-contador button[aria-label=\"Agregar un pasajero\"]"
+        },
+        {
+          "op": "wait",
+          "ms": 70
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-contador button[aria-label=\"Agregar un pasajero\"]"
+        }
+      ],
+      "roi": "#ctl-contador",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-contador [role=spinbutton]').getAttribute('aria-valuenow')",
+          "equals": "4"
+        }
+      ]
+    },
+    {
+      "id": "C11b-contador-baja-rapido",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-contador",
+          "block": "center"
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-contador button[aria-label=\"Agregar un pasajero\"]",
+          "wait": 300
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-contador button[aria-label=\"Agregar un pasajero\"]",
+          "wait": 300
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-contador button[aria-label=\"Agregar un pasajero\"]",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#ctl-contador button[aria-label=\"Quitar un pasajero\"]"
+        },
+        {
+          "op": "wait",
+          "ms": 70
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-contador button[aria-label=\"Quitar un pasajero\"]"
+        },
+        {
+          "op": "wait",
+          "ms": 70
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-contador button[aria-label=\"Quitar un pasajero\"]"
+        }
+      ],
+      "roi": "#ctl-contador",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "[document.querySelector('#ctl-contador [role=spinbutton]').getAttribute('aria-valuenow'), document.querySelector('#ctl-contador button[aria-label=\\\"Quitar un pasajero\\\"]').getAttribute('aria-disabled')]",
+          "equals": [
+            "1",
+            "true"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C12-interruptor-on",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-interruptor",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-ida-vuelta)"
+        }
+      ],
+      "roi": "#ctl-interruptor",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-ida-vuelta').checked",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "C13-interruptor-off",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-interruptor",
+          "block": "center"
+        },
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-ida-vuelta)",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-ida-vuelta)"
+        }
+      ],
+      "roi": "#ctl-interruptor",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-ida-vuelta').checked",
+          "equals": false
+        }
+      ]
+    },
+    {
+      "id": "C14-interruptor-doble-rapido",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-interruptor",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-ida-vuelta)"
+        },
+        {
+          "op": "wait",
+          "ms": 120
+        },
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-ida-vuelta)"
+        }
+      ],
+      "roi": "#ctl-interruptor",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-ida-vuelta').checked",
+          "equals": false
+        }
+      ]
+    },
+    {
+      "id": "C15-campo-error-aparece",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-campo",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-con-error)"
+        }
+      ],
+      "roi": "#ctl-campo",
+      "track": [
+        "#ctl-campo [data-debajo]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "[document.querySelector('#ctl-telefono').getAttribute('aria-invalid'), document.querySelector('#ctl-telefono').getAttribute('aria-describedby'), !!document.getElementById('ctl-telefono-error')]",
+          "equals": [
+            "true",
+            "ctl-telefono-error",
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C16-campo-error-se-va",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-campo",
+          "block": "center"
+        },
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-con-error)",
+          "wait": 1200
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-con-error)"
+        }
+      ],
+      "roi": "#ctl-campo",
+      "track": [
+        "#ctl-campo [data-debajo]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "[document.querySelector('#ctl-telefono').getAttribute('aria-invalid'), !!document.getElementById('ctl-telefono-error')]",
+          "equals": [
+            null,
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C17-campo-ayuda-aparece",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-campo",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-con-ayuda)"
+        }
+      ],
+      "roi": "#ctl-campo",
+      "track": [
+        "#ctl-campo [data-debajo]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-telefono').getAttribute('aria-describedby')",
+          "equals": "ctl-telefono-hint"
+        }
+      ]
+    },
+    {
+      "id": "C18-campo-error-ida-y-vuelta-rapida",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-campo",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-con-error)"
+        },
+        {
+          "op": "wait",
+          "ms": 150
+        },
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-con-error)"
+        }
+      ],
+      "roi": "#ctl-campo",
+      "track": [
+        "#ctl-campo [data-debajo]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "!!document.getElementById('ctl-telefono-error')",
+          "equals": false
+        }
+      ]
+    },
+    {
+      "id": "C19-acordeon-abre",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-acordeon",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#ctl-acordeon h3 button"
+        }
+      ],
+      "roi": "#ctl-acordeon",
+      "track": [
+        "#ctl-acordeon [data-debajo]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelectorAll('#ctl-acordeon h3 button')[0].getAttribute('aria-expanded')",
+          "equals": "true"
+        }
+      ]
+    },
+    {
+      "id": "C20-acordeon-cambia",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-acordeon",
+          "block": "center"
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-acordeon h3 button",
+          "wait": 1200
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#ctl-acordeon h3 button",
+          "nth": 1
+        }
+      ],
+      "roi": "#ctl-acordeon",
+      "track": [
+        "#ctl-acordeon [data-debajo]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "[document.querySelectorAll('#ctl-acordeon h3 button')[0].getAttribute('aria-expanded'), document.querySelectorAll('#ctl-acordeon h3 button')[1].getAttribute('aria-expanded')]",
+          "equals": [
+            "false",
+            "true"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C21-acordeon-cierra",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-acordeon",
+          "block": "center"
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-acordeon h3 button",
+          "wait": 1200
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#ctl-acordeon h3 button"
+        }
+      ],
+      "roi": "#ctl-acordeon",
+      "track": [
+        "#ctl-acordeon [data-debajo]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelectorAll('#ctl-acordeon h3 button')[0].getAttribute('aria-expanded')",
+          "equals": "false"
+        }
+      ]
+    },
+    {
+      "id": "C22-acordeon-cierra-a-media-apertura",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-acordeon",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#ctl-acordeon h3 button"
+        },
+        {
+          "op": "wait",
+          "ms": 160
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-acordeon h3 button"
+        }
+      ],
+      "roi": "#ctl-acordeon",
+      "track": [
+        "#ctl-acordeon [data-debajo]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "[document.querySelectorAll('#ctl-acordeon h3 button')[0].getAttribute('aria-expanded'), getComputedStyle(document.querySelector('#ctl-acordeon .accordion-panel')).visibility]",
+          "equals": [
+            "false",
+            "hidden"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C22b-acordeon-cambia-a-media-apertura",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-acordeon",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#ctl-acordeon h3 button"
+        },
+        {
+          "op": "wait",
+          "ms": 160
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-acordeon h3 button",
+          "nth": 1
+        }
+      ],
+      "roi": "#ctl-acordeon",
+      "track": [
+        "#ctl-acordeon [data-debajo]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "[document.querySelectorAll('#ctl-acordeon h3 button')[0].getAttribute('aria-expanded'), document.querySelectorAll('#ctl-acordeon h3 button')[1].getAttribute('aria-expanded')]",
+          "equals": [
+            "false",
+            "true"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C23-precio",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-precio",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#ctl-cambiar-precio"
+        }
+      ],
+      "roi": "#ctl-precio",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-precio .sr-only').textContent.includes('1,280')",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "C24-ruta-redibujo",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-ruta",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#ctl-cambiar-ruta"
+        }
+      ],
+      "roi": "#ctl-ruta",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-cambiar-ruta').dataset.route",
+          "equals": "1"
+        }
+      ]
     },
     {
       "id": "P1-collapse-abre",

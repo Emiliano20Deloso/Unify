@@ -7,8 +7,9 @@ import { ArrowIcon } from "./icons";
 const buttonVariants = cva(
     [
         "group/button relative inline-flex select-none items-center justify-center gap-2.5 whitespace-nowrap font-medium",
-        "transition-[background-color,border-color,color,transform] duration-fast ease",
-        "active:scale-[0.97] disabled:pointer-events-none disabled:opacity-40 aria-disabled:pointer-events-none aria-disabled:opacity-40",
+        // ctl: color, borde y opacidad con transición, anillo de foco animado; ctl-press: scale(.97) al
+        // presionar y regreso con resorte (globals.css § Controles).
+        "ctl ctl-press disabled:pointer-events-none disabled:opacity-40 aria-disabled:pointer-events-none aria-disabled:opacity-40",
         "[&_svg]:pointer-events-none [&_svg]:shrink-0",
     ],
     {
@@ -20,8 +21,8 @@ const buttonVariants = cva(
                 secondary: "rounded-control border border-line-strong text-fg hover:border-fg-subtle hover:bg-elevated",
                 /** Acción terciaria sin borde (menús, barras). */
                 ghost: "rounded-control text-fg hover:bg-elevated",
-                /** Enlace con flecha. Sin caja: el tamaño solo ajusta la letra. */
-                link: "rounded-sm text-fg underline-offset-4 hover:underline active:scale-100",
+                /** Enlace con flecha: el subrayado se dibuja y la flecha avanza. Sin caja: el tamaño solo ajusta la letra. */
+                link: "ctl-link rounded-sm text-fg [--press-scale:0.98]",
             },
             size: {
                 sm: "h-11 px-[18px] text-[0.9375rem]",
@@ -54,7 +55,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             >
                 <Slottable>{children}</Slottable>
                 {variant === "link" ? (
-                    <ArrowIcon className="transition-transform duration-fast ease-out group-hover/button:translate-x-0.5" />
+                    <ArrowIcon className="ctl-link__arrow" />
                 ) : null}
             </Comp>
         );

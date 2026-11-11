@@ -4,7 +4,7 @@
 // móvil, con barra fija inferior cuando ya hay precio). Estado = borrador compartido (sessionStorage).
 import { useEffect, useMemo, ViewTransition } from "react";
 import { ArrowUpDown } from "lucide-react";
-import { Field, Input, RouteLine, Stepper } from "@/components/ui";
+import { Field, Input, RouteLine, Stepper, Switch } from "@/components/ui";
 import type { Dictionary, Locale } from "@/i18n/types";
 import { QUOTE_PANEL_SHARE, QUOTE_PANEL_VT } from "@/lib/motion";
 import { cn } from "@/lib";
@@ -147,33 +147,18 @@ export function QuoteCalculatorClient({ lang, dict, fromPrices }: Props) {
                     </div>
 
                     <div className="flex flex-col gap-3 border-t border-line pt-5">
-                        <label className="flex min-h-11 cursor-pointer items-center justify-between gap-4">
+                        <Switch
+                            checked={draft.roundTrip}
+                            onCheckedChange={(on) =>
+                                updateDraft((d) => ({
+                                    roundTrip: on,
+                                    returnDate: on ? d.returnDate || d.date : "",
+                                    returnTime: on ? d.returnTime || "18:00" : "",
+                                }))
+                            }
+                        >
                             <span className="text-[0.9375rem] font-medium">{f.roundTrip}</span>
-                            <input
-                                type="checkbox"
-                                role="switch"
-                                checked={draft.roundTrip}
-                                onChange={(e) => {
-                                    const on = e.target.checked;
-                                    updateDraft((d) => ({
-                                        roundTrip: on,
-                                        returnDate: on ? d.returnDate || d.date : "",
-                                        returnTime: on ? d.returnTime || "18:00" : "",
-                                    }));
-                                }}
-                                className="peer sr-only"
-                            />
-                            <span
-                                aria-hidden="true"
-                                className={cn(
-                                    "relative h-7 w-12 shrink-0 rounded-full border border-line-strong bg-elevated transition-[background-color,border-color] duration-fast ease",
-                                    "peer-checked:border-brand peer-checked:bg-brand peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-[3px] peer-focus-visible:outline-fg",
-                                    "peer-checked:[&>span]:translate-x-5",
-                                )}
-                            >
-                                <span className="absolute left-[3px] top-[3px] size-5 rounded-full bg-fg transition-transform duration-base ease-out" />
-                            </span>
-                        </label>
+                        </Switch>
                         {draft.roundTrip ? (
                             <>
                                 <div className="grid grid-cols-2 gap-2.5">

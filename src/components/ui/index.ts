@@ -7,6 +7,7 @@ export { Chip } from "./chip";
 export { Stat } from "./stat";
 export { Field, Input, Textarea } from "./field";
 export { Stepper } from "./stepper";
+export { Switch } from "./switch";
 export { Segmented, type SegmentedOption } from "./segmented";
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "./accordion";
 export {

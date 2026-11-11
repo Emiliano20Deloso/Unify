@@ -1,10 +1,12 @@
 import * as React from "react";
+import { Collapse } from "@/components/motion/collapse";
 import { cn } from "@/lib";
 
+// ctl: borde (también el de error), fondo y opacidad con transición; el anillo de foco entra y sale
+// animado (globals.css § Controles). --ring-offset: el anillo queda a 2 px del borde.
 const control = [
-    "w-full rounded-control border border-line bg-surface px-4 text-base text-fg",
-    "placeholder:text-fg-subtle transition-[border-color,background-color] duration-fast ease",
-    "hover:border-line-strong focus-visible:border-fg-subtle focus-visible:outline-offset-2",
+    "ctl w-full rounded-control border border-line bg-surface px-4 text-base text-fg [--ring-offset:2px]",
+    "placeholder:text-fg-subtle hover:border-line-strong focus-visible:border-fg-subtle",
     "disabled:cursor-not-allowed disabled:opacity-50",
     "aria-[invalid=true]:border-brand-ink",
 ].join(" ");
@@ -37,17 +39,24 @@ interface FieldProps {
     children: React.ReactElement<React.HTMLAttributes<HTMLElement> & { id?: string }>;
 }
 
-/** Etiqueta visible + control + ayuda/error, ya conectados por id y aria. */
+/**
+ * Etiqueta visible + control + ayuda/error, ya conectados por id y aria. El error y la ayuda se
+ * despliegan y se pliegan con Collapse (alto con resorte y fundido); el borde de error entra con
+ * transición. Ids estables (`<id>-hint`, `<id>-error`): aria-describedby solo los nombra mientras
+ * hay texto. El error vive en una región aria-live siempre montada (se anuncia al aparecer). Al
+ * plegarse, AnimatePresence conserva el último texto hasta que termina de salir. Sin estado: sirve
+ * desde un Server Component (Collapse es la única isla cliente).
+ */
 export function Field({ label, hint, error, id, className, children }: FieldProps) {
     const auto = React.useId();
     const controlId = id ?? children.props.id ?? `f${auto}`;
-    const hintId = hint ? `${controlId}-hint` : undefined;
-    const errorId = error ? `${controlId}-error` : undefined;
-    const describedBy = [children.props["aria-describedby"], hintId, errorId].filter(Boolean).join(" ") || undefined;
+    const hintId = `${controlId}-hint`;
+    const errorId = `${controlId}-error`;
+    const describedBy = [children.props["aria-describedby"], hint ? hintId : null, error ? errorId : null].filter(Boolean).join(" ") || undefined;
 
     return (
-        <div className={cn("flex flex-col gap-2", className)}>
-            <label htmlFor={controlId} className="type-label text-fg-subtle">
+        <div className={cn("flex flex-col", className)}>
+            <label htmlFor={controlId} className="type-label pb-2 text-fg-subtle">
                 {label}
             </label>
             {React.cloneElement(children, {
@@ -55,14 +64,18 @@ export function Field({ label, hint, error, id, className, children }: FieldProp
                 "aria-describedby": describedBy,
                 "aria-invalid": error ? true : children.props["aria-invalid"],
             })}
-            {hint ? (
-                <p id={hintId} className="type-label font-normal text-fg-subtle">
+            <Collapse open={!!hint}>
+                <p id={hintId} className="type-label pt-2 font-normal text-fg-subtle">
                     {hint}
                 </p>
-            ) : null}
-            <p id={errorId} aria-live="polite" className={cn("type-label text-brand-ink", !error && "sr-only")}>
-                {error}
-            </p>
+            </Collapse>
+            <div aria-live="polite">
+                <Collapse open={!!error}>
+                    <p id={errorId} className="type-label pt-2 text-brand-ink">
+                        {error}
+                    </p>
+                </Collapse>
+            </div>
         </div>
     );
 }

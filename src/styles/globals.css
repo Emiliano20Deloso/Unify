@@ -116,21 +116,21 @@
 }
 
 /* ── La línea (RouteLine) ─────────────────────────────────────────────── */
+/* draw: el trazo se dibuja con el resorte layout y el punto de destino llega cuando el trazo
+   visualmente termina (duración visual del resorte), con fundido y escala 0.6 → 1. */
 .route-line[data-draw] .route-line__track {
   transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform var(--dur-slower) var(--ease-out) 120ms;
+  transition: transform var(--spring-layout-dur) var(--spring-layout) 120ms;
 }
 .route-line[data-draw][data-orientation="vertical"] .route-line__track {
   transform: scaleY(0);
-  transform-origin: center top;
 }
 .route-line[data-draw] .route-line__end {
   opacity: 0;
   transform: scale(0.6);
   transition:
-    opacity var(--dur-base) var(--ease-out) calc(var(--dur-slower) - 80ms),
-    transform var(--dur-base) var(--ease-out) calc(var(--dur-slower) - 80ms);
+    opacity var(--dur-ui) var(--ease-out) calc(var(--dur-layout) + 40ms),
+    transform var(--spring-ui-dur) var(--spring-ui) calc(var(--dur-layout) + 40ms);
 }
 .route-line[data-draw][data-inview] .route-line__track {
   transform: none;
@@ -143,7 +143,7 @@
   .route-line[data-draw] .route-line__track,
   .route-line[data-draw] .route-line__end {
     transform: none;
-    transition: opacity var(--dur-slow) var(--ease-out);
+    transition: opacity var(--dur-layout) var(--ease-out);
   }
   .route-line[data-draw] .route-line__track {
     opacity: 0;
@@ -539,6 +539,305 @@ html:active-view-transition-type(locale)::view-transition-new(site-footer) {
 }
 ::view-transition-new(.morph) {
   animation: m-fade-in var(--dur-page-in) var(--ease-out) var(--page-in-delay) both;
+}
+
+/* ══ Controles (botones, enlaces, niveles, contador, interruptor, campos, acordeón) ══════════
+   Color y borde: --dur-micro + --ease. Opacidad (deshabilitar): --dur-exit. Lo que se mueve o
+   cambia de tamaño: resortes. Todo con transiciones (se redirigen a media animación), salvo lo
+   que Radix necesita como keyframes (acordeón). */
+
+/* ── Foco: el anillo entra animado en todo lo enfocable ───────────────── */
+/* Es una animación y no una transición: vale aunque el elemento fije su propio transition. Pasa de
+   transparente a fg y se acerca de 6 px a su separación final. Especificidad 0: cualquier animación
+   propia del elemento manda. */
+@keyframes m-focus-in {
+  from {
+    outline-color: rgb(var(--c-fg) / 0);
+    outline-offset: 6px;
+  }
+}
+:where(:focus-visible) {
+  animation: m-focus-in var(--dur-micro) var(--ease-out);
+}
+
+/* Enlace de salto: siempre colocado, invisible hasta recibir el foco; entra y sale con fundido y
+   4 px (antes aparecía y desaparecía de golpe con sr-only). Sigue siendo legible por lectores. */
+body > a[href="#main"] {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  z-index: 50;
+  width: auto;
+  height: auto;
+  margin: 0;
+  clip: auto;
+  overflow: visible;
+  white-space: nowrap;
+  opacity: 0;
+  translate: 0 -4px;
+  pointer-events: none;
+  transition:
+    opacity var(--dur-exit) var(--ease-exit),
+    translate var(--dur-exit) var(--ease-exit);
+}
+body > a[href="#main"]:focus {
+  opacity: 1;
+  translate: none;
+  pointer-events: auto;
+  transition:
+    opacity var(--dur-ui) var(--ease-out),
+    translate var(--spring-ui-dur) var(--spring-ui);
+}
+
+/* ── Control base (.ctl): color, opacidad, presión y anillo con transición ── */
+/* El anillo existe siempre transparente: al perder el foco también se va con transición. La presión
+   usa la propiedad scale (se suma a cualquier transform): baja en 100 ms y regresa con resorte. */
+.ctl {
+  --press-dur: var(--spring-micro-dur);
+  --press-ease: var(--spring-micro);
+  outline: 2px solid rgb(var(--c-fg) / 0);
+  outline-offset: 6px;
+  transition-property: background-color, border-color, color, opacity, scale, outline-color, outline-offset;
+  transition-duration:
+    var(--dur-micro), var(--dur-micro), var(--dur-micro), var(--dur-exit), var(--press-dur), var(--dur-micro),
+    var(--dur-micro);
+  transition-timing-function: var(--ease), var(--ease), var(--ease), var(--ease), var(--press-ease), var(--ease-out), var(--ease-out);
+}
+.ctl:focus-visible,
+.ctl:has(> input:focus-visible) {
+  outline-color: rgb(var(--c-fg));
+  outline-offset: var(--ring-offset, 3px);
+}
+.ctl-press:active:not(:disabled, [aria-disabled="true"]) {
+  --press-dur: 100ms;
+  --press-ease: var(--ease-out);
+  scale: var(--press-scale, 0.97);
+}
+
+/* Enlace con flecha: el subrayado se dibuja de izquierda a derecha y la flecha avanza 2 px. */
+.ctl-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: calc(18px + 0.625rem); /* deja fuera la flecha (18 px) y el espacio (gap-2.5) */
+  top: calc(50% + 0.72em);
+  height: 1px;
+  background: currentColor;
+  scale: 0 1;
+  transform-origin: left center;
+  transition: scale var(--spring-ui-dur) var(--spring-ui);
+}
+.ctl-link__arrow {
+  transition: translate var(--spring-micro-dur) var(--spring-micro);
+}
+.ctl-link:focus-visible::after {
+  scale: 1 1;
+}
+.ctl-link:focus-visible .ctl-link__arrow {
+  translate: 2px 0;
+}
+@media (hover: hover) {
+  .ctl-link:hover::after {
+    scale: 1 1;
+  }
+  .ctl-link:hover .ctl-link__arrow {
+    translate: 2px 0;
+  }
+}
+
+/* ── Segmented: una pastilla que se desliza (columnas iguales, sin medir) ── */
+.segmented {
+  --seg-gap: 0.75rem;
+  position: relative;
+  display: grid;
+  gap: var(--seg-gap);
+  grid-template-columns: repeat(var(--seg-n), minmax(0, 1fr));
+}
+.segmented__pill {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  /* 100 % en translate es el ancho de la propia pastilla (una columna). */
+  --w: calc((100% - (var(--seg-n) - 1) * var(--seg-gap)) / var(--seg-n));
+  --x: calc(var(--seg-i) * (100% + var(--seg-gap)));
+}
+.segmented__pill:not([data-visible]) {
+  opacity: 0;
+}
+/* "Elegido": montado en todas las opciones; solo cambian opacidad y 4 px. */
+.segmented__tag {
+  opacity: 0;
+  translate: 0 4px;
+  transition:
+    opacity var(--dur-exit) var(--ease-exit),
+    translate var(--spring-ui-dur) var(--spring-ui);
+}
+[data-checked] > * > .segmented__tag {
+  opacity: 1;
+  translate: none;
+  transition:
+    opacity var(--dur-ui) var(--ease-out) 60ms,
+    translate var(--spring-ui-dur) var(--spring-ui) 60ms;
+}
+
+/* ── Interruptor (Switch) ──────────────────────────────────────────────── */
+.switch__track {
+  position: relative;
+  flex-shrink: 0;
+  width: 3rem;
+  height: 1.75rem;
+  border-radius: 9999px;
+  border: 1px solid var(--line-strong);
+  background-color: rgb(var(--c-elevated));
+  outline: 2px solid rgb(var(--c-fg) / 0);
+  outline-offset: 6px;
+  transition:
+    background-color var(--dur-micro) var(--ease),
+    border-color var(--dur-micro) var(--ease),
+    opacity var(--dur-exit) var(--ease),
+    outline-color var(--dur-micro) var(--ease-out),
+    outline-offset var(--dur-micro) var(--ease-out);
+}
+.switch__thumb {
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 9999px;
+  background-color: rgb(var(--c-fg));
+  transition:
+    translate var(--spring-ui-dur) var(--spring-ui),
+    scale var(--spring-micro-dur) var(--spring-micro);
+}
+.switch__input:checked + .switch__track {
+  border-color: rgb(var(--c-brand));
+  background-color: rgb(var(--c-brand));
+}
+.switch__input:checked + .switch__track > .switch__thumb {
+  translate: 1.25rem 0;
+}
+.switch__input:focus-visible + .switch__track {
+  outline-color: rgb(var(--c-fg));
+  outline-offset: 3px;
+}
+.switch__input:disabled + .switch__track {
+  opacity: 0.4;
+}
+/* Al presionar, la perilla cede un poco (respuesta inmediata antes de soltar). */
+.switch:active > .switch__input:not(:disabled) + .switch__track > .switch__thumb {
+  scale: 0.9;
+  transition:
+    translate var(--spring-ui-dur) var(--spring-ui),
+    scale 100ms var(--ease-out);
+}
+
+/* ── Acordeón ──────────────────────────────────────────────────────────── */
+/* El contenido siempre está montado (forceMount): con keyframes, Radix Presence se queda montado
+   (alto 0) si se cierra a media apertura. Aquí son transiciones, que se redirigen desde donde van:
+   el alto con grid-template-rows 0fr ↔ 1fr (sigue al contenido, sin medir), el fundido en el texto.
+   Van en hijos del nodo de Radix porque Radix pone transition-duration: 0s en línea al medir.
+   Cerrado: visibility hidden al terminar (fuera del árbol de accesibilidad y del Tab). */
+.accordion-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition:
+    grid-template-rows var(--spring-ui-dur) var(--spring-ui),
+    visibility 0s var(--spring-ui-dur);
+}
+[data-state="open"] > .accordion-panel {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition:
+    grid-template-rows var(--spring-layout-dur) var(--spring-layout),
+    visibility 0s;
+}
+.accordion-panel > div {
+  min-height: 0;
+  overflow: clip;
+  overflow-clip-margin: 6px;
+}
+.accordion-content__inner {
+  opacity: 0;
+  transition: opacity var(--dur-exit) var(--ease-exit);
+}
+[data-state="open"] > .accordion-panel .accordion-content__inner {
+  opacity: 1;
+  transition: opacity var(--dur-ui) var(--ease-out) 60ms;
+}
+.accordion-icon {
+  transition:
+    rotate var(--spring-ui-dur) var(--spring-ui),
+    color var(--dur-micro) var(--ease);
+}
+[data-state="open"] > .accordion-icon {
+  rotate: 45deg;
+}
+
+/* ── La línea: redibujo y latido (RouteLine redraw / pulse) ───────────── */
+.route-line__track {
+  transform-origin: left center;
+}
+.route-line[data-orientation="vertical"] .route-line__track {
+  transform-origin: center top;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ctl-press:active:not(:disabled, [aria-disabled="true"]) {
+    scale: none;
+  }
+  .ctl-link::after {
+    scale: 1 1;
+    opacity: 0;
+    transition: opacity var(--dur-micro) var(--ease);
+  }
+  .ctl-link:focus-visible::after {
+    opacity: 1;
+  }
+  .ctl-link__arrow {
+    transition: none;
+    translate: none !important;
+  }
+  @media (hover: hover) {
+    .ctl-link:hover::after {
+      opacity: 1;
+    }
+  }
+  body > a[href="#main"],
+  body > a[href="#main"]:focus {
+    translate: none;
+  }
+  /* Niveles: sin pastilla que viaja; la opción elegida cambia de fondo y borde con fundido. */
+  .segmented__pill {
+    display: none;
+  }
+  .segmented > label[data-checked] {
+    border-color: rgb(var(--c-fg));
+    background-color: rgb(var(--c-elevated));
+  }
+  .segmented__tag,
+  [data-checked] > * > .segmented__tag {
+    translate: none;
+  }
+  .switch__thumb {
+    transition: none;
+  }
+  /* Alto al instante; queda el fundido del texto (al cerrar, el alto cambia cuando ya no se ve). */
+  .accordion-panel,
+  [data-state="open"] > .accordion-panel {
+    grid-template-rows: 1fr;
+    transition: visibility 0s;
+  }
+  [data-state="closed"] > .accordion-panel {
+    max-height: 0;
+    transition:
+      max-height 0s var(--dur-exit),
+      visibility 0s var(--dur-exit);
+  }
+  .accordion-icon {
+    transition: color var(--dur-micro) var(--ease);
+  }
 }
 
 /* ── Movimiento reducido: quedan los fundidos ─────────────────────────── */

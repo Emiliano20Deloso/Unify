@@ -3,8 +3,12 @@
 import NumberFlow from "@number-flow/react";
 import { formatMXN } from "@/lib/pricing/format";
 import { cn } from "@/lib";
+import { EASE_OUT, SPRING_CSS } from "@/lib/motion";
 
 const FORMAT = { style: "currency", currency: "MXN", maximumFractionDigits: 0 } as const;
+/** Las cifras ruedan y se reacomodan con el resorte ui (sin rebote); los dígitos nuevos entran con fundido. */
+const SPIN = SPRING_CSS.ui;
+const FADE = { duration: 280, easing: `cubic-bezier(${EASE_OUT.join(", ")})` };
 
 interface PriceProps {
     /** Pesos enteros. */
@@ -15,7 +19,7 @@ interface PriceProps {
 }
 
 /**
- * Cifra en MXN que rueda al cambiar (NumberFlow; respeta reduced motion). El lector de pantalla
+ * Cifra en MXN que rueda al cambiar con el resorte ui (NumberFlow; respeta reduced motion). El lector de pantalla
  * recibe el texto de formatMXN, no los dígitos animados. Tamaño y peso por className (type-figure…).
  */
 export function Price({ value, currency = false, className }: PriceProps) {
@@ -29,9 +33,9 @@ export function Price({ value, currency = false, className }: PriceProps) {
                 locales="es-MX"
                 format={FORMAT}
                 suffix={currency ? " MXN" : undefined}
-                transformTiming={{ duration: 450, easing: "cubic-bezier(0.22, 1, 0.36, 1)" }}
-                spinTiming={{ duration: 450, easing: "cubic-bezier(0.22, 1, 0.36, 1)" }}
-                opacityTiming={{ duration: 250, easing: "ease-out" }}
+                transformTiming={SPIN}
+                spinTiming={SPIN}
+                opacityTiming={FADE}
             />
         </span>
     );
