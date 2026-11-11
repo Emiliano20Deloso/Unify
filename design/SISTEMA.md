@@ -1,5 +1,7 @@
 # Sistema Nocturno · guía para construir páginas
 
+Para VER tu trabajo sin depender de un navegador abierto: `node scripts/shot.mjs pasos.json` (Chrome sin cabeza; capturas de escritorio y de móvil real a 390 px, clics, tecleo y errores de consola; instrucciones en el encabezado del script; guarda las capturas en `.shots/`).
+
 Revisa siempre en **`/dev/ui`** (muestrario de todo) y **`/dev/frame?path=/tu-ruta`** (la ruta en 390×844 y 768×1024 lado a lado). Maqueta: `design/referencia/B-Nocturno-*.dc.html`.
 
 ## Tokens y clases (`src/styles/tokens.css` → `tailwind.config.ts`)
