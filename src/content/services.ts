@@ -7,7 +7,7 @@ import { photos } from "./photos";
 /** Se cotizan en línea: llevan al cotizador de /tarifas. */
 export const ONLINE_SERVICES = [
     { id: "point", image: { src: photos.servicePoint, position: "40% 55%" } },
-    { id: "airport", image: { src: photos.serviceAirport, position: "50% 55%" } },
+    { id: "airport", image: { src: photos.serviceAirport, position: "38% 52%" } },
 ] as const satisfies readonly { id: string; image: { src: StaticImageData; position: string } }[];
 
 /** Cotización personalizada por WhatsApp (buildSpecialQuoteUrl con su tipo). */

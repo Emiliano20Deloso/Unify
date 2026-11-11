@@ -95,7 +95,7 @@ export function AboutCare({ t }: Props) {
                 alt={t.care.imageAlt}
                 position={aboutImages.care.position}
                 sizes="(min-width: 1440px) 1280px, 92vw"
-                className="aspect-[4/3] md:aspect-[21/9]"
+                className="aspect-[4/3] md:aspect-[2/1]"
             />
             <ul className="mt-12 grid gap-x-8 gap-y-8 sm:grid-cols-2 md:mt-16 lg:grid-cols-3 lg:gap-y-12">
                 {t.care.items.map((item) => (

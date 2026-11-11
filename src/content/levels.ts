@@ -110,7 +110,7 @@ const copy = {
         cta: "Cotizar {level}",
         seeAll: "Ver tarifas",
         amenities: {
-            title: "Amenities a bordo",
+            title: "A bordo",
             text: "Lo que encuentras en el vehículo según el nivel que elijas.",
             caption: "Amenities por nivel de servicio",
             amenityHeader: "Amenity",
@@ -119,6 +119,10 @@ const copy = {
             savory: "Salado",
             none: "No incluye",
             note: "Variedades sujetas a disponibilidad.",
+        },
+        /** Comparativa de /servicios. */
+        compare: {
+            caption: "Comparativa de niveles",
         },
     },
     en: {
@@ -130,7 +134,7 @@ const copy = {
         cta: "Quote {level}",
         seeAll: "See pricing",
         amenities: {
-            title: "On-board amenities",
+            title: "On board",
             text: "What you'll find in the car, depending on the level you choose.",
             caption: "Amenities by service level",
             amenityHeader: "Amenity",
@@ -139,6 +143,9 @@ const copy = {
             savory: "Savory",
             none: "Not included",
             note: "Varieties subject to availability.",
+        },
+        compare: {
+            caption: "Level comparison",
         },
     },
 } satisfies Record<Locale, unknown>;

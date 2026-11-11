@@ -100,6 +100,12 @@ const copy = {
         /** "{origin}", "{destination}" y "{km}" se sustituyen. */
         whatsappContext: "Ruta: {origin} → {destination} (aprox. {km} km).",
         seeAll: "Ver todas las rutas",
+        /** Rótulos de grupo en /tarifas. */
+        inZoneGroup: "Dentro de la zona de servicio",
+        outOfZoneGroup: "Fuera de la ciudad",
+        outOfZoneGroupText: "Sin tarifa en línea: te enviamos una cotización a la medida por WhatsApp.",
+        viaWhatsapp: "Por WhatsApp",
+        external: "(abre WhatsApp)",
     },
     en: {
         title: "Popular routes",
@@ -113,6 +119,11 @@ const copy = {
         outOfZoneHint: "Outside the service area",
         whatsappContext: "Route: {origin} → {destination} (approx. {km} km).",
         seeAll: "See all routes",
+        inZoneGroup: "Within the service area",
+        outOfZoneGroup: "Outside the city",
+        outOfZoneGroupText: "No online fare: we send you a tailored quote on WhatsApp.",
+        viaWhatsapp: "On WhatsApp",
+        external: "(opens WhatsApp)",
     },
 } satisfies Record<Locale, unknown>;
 
