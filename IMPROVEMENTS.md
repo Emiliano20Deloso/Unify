@@ -18,8 +18,13 @@ Plan de modernización de la plataforma. Léelo antes de tocar código.
     `config/pricing.json`. Las rutas frecuentes y el ejemplo de `/tarifas` usan el mismo motor y la misma distancia.
 - **Contenido** en `src/content` (compartido) y `src/i18n/dictionaries` (por página). Textos legales en
   `src/content/legal`. El sitio anterior (`legacy/`) se migró y se borró.
+- **Movimiento** (pasada de nov-2026): toda acción y todo cambio de estado va animado, sin cortes, brincos
+  ni flashazos: transición entre páginas (también atrás y adelante), entrada en secuencia de cada cabecera,
+  apariciones al hacer scroll, controles, los dos cotizadores, legales, pie y 404. Reglas de uso diario en
+  `design/SISTEMA.md` § Movimiento; arquitectura en `design/MOVIMIENTO.md`.
 - **Herramientas**: `/dev/ui` (muestrario) y `/dev/frame` (vista móvil/tableta) solo en desarrollo;
-  `scripts/shot.mjs` para capturas sin cabeza.
+  `scripts/shot.mjs` para capturas sin cabeza; `scripts/motion-audit.mjs` mide cuadro por cuadro cada
+  interacción (`scripts/motion/README.md`; 170 escenarios en `scripts/motion/escenarios.json`).
 
 ### Pendiente del flujo de reservas
 
