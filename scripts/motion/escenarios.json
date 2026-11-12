@@ -1397,41 +1397,6 @@
       ]
     },
     {
-      "id": "S3-testimonios",
-      "vp": [
-        "m",
-        "d"
-      ],
-      "setup": [
-        {
-          "op": "goto",
-          "url": "/"
-        },
-        {
-          "op": "eval",
-          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
-        }
-      ],
-      "action": [
-        {
-          "op": "scroll",
-          "selector": "#testimonios"
-        }
-      ],
-      "expect": {
-        "animated": true
-      },
-      "maxMs": 2000,
-      "post": [
-        {
-          "op": "eval",
-          "label": "la sección se reveló con fundido y nada quedó a medias",
-          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"testimonios\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
-          "equals": "ok"
-        }
-      ]
-    },
-    {
       "id": "S4-cifras",
       "vp": [
         "d",
@@ -6917,6 +6882,491 @@
           "op": "eval",
           "label": "con el foco de teclado el subrayado se traza",
           "expr": "(() => { const a = document.activeElement; const o = getComputedStyle(a, '::after'); return a.matches('footer .footer-link:focus-visible') && (matchMedia('(prefers-reduced-motion: reduce)').matches ? o.opacity === '1' : (o.scale === '1' || o.scale === '1 1')); })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "LP1-linea-avanza",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "wait",
+          "ms": 600
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "y": 2400,
+          "smooth": true
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200,
+      "post": [
+        {
+          "op": "eval",
+          "label": "el trazo sigue al scroll y el destino sigue vacío (reducido: fija)",
+          "expr": "(() => { const lp = document.querySelector('.route-progress'); if (!lp || getComputedStyle(lp).display !== 'flex') return 'sin línea'; const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches; const tr = getComputedStyle(lp.querySelector('.route-progress__track'), '::after'); const end = getComputedStyle(lp.querySelector('.route-progress__end')).backgroundColor; const max = document.documentElement.scrollHeight - innerHeight; const p = max > 0 ? scrollY / max : 0; if (reduced) return tr.content === 'none' && end === 'rgba(0, 0, 0, 0)' ? 'ok' : 'avanza con movimiento reducido'; const parts = tr.scale.split(' '); const s = parseFloat(parts[1] ?? parts[0]); if (Math.abs(s - p) > 0.02) return 'trazo ' + s.toFixed(3) + ' vs scroll ' + p.toFixed(3); const filled = end === 'rgb(242, 241, 238)'; if (filled !== false) return 'destino ' + end; return 'ok'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "LP2-linea-destino",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/nosotros"
+        },
+        {
+          "op": "wait",
+          "ms": 600
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "footer[data-site-chrome]",
+          "block": "end"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "al final de la página",
+          "expr": "Math.ceil(scrollY + innerHeight) >= document.documentElement.scrollHeight",
+          "equals": true
+        },
+        {
+          "op": "eval",
+          "label": "trazo completo y destino relleno (reducido: fija, destino vacío)",
+          "expr": "(() => { const lp = document.querySelector('.route-progress'); if (!lp || getComputedStyle(lp).display !== 'flex') return 'sin línea'; const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches; const tr = getComputedStyle(lp.querySelector('.route-progress__track'), '::after'); const end = getComputedStyle(lp.querySelector('.route-progress__end')).backgroundColor; const max = document.documentElement.scrollHeight - innerHeight; const p = max > 0 ? scrollY / max : 0; if (reduced) return tr.content === 'none' && end === 'rgba(0, 0, 0, 0)' ? 'ok' : 'avanza con movimiento reducido'; const parts = tr.scale.split(' '); const s = parseFloat(parts[1] ?? parts[0]); if (Math.abs(s - p) > 0.02) return 'trazo ' + s.toFixed(3) + ' vs scroll ' + p.toFixed(3); const filled = end === 'rgb(242, 241, 238)'; if (filled !== true) return 'destino ' + end; return 'ok'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "LP2b-linea-destino-portada",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "wait",
+          "ms": 600
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "footer[data-site-chrome]",
+          "block": "end"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "al final de la página",
+          "expr": "Math.ceil(scrollY + innerHeight) >= document.documentElement.scrollHeight",
+          "equals": true
+        },
+        {
+          "op": "eval",
+          "label": "trazo completo y destino relleno (reducido: fija, destino vacío)",
+          "expr": "(() => { const lp = document.querySelector('.route-progress'); if (!lp || getComputedStyle(lp).display !== 'flex') return 'sin línea'; const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches; const tr = getComputedStyle(lp.querySelector('.route-progress__track'), '::after'); const end = getComputedStyle(lp.querySelector('.route-progress__end')).backgroundColor; const max = document.documentElement.scrollHeight - innerHeight; const p = max > 0 ? scrollY / max : 0; if (reduced) return tr.content === 'none' && end === 'rgba(0, 0, 0, 0)' ? 'ok' : 'avanza con movimiento reducido'; const parts = tr.scale.split(' '); const s = parseFloat(parts[1] ?? parts[0]); if (Math.abs(s - p) > 0.02) return 'trazo ' + s.toFixed(3) + ' vs scroll ' + p.toFixed(3); const filled = end === 'rgb(242, 241, 238)'; if (filled !== true) return 'destino ' + end; return 'ok'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "LP7-linea-oculta-en-legales",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/privacidad"
+        },
+        {
+          "op": "wait",
+          "ms": 600
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "y": 900,
+          "smooth": true
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "en legales manda el índice: la línea de progreso no se muestra",
+          "expr": "getComputedStyle(document.querySelector('.route-progress')).display",
+          "equals": "none"
+        },
+        {
+          "op": "eval",
+          "label": "el punto del índice sí está",
+          "expr": "!!document.querySelector('[data-toc-dot][data-visible]')",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "LP3-linea-cambio-de-pagina",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "scroll",
+          "y": 2400,
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "header nav a[href=\"/servicios\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200,
+      "post": [
+        {
+          "op": "eval",
+          "label": "página nueva arriba",
+          "expr": "[location.pathname, Math.round(scrollY)]",
+          "equals": [
+            "/servicios",
+            0
+          ]
+        },
+        {
+          "op": "eval",
+          "label": "el avance volvió a cero",
+          "expr": "(() => { const lp = document.querySelector('.route-progress'); if (!lp || getComputedStyle(lp).display !== 'flex') return 'sin línea'; const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches; const tr = getComputedStyle(lp.querySelector('.route-progress__track'), '::after'); const end = getComputedStyle(lp.querySelector('.route-progress__end')).backgroundColor; const max = document.documentElement.scrollHeight - innerHeight; const p = max > 0 ? scrollY / max : 0; if (reduced) return tr.content === 'none' && end === 'rgba(0, 0, 0, 0)' ? 'ok' : 'avanza con movimiento reducido'; const parts = tr.scale.split(' '); const s = parseFloat(parts[1] ?? parts[0]); if (Math.abs(s - p) > 0.02) return 'trazo ' + s.toFixed(3) + ' vs scroll ' + p.toFixed(3); const filled = end === 'rgb(242, 241, 238)'; if (filled !== false) return 'destino ' + end; return 'ok'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "LP4-linea-atras",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "scroll",
+          "y": 2400,
+          "wait": 900
+        },
+        {
+          "op": "eval",
+          "expr": "document.querySelector('a[href=\"/servicios\"]').click()"
+        },
+        {
+          "op": "wait",
+          "ms": 1800
+        }
+      ],
+      "action": [
+        {
+          "op": "eval",
+          "expr": "history.back()"
+        }
+      ],
+      "expect": {
+        "animated": true,
+        "maxScrollFrames": 1
+      },
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "ruta y scroll finales",
+          "expr": "[location.pathname, Math.round(scrollY)]",
+          "equals": [
+            "/",
+            2400
+          ]
+        },
+        {
+          "op": "eval",
+          "label": "el avance corresponde al scroll restaurado",
+          "expr": "(() => { const lp = document.querySelector('.route-progress'); if (!lp || getComputedStyle(lp).display !== 'flex') return 'sin línea'; const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches; const tr = getComputedStyle(lp.querySelector('.route-progress__track'), '::after'); const end = getComputedStyle(lp.querySelector('.route-progress__end')).backgroundColor; const max = document.documentElement.scrollHeight - innerHeight; const p = max > 0 ? scrollY / max : 0; if (reduced) return tr.content === 'none' && end === 'rgba(0, 0, 0, 0)' ? 'ok' : 'avanza con movimiento reducido'; const parts = tr.scale.split(' '); const s = parseFloat(parts[1] ?? parts[0]); if (Math.abs(s - p) > 0.02) return 'trazo ' + s.toFixed(3) + ' vs scroll ' + p.toFixed(3); const filled = end === 'rgb(242, 241, 238)'; if (filled !== false) return 'destino ' + end; return 'ok'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "LP5-linea-adelante",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "scroll",
+          "y": 2400,
+          "wait": 900
+        },
+        {
+          "op": "eval",
+          "expr": "document.querySelector('a[href=\"/servicios\"]').click()"
+        },
+        {
+          "op": "wait",
+          "ms": 1800
+        },
+        {
+          "op": "eval",
+          "expr": "history.back()"
+        },
+        {
+          "op": "wait",
+          "ms": 1800
+        }
+      ],
+      "action": [
+        {
+          "op": "eval",
+          "expr": "history.forward()"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "ruta final",
+          "expr": "location.pathname",
+          "equals": "/servicios"
+        },
+        {
+          "op": "eval",
+          "label": "el avance corresponde al scroll",
+          "expr": "(() => { const lp = document.querySelector('.route-progress'); if (!lp || getComputedStyle(lp).display !== 'flex') return 'sin línea'; const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches; const tr = getComputedStyle(lp.querySelector('.route-progress__track'), '::after'); const end = getComputedStyle(lp.querySelector('.route-progress__end')).backgroundColor; const max = document.documentElement.scrollHeight - innerHeight; const p = max > 0 ? scrollY / max : 0; if (reduced) return tr.content === 'none' && end === 'rgba(0, 0, 0, 0)' ? 'ok' : 'avanza con movimiento reducido'; const parts = tr.scale.split(' '); const s = parseFloat(parts[1] ?? parts[0]); if (Math.abs(s - p) > 0.02) return 'trazo ' + s.toFixed(3) + ' vs scroll ' + p.toFixed(3); const filled = end === 'rgb(242, 241, 238)'; if (filled !== false) return 'destino ' + end; return 'ok'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "LP6-linea-idioma",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "scroll",
+          "y": 1500,
+          "wait": 900
+        },
+        {
+          "op": "eval",
+          "expr": "window.__boot = 1"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "header a[hreflang=\"en\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200,
+      "post": [
+        {
+          "op": "eval",
+          "label": "idioma y misma sesión JS (navegación de cliente)",
+          "expr": "[document.documentElement.lang.slice(0,2), window.__boot ?? null]",
+          "equals": [
+            "en",
+            1
+          ]
+        },
+        {
+          "op": "eval",
+          "label": "el avance corresponde al scroll",
+          "expr": "(() => { const lp = document.querySelector('.route-progress'); if (!lp || getComputedStyle(lp).display !== 'flex') return 'sin línea'; const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches; const tr = getComputedStyle(lp.querySelector('.route-progress__track'), '::after'); const end = getComputedStyle(lp.querySelector('.route-progress__end')).backgroundColor; const max = document.documentElement.scrollHeight - innerHeight; const p = max > 0 ? scrollY / max : 0; if (reduced) return tr.content === 'none' && end === 'rgba(0, 0, 0, 0)' ? 'ok' : 'avanza con movimiento reducido'; const parts = tr.scale.split(' '); const s = parseFloat(parts[1] ?? parts[0]); if (Math.abs(s - p) > 0.02) return 'trazo ' + s.toFixed(3) + ' vs scroll ' + p.toFixed(3); const filled = end === 'rgb(242, 241, 238)'; if (filled !== false) return 'destino ' + end; return 'ok'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S31-niveles-filas",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#niveles"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"niveles\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        },
+        {
+          "op": "eval",
+          "label": "auto, a bordo (bebida, dulce, salado) y botón alineados fila con fila",
+          "expr": "(() => { const cards = [...document.querySelectorAll('section[aria-labelledby=\"niveles\"] [data-react-card]')]; if (cards.length !== 3) return 'tarjetas: ' + cards.length; const rows = cards.map((c) => [c.querySelector('h4').previousElementSibling, c.querySelector('h4'), ...c.querySelectorAll('dl > div'), c.querySelector('a')]); if (rows.some((r) => r.length !== 6 || r.some((e) => !e))) return 'faltan filas'; if (cards.some((c) => c.querySelectorAll('dt').length !== 3)) return 'faltan datos'; if (innerWidth < 768) return 'ok'; const cols = innerWidth >= 1024 ? [0, 1, 2] : [0, 1]; for (let k = 0; k < 6; k++) { const tops = cols.map((i) => Math.round(rows[i][k].getBoundingClientRect().top)); if (Math.max(...tops) - Math.min(...tops) > 1) return 'fila ' + k + ' desalineada: ' + tops; } return 'ok'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S31b-niveles-filas-en",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/en"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#niveles"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"niveles\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        },
+        {
+          "op": "eval",
+          "label": "auto, a bordo (bebida, dulce, salado) y botón alineados fila con fila",
+          "expr": "(() => { const cards = [...document.querySelectorAll('section[aria-labelledby=\"niveles\"] [data-react-card]')]; if (cards.length !== 3) return 'tarjetas: ' + cards.length; const rows = cards.map((c) => [c.querySelector('h4').previousElementSibling, c.querySelector('h4'), ...c.querySelectorAll('dl > div'), c.querySelector('a')]); if (rows.some((r) => r.length !== 6 || r.some((e) => !e))) return 'faltan filas'; if (cards.some((c) => c.querySelectorAll('dt').length !== 3)) return 'faltan datos'; if (innerWidth < 768) return 'ok'; const cols = innerWidth >= 1024 ? [0, 1, 2] : [0, 1]; for (let k = 0; k < 6; k++) { const tops = cols.map((i) => Math.round(rows[i][k].getBoundingClientRect().top)); if (Math.max(...tops) - Math.min(...tops) > 1) return 'fila ' + k + ' desalineada: ' + tops; } return 'ok'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "L11-carga-portada-sin-antetitulo",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "nocache"
+        },
+        {
+          "op": "goto",
+          "url": "data:text/html,<body style='background:%230b0b0c'>",
+          "wait": 300
+        }
+      ],
+      "action": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 700,
+      "maxMs": 4000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "el título abre el hero y la entrada terminó entera",
+          "expr": "(() => { const h = document.getElementById('inicio-titulo'); return h.parentElement.firstElementChild === h && h.getAttribute('data-enter') === '1' && [...document.querySelectorAll('[data-enter]')].every((e) => getComputedStyle(e).opacity === '1'); })()",
           "equals": true
         }
       ]

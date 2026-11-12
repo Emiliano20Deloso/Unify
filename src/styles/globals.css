@@ -153,6 +153,92 @@
   }
 }
 
+/* ── La línea como progreso (RouteProgress, layout de [lang]) ────────────── */
+/* Fija en el margen izquierdo, a medio margen del contenido, bajo el menú (z 40) y las hojas (z 50).
+   El trazo claro sigue al scroll del documento y el destino se rellena en los últimos 64 px. Solo en
+   escritorio ancho (≥ 1280: el margen libre mide ≥ 70 px) y donde hay animation-timeline; si no, no
+   existe. La curva es linear a propósito: el avance es la posición del scroll, no un tiempo. */
+.route-progress {
+  display: none;
+}
+@supports (animation-timeline: scroll()) {
+  @media (min-width: 1280px) {
+    .route-progress {
+      position: fixed;
+      z-index: 30;
+      top: calc(var(--header-h) + 1.5rem);
+      bottom: 1.5rem;
+      left: calc(max(var(--gutter), (100% - var(--container)) / 2) - var(--gutter) / 2 - 4px);
+      display: flex;
+      width: 8px;
+      flex-direction: column;
+      align-items: center;
+      pointer-events: none;
+    }
+  }
+}
+.route-progress__start,
+.route-progress__end {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 9999px;
+}
+.route-progress__start {
+  background-color: rgb(var(--c-brand-ink));
+}
+.route-progress__end {
+  border: 1.5px solid rgb(var(--c-fg));
+  animation: route-progress-end linear both;
+  animation-timeline: scroll(root block);
+  animation-range: calc(100% - 64px) 100%;
+}
+.route-progress__track {
+  position: relative;
+  width: 1px;
+  flex: 1;
+  background-color: rgb(var(--c-route));
+}
+.route-progress__track::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgb(var(--c-fg));
+  transform-origin: center top;
+  animation: route-progress-fill linear both;
+  animation-timeline: scroll(root block);
+}
+@keyframes route-progress-fill {
+  from {
+    scale: 1 0;
+  }
+  to {
+    scale: 1 1;
+  }
+}
+@keyframes route-progress-end {
+  from {
+    background-color: transparent;
+  }
+  to {
+    background-color: rgb(var(--c-fg));
+  }
+}
+/* Páginas legales: el índice ya marca por dónde va la lectura con su propio punto rojo. Dos líneas
+   verticales con dos puntos rojos a 30 px una de otra dirían lo mismo: ahí esta no se muestra. */
+html:has([data-toc-dot]) .route-progress {
+  display: none;
+}
+/* Movimiento reducido: queda la línea fija, sin trazo que avance ni destino que se rellene. */
+@media (prefers-reduced-motion: reduce) {
+  .route-progress__track::after {
+    content: none;
+  }
+  .route-progress__end {
+    animation: none;
+  }
+}
+
 /* ══ Movimiento v2 (design/MOVIMIENTO.md §B) ═══════════════════════════════
    Atributos que escribe el script de arranque (src/lib/motion/boot.ts): html[data-motion],
    html[data-fonts], html[data-scrolled], [data-shown], [data-instant], [data-loaded].
@@ -485,6 +571,18 @@ html[data-scrolled] [data-site-header] {
   animation: m-vt-out var(--dur-page-out) var(--ease-page-out) both;
 }
 ::view-transition-new(site-footer) {
+  animation: m-fade-in var(--dur-page-in) var(--ease-out) var(--page-in-delay) both;
+}
+/* La línea como progreso: vuelve a cero con un fundido (la vieja se va con su avance, la nueva entra
+   desde arriba de la página), sin desplazarse: es parte del marco. Encima de la página, bajo el menú. */
+::view-transition-group(route-progress) {
+  animation: none;
+  z-index: 99;
+}
+::view-transition-old(route-progress) {
+  animation: m-fade-out var(--dur-page-out) var(--ease-page-out) both;
+}
+::view-transition-new(route-progress) {
   animation: m-fade-in var(--dur-page-in) var(--ease-out) var(--page-in-delay) both;
 }
 /* La hoja del menú se retira encima mientras la página cambia debajo (su propia salida, en vivo).

@@ -135,7 +135,8 @@ export function QuoteResult({ lang, dict, draft, fromPrices, estimate, hasFieldE
     const loading = view.kind === "skeleton" || (view.kind === "price" && view.stale);
     const body = view.kind === "special" ? "special" : view.kind === "error" ? "error" : "levels";
     const meta = leg ? `${fill(t.distance, { km: formatKm(leg.distanceKm) })} · ${formatDuration(leg.durationMin, lang)}` : null;
-    const note = leg ? (leg.distanceSource === "google" ? dict.places.attribution : t.approx) : view.kind === "empty" ? t.emptyText : null;
+    // Sin ruta no hay nota: el mensaje de la tarjeta vacía va una sola vez, dentro de la caja del desglose.
+    const note = leg ? (leg.distanceSource === "google" ? dict.places.attribution : t.approx) : null;
 
     return (
         <article
@@ -204,7 +205,7 @@ export function QuoteResult({ lang, dict, draft, fromPrices, estimate, hasFieldE
                                         ) : (
                                             <div className="flex min-h-[13rem] flex-col justify-center gap-3 py-4">
                                                 {view.kind === "fix" ? (
-                                                    <p className="type-small text-fg-subtle">{t.fixFields}</p>
+                                                    <p className="type-small text-balance text-center text-fg-subtle">{t.fixFields}</p>
                                                 ) : loading ? (
                                                     <>
                                                         <span className="sr-only">{t.loading}</span>
@@ -214,7 +215,7 @@ export function QuoteResult({ lang, dict, draft, fromPrices, estimate, hasFieldE
                                                         <Bar className="mt-3 h-7 w-1/3 self-end" />
                                                     </>
                                                 ) : (
-                                                    <p className="type-small text-fg-subtle">{t.emptyText}</p>
+                                                    <p className="type-small text-balance text-center text-fg-subtle">{t.emptyText}</p>
                                                 )}
                                             </div>
                                         )}

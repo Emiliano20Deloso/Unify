@@ -14,7 +14,6 @@ import {
     PopularRoutes,
     ServiceLevels,
     StatsBand,
-    Testimonials,
 } from "@/components/sections/shared";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]">): Promise<Metadata> {
@@ -37,11 +36,13 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
             <ServiceLevels lang={lang} variant="summary" tone="surface" />
             <PopularRoutes lang={lang} variant="teaser" tone="bg" />
             <CorporateBand lang={lang} tone="surface" image={photos.homeCorporate} />
-            <Testimonials lang={lang} tone="bg" />
-            <Faq lang={lang} topic="general" tone="surface" />
+            {/* Sin testimonios (decisión del dueño; el componente sigue en sections/shared). La banda de
+                empresas va en surface y el cierre en bg: preguntas en bg y una línea que las separa. */}
+            <Faq lang={lang} topic="general" tone="bg" />
             <FinalCta
                 lang={lang}
                 offset
+                separated
                 image={{ src: photos.homeFinalCta, alt: finalCtaCopy[lang].imageAlt, position: "62% 50%" }}
             />
         </PageTransition>

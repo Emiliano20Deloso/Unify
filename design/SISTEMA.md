@@ -42,6 +42,8 @@ import { QuoteWidget, QuoteCalculator } from "@/components/quote"; // ({ lang, d
 - `<Price value={450} currency className="type-figure" />` — rueda al cambiar; formatea con `formatMXN`.
 - `<RouteLine className="w-24" label="a" />` horizontal · `orientation="vertical"` · `draw` (se dibuja al entrar) · `redraw={clave}` (se recoge y se vuelve a dibujar cuando cambia, sin `key`) · `pulse={clave}` (el punto de destino late una vez). Sin `label` es decorativa.
 - `<Logo className="h-8" title={null} />` dentro de un enlace con `aria-label`.
+- **La línea como progreso** (`site/route-progress.tsx`, en el layout de `[lang]`): ● origen —— ○ destino fija a medio margen a la izquierda del contenido; el trazo claro sigue el scroll y el destino se rellena al final. Solo CSS (`animation-timeline: scroll()`), solo ≥ 1280 px y donde hay soporte; decorativa, fuera de impresión.
+  Transición de página propia (`route-progress`, fundido sin desplazamiento); con movimiento reducido queda fija, sin trazo. No pongas nada en ese margen ni le pongas un ancestro con `transform`.
 
 ## Recetas
 **Hero con foto a sangre (portada)** — el menú es transparente encima; el velo superior lo hace legible.

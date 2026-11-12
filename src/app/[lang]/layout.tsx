@@ -1,4 +1,5 @@
-// Layout raíz del sitio público (uno por idioma): fuentes, menú fijo, pie y proveedores de movimiento.
+// Layout raíz del sitio público (uno por idioma): fuentes, menú fijo, La línea como progreso, pie y
+// proveedores de movimiento.
 import "@/styles/globals.css";
 import type { Metadata, Viewport } from "next";
 import { fontVariables } from "@/styles/fonts";
@@ -7,6 +8,7 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { resolveLocale } from "@/i18n/params";
 import { InlineScript, Providers } from "@/components/motion";
 import { SiteFooter, SiteHeader } from "@/components/site";
+import { RouteProgress } from "@/components/site/route-progress";
 import { site } from "@/lib/site";
 import { BOOT_SCRIPT, NOSCRIPT_CSS } from "@/lib/motion/boot";
 
@@ -56,6 +58,8 @@ export default async function LangLayout({ children, params }: LayoutProps<"/[la
                 >
                     {t.a11y.skipToContent}
                 </a>
+                {/* Fuera de Providers y sin ancestros con transform: es position: fixed. */}
+                <RouteProgress />
                 <Providers>
                     <SiteHeader lang={lang} t={t} />
                     <main id="main" tabIndex={-1} className="outline-none">

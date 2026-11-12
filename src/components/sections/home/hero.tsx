@@ -14,7 +14,8 @@ interface HomeHeroProps {
 /**
  * Hero a sangre de la portada (maqueta B-Nocturno). Escritorio: texto arriba, bajo el menú, y el
  * cotizador montado sobre el borde inferior de la foto. Móvil: texto al pie de la foto y el
- * cotizador debajo. Entrada en secuencia con data-enter: foto → antetítulo y título → texto → cotizador.
+ * cotizador debajo. Entrada en secuencia con data-enter: foto → título → texto → cotizador. Sin antetítulo:
+ * el texto de abajo ya lo dice (t.eyebrow sigue en el diccionario).
  */
 export function HomeHero({ lang, t, quote }: HomeHeroProps) {
     return (
@@ -36,9 +37,9 @@ export function HomeHero({ lang, t, quote }: HomeHeroProps) {
                         enter
                     />
                 </div>
-                <Container className="relative pt-[22rem] sm:pt-[30.5rem] lg:pt-[calc(var(--header-h)+4rem)]">
-                    <p data-enter="1" className="type-label lg:text-[0.9375rem]">{t.eyebrow}</p>
-                    <h1 id="inicio-titulo" data-enter="1" className="type-display mt-3 max-w-4xl lg:mt-5">
+                {/* Móvil y tableta: el título cae donde antes iba el antetítulo, con aire sobre el auto. */}
+                <Container className="relative pt-[24rem] sm:pt-[32.5rem] lg:pt-[calc(var(--header-h)+4rem)]">
+                    <h1 id="inicio-titulo" data-enter="1" className="type-display max-w-4xl">
                         {t.title.map((line, i) => (
                             <Fragment key={line}>
                                 {i > 0 ? <br /> : null}

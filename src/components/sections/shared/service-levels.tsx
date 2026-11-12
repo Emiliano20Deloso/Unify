@@ -43,7 +43,14 @@ export function ServiceLevels({ lang, variant = "summary", tone = "bg", id = "ni
     );
 }
 
-/** Portada: tres tarjetas con foto. */
+/**
+ * Portada: tres tarjetas con foto y los mismos datos en el mismo orden (auto · a bordo: bebida, dulce y
+ * salado), para compararlas de un vistazo. Desde md cada franja (foto · nombre y precio · descripción ·
+ * auto · título «A bordo» · bebida · dulce · salado · botón) es una fila de la rejilla compartida por
+ * subgrid, así las filas y el botón quedan a la misma altura aunque un texto ocupe dos líneas.
+ */
+const CARD_ROWS = "md:row-span-9 md:grid md:grid-rows-subgrid md:gap-y-0";
+
 function SummaryCards({ lang, id, tone }: { lang: Locale; id: string; tone: "bg" | "surface" }) {
     const t = levelsCopy[lang];
     return (
@@ -51,13 +58,13 @@ function SummaryCards({ lang, id, tone }: { lang: Locale; id: string; tone: "bg"
         // dentro de su marco y el borde se aclara (globals.css § Secciones: data-react-card).
         <RevealGroup className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {levels[lang].map((level, i) => (
-                <Reveal key={level.id} variant="item" index={i} className={i === 2 ? "md:col-span-2 lg:col-span-1" : undefined}>
+                <Reveal key={level.id} variant="item" index={i} className={cn(CARD_ROWS, i === 2 && "md:col-span-2 lg:col-span-1")}>
                     <Card
                         as="article"
                         tone={tone === "surface" ? "elevated" : "surface"}
                         padding="none"
                         data-react-card=""
-                        className="h-full"
+                        className={cn("h-full", CARD_ROWS)}
                         aria-labelledby={`${id}-${level.id}`}
                     >
                         <Media
@@ -68,7 +75,7 @@ function SummaryCards({ lang, id, tone }: { lang: Locale; id: string; tone: "bg"
                             sizes="(min-width: 1024px) 400px, (min-width: 768px) 50vw, 100vw"
                             className="aspect-[16/7] shrink-0 md:aspect-[16/6]"
                         />
-                        <CardBody>
+                        <CardBody className="md:row-span-8 md:grid md:grid-rows-subgrid md:gap-y-0">
                             <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                                 <h3 id={`${id}-${level.id}`} className="type-heading">
                                     {level.name}
@@ -80,8 +87,21 @@ function SummaryCards({ lang, id, tone }: { lang: Locale; id: string; tone: "bg"
                                 </p>
                             </div>
                             <p className="type-small mt-3 text-fg-subtle">{level.description}</p>
-                            <FeatureList level={level} label={t.featuresLabel} className="mt-5 border-t border-line pt-5" />
-                            <div className="mt-auto pt-8">
+                            {/* El auto: primer elemento de features en los tres niveles. */}
+                            <p className="type-small mt-5 border-t border-line pt-5 font-medium text-fg">{level.features[0]}</p>
+                            <h4 className="type-label mt-5 text-fg-muted">{t.amenities.title}</h4>
+                            <dl className="mt-2 md:row-span-3 md:grid md:grid-rows-subgrid">
+                                {AMENITY_KEYS.map((key) => {
+                                    const value = level.amenities[key];
+                                    return (
+                                        <div key={key} className="grid grid-cols-[5.5rem_minmax(0,1fr)] gap-x-4 py-2 type-small">
+                                            <dt className="text-fg-subtle">{t.amenities[key]}</dt>
+                                            <dd className={value ? "text-fg" : "text-fg-subtle"}>{value ?? t.amenities.none}</dd>
+                                        </div>
+                                    );
+                                })}
+                            </dl>
+                            <div className="mt-auto pt-6">
                                 <Button asChild variant="secondary" className="w-full">
                                     <Link href={quoteHref(lang, { n: level.id })}>{fill(t.cta, { level: level.name })}</Link>
                                 </Button>

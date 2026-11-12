@@ -14,13 +14,16 @@ interface HowItWorksProps {
 // el inicio de la columna n es (n-1)·(100% + 2.5rem)/3.
 const STEP_MARK = "absolute size-2 rounded-full bg-fg-subtle";
 
-/** Cotiza → Confirma → Viaja. La línea que se dibuja es el único momento coreografiado de la portada. */
+/**
+ * Cotiza → Confirma → Viaja. La línea que se dibuja es el único momento coreografiado de la portada.
+ * Solo el título: la bajada (t.text) repetía los tres pasos de abajo; sigue en src/content.
+ */
 export function HowItWorks({ lang, tone = "surface" }: HowItWorksProps) {
     const t = howItWorksCopy[lang];
     const last = t.steps.length - 1;
     return (
         <Section tone={tone} aria-labelledby="como-funciona">
-            <SectionHeader id="como-funciona" title={t.title} text={t.text} />
+            <SectionHeader id="como-funciona" title={t.title} />
             <div className="relative">
                 {/* Escritorio: horizontal, del paso 1 al paso 3. */}
                 <RouteLine draw className="absolute left-0 top-0 hidden w-[calc((200%+5rem)/3+0.5rem)] md:flex" />
