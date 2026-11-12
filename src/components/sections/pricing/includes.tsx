@@ -70,8 +70,9 @@ export function Includes({ lang, t, tone = "bg", id = "que-incluye" }: IncludesP
                 ))}
             </RevealGroup>
 
-            <Reveal className="mt-section-sm grid gap-10 border-t border-line-strong pt-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16 lg:pt-12">
-                <div className="flex flex-col items-start gap-3">
+            {/* Cancelaciones: el texto sube, La línea se traza del aviso al viaje y los reembolsos se posan sobre ella. */}
+            <RevealGroup className="mt-section-sm grid gap-10 border-t border-line-strong pt-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16 lg:pt-12">
+                <Reveal variant="text" index={0} className="flex flex-col items-start gap-3">
                     <h3 id={`${id}-cancelaciones`} className="type-heading">
                         {c.title}
                     </h3>
@@ -79,21 +80,21 @@ export function Includes({ lang, t, tone = "bg", id = "que-incluye" }: IncludesP
                     <Button asChild variant="link" className="mt-2">
                         <Link href={localizedHref(lang, "terms")}>{c.terms}</Link>
                     </Button>
-                </div>
+                </Reveal>
                 <div className="relative">
                     {/* La línea va del aviso (●) al viaje (○): cuanto antes avisas, más se reembolsa. */}
-                    <RouteLine className="absolute left-0 top-0 hidden md:flex" />
-                    <RouteLine orientation="vertical" className="absolute bottom-2 left-0 top-1.5 md:hidden" />
+                    <RouteLine draw className="absolute left-0 top-0 hidden md:flex" />
+                    <RouteLine draw orientation="vertical" className="absolute bottom-2 left-0 top-1.5 md:hidden" />
                     <ol aria-label={c.listLabel} className="grid gap-8 pl-10 md:grid-cols-3 md:gap-x-8 md:pl-0 md:pt-10">
-                        {c.rows.map((row) => (
-                            <li key={row.notice} className="flex flex-col gap-2">
+                        {c.rows.map((row, i) => (
+                            <Reveal as="li" variant="figure" index={1 + i} delay={120} key={row.notice} className="flex flex-col gap-2">
                                 <span className="type-figure">{row.refund}</span>
                                 <span className="type-small text-fg-subtle">{row.notice}</span>
-                            </li>
+                            </Reveal>
                         ))}
                     </ol>
                 </div>
-            </Reveal>
+            </RevealGroup>
         </Section>
     );
 }

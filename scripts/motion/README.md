@@ -34,7 +34,7 @@ node scripts/motion-audit.mjs scripts/motion/escenarios.json --check  # solo ver
 | `FLASHAZO` | Luminancia que sube/baja > 0.06 y regresa en ≤ 4 cuadros (≤ 150 ms), patrón A→B→A, o un cuadro claro (Y > 0.6) sobre una página oscura. |
 | `SIN REACCIÓN` | Se esperaba animación (`expect.animated`) y no cambió nada en el ROI. |
 | `SIN CAMBIO` | No cambió nada y tampoco se esperaba. |
-| `RM-MOVIMIENTO` | Pasada con `prefers-reduced-motion: reduce`: hubo transform/desplazamiento/alto animado (solo se permite opacidad). Las animaciones de duración 0 no cuentan (no mueven nada; React las usa en `::view-transition`). |
+| `RM-MOVIMIENTO` | Pasada con `prefers-reduced-motion: reduce`: hubo transform/desplazamiento/alto animado (solo se permite opacidad). Las animaciones de duración 0 no cuentan (no mueven nada; React las usa en `::view-transition`). El movimiento por estilo en línea solo cuenta si cambia en 3 o más cuadros seguidos: varios cambios sueltos e instantáneos (una lista que ajusta su alto con cada tecla) están permitidos. |
 | `POST FALLÓ` | Una comprobación `post` no dio lo esperado (p. ej. N8: el cambio de idioma recargó la página). |
 | `ERROR` | No se pudo medir (selector inexistente, página caída…). |
 

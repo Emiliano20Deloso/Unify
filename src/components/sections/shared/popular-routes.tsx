@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Reveal } from "@/components/motion";
+import { Reveal, RevealGroup } from "@/components/motion";
 import { ArrowIcon, Button, RouteLine, Section, SectionHeader } from "@/components/ui";
 import { fill, popularRoutes, routesCopy, type PopularRoute } from "@/content";
 import type { Locale } from "@/i18n/config";
@@ -48,21 +48,19 @@ export function PopularRoutes({ lang, variant = "teaser", tone = "bg", id = "rut
                 }
             />
             {variant === "teaser" ? (
-                <Reveal>
-                    <RouteList routes={inZone.slice(0, 3)} lang={lang} heading="h3" />
-                </Reveal>
+                <RouteList routes={inZone.slice(0, 3)} lang={lang} heading="h3" />
             ) : (
                 <div className="flex flex-col gap-section-sm">
-                    <Reveal>
+                    <div>
                         <GroupHeading id={`${id}-zona`}>{t.inZoneGroup}</GroupHeading>
                         <RouteList routes={inZone} lang={lang} heading="h4" labelledBy={`${id}-zona`} />
-                    </Reveal>
-                    <Reveal>
+                    </div>
+                    <div>
                         <GroupHeading id={`${id}-fuera`} text={t.outOfZoneGroupText}>
                             {t.outOfZoneGroup}
                         </GroupHeading>
                         <RouteList routes={outOfZone} lang={lang} heading="h4" labelledBy={`${id}-fuera`} />
-                    </Reveal>
+                    </div>
                 </div>
             )}
         </Section>
@@ -71,12 +69,12 @@ export function PopularRoutes({ lang, variant = "teaser", tone = "bg", id = "rut
 
 function GroupHeading({ id, text, children }: { id: string; text?: string; children: React.ReactNode }) {
     return (
-        <div className="mb-2 flex flex-col gap-1 md:flex-row md:items-baseline md:justify-between md:gap-8">
+        <Reveal variant="text" className="mb-2 flex flex-col gap-1 md:flex-row md:items-baseline md:justify-between md:gap-8">
             <h3 id={id} className="font-medium text-fg-muted">
                 {children}
             </h3>
             {text ? <p className="type-small max-w-[36rem] text-fg-subtle md:text-right">{text}</p> : null}
-        </div>
+        </Reveal>
     );
 }
 
@@ -92,13 +90,14 @@ function RouteList({
     labelledBy?: string;
 }) {
     return (
-        <ul aria-labelledby={labelledBy} className="border-t border-line-strong">
-            {routes.map((route) => (
-                <li key={route.slug} className="border-b border-line">
+        // Las filas suben una tras otra (60 ms). La fila (un enlace con hover propio) va dentro del li.
+        <RevealGroup as="ul" aria-labelledby={labelledBy} className="border-t border-line-strong">
+            {routes.map((route, i) => (
+                <Reveal as="li" variant="item" index={i} key={route.slug} className="border-b border-line">
                     <RouteRow route={route} lang={lang} heading={heading} />
-                </li>
+                </Reveal>
             ))}
-        </ul>
+        </RevealGroup>
     );
 }
 
@@ -120,7 +119,7 @@ function RouteRow({ route, lang, heading: Heading }: { route: PopularRoute; lang
                     >
                         <RouteLine orientation="vertical" label={t.to} />
                     </span>
-                    <span className="col-start-2 row-start-1 transition-colors duration-fast ease group-hover:text-white lg:max-w-[12rem] lg:shrink-0 xl:max-w-[20rem]">
+                    <span className="col-start-2 row-start-1 transition-colors duration-micro ease group-hover:text-white group-focus-visible:text-white lg:max-w-[12rem] lg:shrink-0 xl:max-w-[20rem]">
                         {origin}
                     </span>
                     <span
@@ -140,7 +139,7 @@ function RouteRow({ route, lang, heading: Heading }: { route: PopularRoute; lang
                             {km}
                         </span>
                     </span>
-                    <span className="col-start-2 row-start-3 transition-colors duration-fast ease group-hover:text-white lg:w-[13rem] lg:shrink-0 xl:w-[21rem]">
+                    <span className="col-start-2 row-start-3 transition-colors duration-micro ease group-hover:text-white group-focus-visible:text-white lg:w-[13rem] lg:shrink-0 xl:w-[21rem]">
                         {destination}
                     </span>
                 </Heading>
@@ -172,7 +171,7 @@ function RouteRow({ route, lang, heading: Heading }: { route: PopularRoute; lang
                 aria-hidden="true"
                 className="mt-6 flex size-11 items-center justify-center self-center rounded-full border border-line-strong text-fg lg:mt-0"
             >
-                <ArrowIcon className="size-5 transition-transform duration-fast ease-out group-hover:translate-x-1" />
+                <ArrowIcon className="size-5" />
             </span>
         </>
     );

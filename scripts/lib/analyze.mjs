@@ -391,9 +391,24 @@ export async function analyze(rec, { vp, scenario: sc, reduced }) {
     // Movimiento reducido: solo se permite opacidad.
     if (reduced) {
         for (const a of animsRec) if (a.move && !a.inf && a.dur !== 0) res.rmMoves.push({ kind: a.type, sel: a.sel, props: a.props.join(",") });
+        // Movimiento por estilo en línea (motion por rAF): solo cuenta si el estilo cambia en 3 o más
+        // cuadros SEGUIDOS (una animación). Varios cambios sueltos e instantáneos, p. ej. el alto de una
+        // lista que se ajusta con cada tecla, están permitidos con movimiento reducido.
         const mvs = new Map();
-        for (const m of rec.moves.filter((x) => x.t >= rec.t0 - 20)) mvs.set(m.sel, (mvs.get(m.sel) ?? 0) + 1);
-        for (const [sel, n] of mvs) if (n >= 2) res.rmMoves.push({ kind: "style por rAF", sel, props: `${n} cuadros` });
+        for (const m of rec.moves.filter((x) => x.t >= rec.t0 - 20)) {
+            if (!mvs.has(m.sel)) mvs.set(m.sel, []);
+            mvs.get(m.sel).push(m.f);
+        }
+        for (const [sel, fs] of mvs) {
+            fs.sort((a, b) => a - b);
+            let run = 1;
+            let best = 1;
+            for (let i = 1; i < fs.length; i++) {
+                run = fs[i] === fs[i - 1] ? run : fs[i] === fs[i - 1] + 1 ? run + 1 : 1;
+                best = Math.max(best, run);
+            }
+            if (fs.every((f) => f != null) && best >= 3) res.rmMoves.push({ kind: "style por rAF", sel, props: `${best} cuadros seguidos` });
+        }
     }
 
     // Veredicto.

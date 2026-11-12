@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Reveal } from "@/components/motion";
+import { Reveal, RevealGroup } from "@/components/motion";
 import { Button, Card, CardBody, CheckIcon, Media, Section, SectionHeader } from "@/components/ui";
 import { fill, levels, levelsCopy, type Amenities, type LevelContent } from "@/content";
 import type { Locale } from "@/i18n/config";
@@ -47,13 +47,16 @@ export function ServiceLevels({ lang, variant = "summary", tone = "bg", id = "ni
 function SummaryCards({ lang, id, tone }: { lang: Locale; id: string; tone: "bg" | "surface" }) {
     const t = levelsCopy[lang];
     return (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        // Las tres tarjetas suben en escalonado; al pasar el cursor (o con el foco dentro) la foto se acerca
+        // dentro de su marco y el borde se aclara (globals.css § Secciones: data-react-card).
+        <RevealGroup className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {levels[lang].map((level, i) => (
                 <Reveal key={level.id} variant="item" index={i} className={i === 2 ? "md:col-span-2 lg:col-span-1" : undefined}>
                     <Card
                         as="article"
                         tone={tone === "surface" ? "elevated" : "surface"}
                         padding="none"
+                        data-react-card=""
                         className="h-full"
                         aria-labelledby={`${id}-${level.id}`}
                     >
@@ -70,7 +73,7 @@ function SummaryCards({ lang, id, tone }: { lang: Locale; id: string; tone: "bg"
                                 <h3 id={`${id}-${level.id}`} className="type-heading">
                                     {level.name}
                                 </h3>
-                                <p className="flex items-baseline gap-1.5 text-sm font-medium text-fg-subtle">
+                                <p data-level-price="" className="flex items-baseline gap-1.5 text-sm font-medium text-fg-subtle">
                                     {t.from}
                                     <span className="tabular text-[1.375rem] text-fg">{formatMXN(fromPrice(level.id))}</span>
                                     {t.currency}
@@ -87,7 +90,7 @@ function SummaryCards({ lang, id, tone }: { lang: Locale; id: string; tone: "bg"
                     </Card>
                 </Reveal>
             ))}
-        </div>
+        </RevealGroup>
     );
 }
 
@@ -102,14 +105,18 @@ function SummaryCards({ lang, id, tone }: { lang: Locale; id: string; tone: "bg"
 function Comparison({ lang, id }: { lang: Locale; id: string }) {
     const t = levelsCopy[lang];
     return (
-        <Reveal>
-            <div
+        <>
+            {/* Las columnas entran escalonadas (Reveal es la propia columna: un envoltorio rompería el subgrid). */}
+            <RevealGroup
                 role="group"
                 aria-label={t.compare.caption}
                 className="grid border-y border-line-strong lg:grid-cols-3 lg:grid-rows-[auto_auto_1fr_auto_auto]"
             >
                 {levels[lang].map((level, i) => (
-                    <article
+                    <Reveal
+                        as="article"
+                        variant="item"
+                        index={i}
                         key={level.id}
                         data-level={level.id}
                         aria-labelledby={`${id}-${level.id}`}
@@ -151,11 +158,13 @@ function Comparison({ lang, id }: { lang: Locale; id: string }) {
                                 <Link href={quoteHref(lang, { n: level.id })}>{fill(t.cta, { level: level.name })}</Link>
                             </Button>
                         </div>
-                    </article>
+                    </Reveal>
                 ))}
-            </div>
-            <p className="type-label mt-5 font-normal text-fg-subtle">{t.amenities.note}</p>
-        </Reveal>
+            </RevealGroup>
+            <Reveal as="p" variant="text" className="type-label mt-5 font-normal text-fg-subtle">
+                {t.amenities.note}
+            </Reveal>
+        </>
     );
 }
 

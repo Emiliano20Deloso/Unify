@@ -325,7 +325,7 @@ export function samplerMain() {
                 const sig2 = `${s.transform}|${s.translate}|${s.scale}|${s.rotate}|${s.height}|${s.width}|${s.top}|${s.left}`;
                 const was = lastStyle.get(el);
                 lastStyle.set(el, sig2);
-                if (was !== undefined && was !== sig2) push({ k: "mv", t, sel: desc(el), style: sig2 });
+                if (was !== undefined && was !== sig2) push({ k: "mv", t, f: fno, sel: desc(el), style: sig2 });
             }
         }
         // Texto que cambia de golpe.

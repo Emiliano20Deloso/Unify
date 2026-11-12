@@ -1,6 +1,8 @@
-// Secciones de /nosotros. Todo de servidor; el único movimiento es La línea de "Quiénes somos".
+// Secciones de /nosotros. Todo de servidor. Cada sección aparece al entrar en pantalla con un solo
+// momento: el título lidera, las fotos se asientan en su marco y las listas caen escalonadas.
 import Link from "next/link";
 import { aboutImages } from "@/content";
+import { Reveal, RevealGroup } from "@/components/motion";
 import { Button, Container, Media, RouteLine, Section, SectionHeader } from "@/components/ui";
 import type { Locale } from "@/i18n/config";
 import { localizedHref } from "@/i18n/routes";
@@ -46,18 +48,23 @@ export function AboutStory({ t }: Props) {
     const [problem, answer] = t.story.paragraphs;
     return (
         <Section aria-labelledby="quienes-somos" space="lg">
-            <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
-                <h2 id="quienes-somos" className="type-title lg:col-span-4">
+            {/* El título lidera; el problema sube con el origen (●) y la respuesta llega con el destino (○). */}
+            <RevealGroup className="grid gap-10 lg:grid-cols-12 lg:gap-8">
+                <Reveal as="h2" variant="title" index={0} id="quienes-somos" className="type-title lg:col-span-4">
                     {t.story.title}
-                </h2>
+                </Reveal>
                 <div className="flex gap-6 sm:gap-8 lg:col-span-7 lg:col-start-6">
                     <RouteLine orientation="vertical" draw className="mt-[0.55em] h-auto self-stretch" />
                     <div className="flex flex-col gap-10 md:gap-14">
-                        <p className="type-lead max-w-[38rem] text-fg-muted">{problem}</p>
-                        <p className="type-lead max-w-[38rem] text-fg">{answer}</p>
+                        <Reveal as="p" variant="text" index={1} className="type-lead max-w-[38rem] text-fg-muted">
+                            {problem}
+                        </Reveal>
+                        <Reveal as="p" variant="text" index={1} delay={300} className="type-lead max-w-[38rem] text-fg">
+                            {answer}
+                        </Reveal>
                     </div>
                 </div>
-            </div>
+            </RevealGroup>
         </Section>
     );
 }
@@ -67,23 +74,26 @@ export function AboutTesla({ t }: Props) {
     return (
         <Section tone="surface" aria-labelledby="por-que-tesla">
             <div className="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-8">
-                <Media
-                    src={aboutImages.tesla.src}
-                    alt={t.tesla.imageAlt}
-                    position={aboutImages.tesla.position}
-                    sizes="(min-width: 1440px) 520px, (min-width: 1024px) 40vw, 100vw"
-                    className="aspect-[4/3] sm:aspect-[16/10] lg:col-span-5 lg:aspect-[4/5]"
-                />
+                <Reveal variant="media" className="lg:col-span-5">
+                    <Media
+                        src={aboutImages.tesla.src}
+                        alt={t.tesla.imageAlt}
+                        position={aboutImages.tesla.position}
+                        sizes="(min-width: 1440px) 520px, (min-width: 1024px) 40vw, 100vw"
+                        className="aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/5]"
+                    />
+                </Reveal>
                 <div className="lg:col-span-6 lg:col-start-7">
                     <SectionHeader id="por-que-tesla" title={t.tesla.title} text={t.tesla.text} className="md:mb-12" />
-                    <ul className="grid gap-x-8 gap-y-8 sm:grid-cols-2 sm:gap-y-10">
-                        {t.tesla.reasons.map((reason) => (
-                            <li key={reason.title} className="border-t border-line-strong pt-5">
+                    {/* Rejilla de 2 × 2: las razones entran en escalonado, con su filete. */}
+                    <RevealGroup as="ul" className="grid gap-x-8 gap-y-8 sm:grid-cols-2 sm:gap-y-10">
+                        {t.tesla.reasons.map((reason, i) => (
+                            <Reveal as="li" variant="item" index={i} key={reason.title} className="border-t border-line-strong pt-5">
                                 <h3 className="type-subheading">{reason.title}</h3>
                                 <p className="type-small mt-3 text-fg-subtle">{reason.text}</p>
-                            </li>
+                            </Reveal>
                         ))}
-                    </ul>
+                    </RevealGroup>
                 </div>
             </div>
         </Section>
@@ -95,21 +105,24 @@ export function AboutCare({ t }: Props) {
     return (
         <Section aria-labelledby="como-te-cuidamos">
             <SectionHeader id="como-te-cuidamos" title={t.care.title} text={t.care.text} />
-            <Media
-                src={aboutImages.care.src}
-                alt={t.care.imageAlt}
-                position={aboutImages.care.position}
-                sizes="(min-width: 1440px) 1280px, 92vw"
-                className="aspect-[4/3] md:aspect-[2/1]"
-            />
-            <ul className="mt-12 grid gap-x-8 gap-y-8 sm:grid-cols-2 md:mt-16 lg:grid-cols-3 lg:gap-y-12">
-                {t.care.items.map((item) => (
-                    <li key={item.title} className="border-t border-line-strong pt-5">
+            <Reveal variant="media">
+                <Media
+                    src={aboutImages.care.src}
+                    alt={t.care.imageAlt}
+                    position={aboutImages.care.position}
+                    sizes="(min-width: 1440px) 1280px, 92vw"
+                    className="aspect-[4/3] md:aspect-[2/1]"
+                />
+            </Reveal>
+            {/* Seis compromisos: escalonado corto (40 ms) para que la lista no haga esperar. */}
+            <RevealGroup as="ul" className="mt-12 grid gap-x-8 gap-y-8 [--stagger:var(--stagger-tight)] sm:grid-cols-2 md:mt-16 lg:grid-cols-3 lg:gap-y-12">
+                {t.care.items.map((item, i) => (
+                    <Reveal as="li" variant="item" index={i} key={item.title} className="border-t border-line-strong pt-5">
                         <h3 className="type-subheading">{item.title}</h3>
                         <p className="type-small mt-3 max-w-[22rem] text-fg-subtle">{item.text}</p>
-                    </li>
+                    </Reveal>
                 ))}
-            </ul>
+            </RevealGroup>
         </Section>
     );
 }
@@ -120,20 +133,26 @@ export function AboutEnvironment({ t }: Props) {
     return (
         <Section tone="surface" aria-labelledby="medio-ambiente">
             <div className="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-8">
-                <div className="lg:col-span-5">
-                    <h2 id="medio-ambiente" className="type-title">
+                <RevealGroup className="lg:col-span-5">
+                    <Reveal as="h2" variant="title" index={0} id="medio-ambiente" className="type-title">
                         {t.environment.title}
-                    </h2>
-                    <p className="type-lead mt-6 text-fg-muted">{first}</p>
-                    <p className="type-lead mt-5 text-fg-muted">{second}</p>
-                </div>
-                <Media
-                    src={aboutImages.environment.src}
-                    alt={t.environment.imageAlt}
-                    position={aboutImages.environment.position}
-                    sizes="(min-width: 1440px) 640px, (min-width: 1024px) 50vw, 100vw"
-                    className="aspect-[4/3] lg:col-span-6 lg:col-start-7"
-                />
+                    </Reveal>
+                    <Reveal as="p" variant="text" index={1} className="type-lead mt-6 text-fg-muted">
+                        {first}
+                    </Reveal>
+                    <Reveal as="p" variant="text" index={2} className="type-lead mt-5 text-fg-muted">
+                        {second}
+                    </Reveal>
+                </RevealGroup>
+                <Reveal variant="media" index={1} className="lg:col-span-6 lg:col-start-7">
+                    <Media
+                        src={aboutImages.environment.src}
+                        alt={t.environment.imageAlt}
+                        position={aboutImages.environment.position}
+                        sizes="(min-width: 1440px) 640px, (min-width: 1024px) 50vw, 100vw"
+                        className="aspect-[4/3]"
+                    />
+                </Reveal>
             </div>
         </Section>
     );
@@ -143,17 +162,22 @@ export function AboutEnvironment({ t }: Props) {
 export function AboutCta({ t, lang }: Props & { lang: Locale }) {
     return (
         <Section aria-labelledby="cotiza" space="lg">
-            <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between md:gap-12">
+            <RevealGroup className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between md:gap-12">
                 <div className="flex max-w-2xl flex-col gap-4">
-                    <h2 id="cotiza" className="type-title">
+                    <Reveal as="h2" variant="title" index={0} id="cotiza" className="type-title">
                         {t.cta.title}
-                    </h2>
-                    <p className="type-lead text-fg-subtle">{t.cta.text}</p>
+                    </Reveal>
+                    <Reveal as="p" variant="text" index={1} className="type-lead text-fg-subtle">
+                        {t.cta.text}
+                    </Reveal>
                 </div>
-                <Button size="lg" asChild className="self-start md:self-auto">
-                    <Link href={localizedHref(lang, "pricing", "cotizar")}>{t.cta.action}</Link>
-                </Button>
-            </div>
+                {/* El botón (transición propia) va envuelto. */}
+                <Reveal variant="text" index={2} className="self-start md:self-auto">
+                    <Button size="lg" asChild>
+                        <Link href={localizedHref(lang, "pricing", "cotizar")}>{t.cta.action}</Link>
+                    </Button>
+                </Reveal>
+            </RevealGroup>
         </Section>
     );
 }

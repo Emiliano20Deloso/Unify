@@ -3,7 +3,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { interiorAsientosDelanteros, rutaCosta, teslaGrisAnochecer } from "@/assets/images";
-import { Logo, LogoMark } from "@/components/brand";
+import { BrokenRoute, Logo, LogoMark } from "@/components/brand";
 import { PageTransition, Reveal, RevealGroup } from "@/components/motion";
 import {
     Accordion,
@@ -287,6 +287,34 @@ export default function UiPage() {
                         <p>Reveal: aparece una vez al entrar en pantalla, 14 px y fundido; la foto, con escala 1.03 → 1.</p>
                     </Card>
                 </Reveal>
+
+                {/* Secciones: cifras que ruedan, tarjeta que reacciona, enlace del pie y la línea de la 404. */}
+                <div className="mt-section-md grid gap-6 md:grid-cols-2">
+                    <RevealGroup id="sec-cifras" className="flex flex-wrap items-baseline gap-x-16 gap-y-6 border-t border-line pt-8 md:col-span-2">
+                        <Reveal variant="figure" index={0}>
+                            <Stat value="+1,500" label="viajes" />
+                        </Reveal>
+                        <Reveal variant="figure" index={1}>
+                            <Stat value={"98 %"} label="de satisfacción" />
+                        </Reveal>
+                    </RevealGroup>
+                    <Card id="sec-tarjeta" as="article" padding="none" data-react-card="">
+                        <Media src={interiorAsientosDelanteros} alt="" radius="none" sizes="(min-width: 768px) 640px, 100vw" className="aspect-[16/7]" />
+                        <CardBody>
+                            <p className="type-heading">data-react-card</p>
+                            <p className="type-small mt-3 text-fg-subtle">Cursor o foco dentro: la foto se acerca en su marco y el borde se aclara.</p>
+                            <Button asChild variant="secondary" className="mt-6 self-start">
+                                <Link href="#sec-tarjeta">Enfocar</Link>
+                            </Button>
+                        </CardBody>
+                    </Card>
+                    <Card id="sec-otros" tone="elevated" className="gap-8">
+                        <a href="#sec-otros" className="ctl footer-link relative inline-flex min-h-11 items-center self-start rounded-sm text-fg-muted hover:text-fg">
+                            Enlace del pie (footer-link)
+                        </a>
+                        <BrokenRoute />
+                    </Card>
+                </div>
             </Block>
 
             <Block title="Marca">

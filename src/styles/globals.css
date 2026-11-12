@@ -976,6 +976,358 @@ html[data-quote-restore] [data-draft-value] {
   }
 }
 
+/* ══ Secciones y páginas (apariciones con variedad y reacciones al cursor) ══════════════════════
+   Las apariciones son Reveal/RevealGroup (arriba); aquí van los detalles de cada pieza. Reacciones:
+   las que mueven algo solo con hover real (@media (hover: hover)) o con el foco de teclado
+   (:focus-visible / :has(:focus-visible)), nunca cambian el layout (scale/translate) y con
+   movimiento reducido se vuelven fundidos de color u opacidad. */
+
+/* ── Foto que aparece (Reveal variant="media") ─────────────────────────── */
+/* La caja se funde (y la escala 1.03 del Reveal) y, además, el encuadre se asienta dentro del marco:
+   la foto se acerca desde 1.06 con el resorte de página. Una foto no entra como un párrafo. */
+[data-reveal="media"] [data-media-frame] {
+  transition: scale var(--spring-page-dur) var(--spring-page) var(--reveal-delay, 0ms);
+}
+html[data-motion] [data-reveal="media"]:not([data-shown]) [data-media-frame],
+html[data-motion] [data-reveal-group]:not([data-shown]) [data-reveal="media"] [data-media-frame] {
+  scale: 1.06;
+}
+[data-reveal="media"][data-instant] [data-media-frame] {
+  transition: none;
+}
+
+/* ── Banda de cifras: el filete se traza de izquierda a derecha ────────── */
+.stats-band__rule {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 1px;
+  background-color: var(--line);
+  transform-origin: left center;
+}
+html[data-motion] [data-reveal-group]:not([data-shown]) .stats-band__rule {
+  translate: none;
+  scale: 0 1;
+}
+
+/* ── Tarjeta que reacciona (data-react-card): la foto se acerca dentro de su marco ── */
+[data-react-card] {
+  transition: border-color var(--dur-micro) var(--ease);
+}
+[data-react-card] [data-media-frame] {
+  transition: scale var(--spring-layout-dur) var(--spring-layout);
+}
+[data-react-card] [data-level-price] {
+  transition: color var(--dur-micro) var(--ease);
+}
+[data-react-card]:has(:focus-visible) {
+  border-color: var(--line-strong);
+}
+[data-react-card]:has(:focus-visible) [data-media-frame] {
+  scale: 1.04;
+}
+[data-react-card]:has(:focus-visible) [data-level-price] {
+  color: rgb(var(--c-fg));
+}
+
+/* ── Comparativa de niveles (servicios): la columna responde ───────────── */
+[data-level] h3 {
+  transition: color var(--dur-micro) var(--ease);
+}
+[data-level] [data-level-price] {
+  transition: translate var(--spring-ui-dur) var(--spring-ui);
+}
+[data-level]:has(:focus-visible) h3 {
+  color: rgb(var(--c-white));
+}
+/* El botón de la columna se adelanta a su propio hover: borde claro y fondo elevado (transición de .ctl). */
+[data-level]:has(:focus-visible) [data-level-cta] {
+  border-color: rgb(var(--c-fg));
+  background-color: rgb(var(--c-elevated));
+}
+[data-level]:has(:focus-visible) [data-level-price] {
+  translate: 0 -3px;
+}
+
+/* ── Rutas frecuentes: La línea se recorre en claro hasta el destino ───── */
+/* Un trazo claro crece del origen al destino encima del trazo gris; al llegar, el anillo de destino se
+   rellena. La distancia se aclara y la flecha avanza dentro de su círculo. */
+[data-route-row] .route-line__track {
+  position: relative;
+}
+[data-route-row] .route-line__track::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgb(var(--c-fg));
+  scale: 0 1;
+  transform-origin: left center;
+  transition: scale var(--spring-layout-dur) var(--spring-layout);
+}
+[data-route-row] .route-line[data-orientation="vertical"] .route-line__track::after {
+  scale: 1 0;
+  transform-origin: center top;
+}
+[data-route-row] .route-line__end {
+  transition:
+    scale var(--spring-ui-dur) var(--spring-ui),
+    background-color var(--dur-micro) var(--ease);
+}
+[data-route-row] [data-route-km] {
+  transition: color var(--dur-micro) var(--ease);
+}
+[data-route-arrow],
+[data-quote-arrow] {
+  transition:
+    border-color var(--dur-micro) var(--ease),
+    background-color var(--dur-micro) var(--ease),
+    scale var(--spring-micro-dur) var(--spring-micro);
+}
+[data-route-arrow] > svg,
+[data-quote-arrow] > svg {
+  transition: translate var(--spring-ui-dur) var(--spring-ui);
+}
+/* Activo: foco de teclado (en hover, más abajo). */
+[data-route-row]:focus-visible .route-line[data-orientation] .route-line__track::after {
+  scale: 1 1;
+}
+[data-route-row]:focus-visible .route-line__end {
+  scale: 1.25;
+  background-color: rgb(var(--c-fg));
+  transition-delay: 120ms;
+}
+[data-route-row]:focus-visible [data-route-km] {
+  color: rgb(var(--c-fg));
+}
+[data-route-row]:focus-visible [data-route-arrow],
+[data-quote-kind]:focus-visible [data-quote-arrow] {
+  border-color: rgb(var(--c-fg));
+  background-color: rgb(var(--c-elevated));
+}
+[data-route-row]:focus-visible [data-route-arrow] > svg,
+[data-quote-kind]:focus-visible [data-quote-arrow] > svg {
+  translate: 4px 0;
+}
+/* Al tocar (pantallas táctiles incluidas): el círculo de la flecha cede un poco. */
+[data-route-row]:active [data-route-arrow],
+[data-quote-kind]:active [data-quote-arrow] {
+  scale: 0.94;
+  transition:
+    border-color var(--dur-micro) var(--ease),
+    background-color var(--dur-micro) var(--ease),
+    scale 100ms var(--ease-out);
+}
+
+/* ── Cotización a la medida: el filete superior se recorre en claro ───── */
+[data-quote-kind]::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: -1px;
+  height: 1px;
+  background-color: rgb(var(--c-fg));
+  scale: 0 1;
+  transform-origin: left center;
+  transition: scale var(--spring-layout-dur) var(--spring-layout);
+}
+[data-quote-kind]:focus-visible::before {
+  scale: 1 1;
+}
+
+/* ── Pie: enlaces con subrayado que se traza ───────────────────────────── */
+.footer-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(50% + 0.72em);
+  height: 1px;
+  background-color: currentColor;
+  scale: 0 1;
+  transform-origin: left center;
+  transition: scale var(--spring-ui-dur) var(--spring-ui);
+}
+.footer-link:focus-visible::after {
+  scale: 1 1;
+}
+
+/* ── Índice legal: un solo punto que se desliza (SlidingIndicator vertical) ── */
+/* El punto se centra sobre el trazo (borde izquierdo de 1 px de la lista). */
+.toc-dot {
+  position: absolute;
+  left: -3.5px;
+  top: 1.15rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background-color: rgb(var(--c-brand-ink));
+}
+.toc-dot:not([data-visible]) {
+  opacity: 0;
+}
+.toc-link {
+  transition:
+    color var(--dur-micro) var(--ease),
+    background-color var(--dur-micro) var(--ease);
+}
+
+/* ── 404: la línea interrumpida ────────────────────────────────────────── */
+/* Después de la secuencia de la cabecera (data-enter): el trazo sale del origen y se queda corto; el
+   destino aparece al final, suelto. Relleno backwards: al terminar no queda nada aplicado. */
+@keyframes m-scale-x-in {
+  from {
+    scale: 0 1;
+  }
+}
+@keyframes m-pop-in {
+  from {
+    scale: 0.6;
+  }
+}
+.broken-route {
+  --broken-delay: calc(var(--enter-delay, 40ms) + 260ms);
+}
+.broken-route__track {
+  transform-origin: left center;
+  animation: m-scale-x-in var(--spring-layout-dur) var(--spring-layout) var(--broken-delay) backwards;
+}
+.broken-route__end {
+  animation:
+    m-fade-in var(--dur-ui) var(--ease-out) calc(var(--broken-delay) + var(--dur-layout) + 80ms) backwards,
+    m-pop-in var(--spring-ui-dur) var(--spring-ui) calc(var(--broken-delay) + var(--dur-layout) + 80ms) backwards;
+}
+/* 404 global: toda la entrada espera a las fuentes (data-enter-fonts); la línea también. */
+html[data-motion]:not([data-fonts]) [data-enter-fonts] .broken-route > * {
+  animation-play-state: paused;
+}
+
+/* ── Hover real (no en pantallas táctiles) ─────────────────────────────── */
+@media (hover: hover) {
+  [data-react-card]:hover {
+    border-color: var(--line-strong);
+  }
+  [data-react-card]:hover [data-media-frame] {
+    scale: 1.04;
+  }
+  [data-react-card]:hover [data-level-price] {
+    color: rgb(var(--c-fg));
+  }
+  [data-level]:hover h3 {
+    color: rgb(var(--c-white));
+  }
+  [data-level]:hover [data-level-price] {
+    translate: 0 -3px;
+  }
+  [data-level]:hover [data-level-cta] {
+    border-color: rgb(var(--c-fg));
+    background-color: rgb(var(--c-elevated));
+  }
+  [data-route-row]:hover .route-line[data-orientation] .route-line__track::after {
+    scale: 1 1;
+  }
+  [data-route-row]:hover .route-line__end {
+    scale: 1.25;
+    background-color: rgb(var(--c-fg));
+    transition-delay: 120ms;
+  }
+  [data-route-row]:hover [data-route-km] {
+    color: rgb(var(--c-fg));
+  }
+  [data-route-row]:hover [data-route-arrow],
+  [data-quote-kind]:hover [data-quote-arrow] {
+    border-color: rgb(var(--c-fg));
+    background-color: rgb(var(--c-elevated));
+  }
+  [data-route-row]:hover [data-route-arrow] > svg,
+  [data-quote-kind]:hover [data-quote-arrow] > svg {
+    translate: 4px 0;
+  }
+  [data-quote-kind]:hover::before {
+    scale: 1 1;
+  }
+  .footer-link:hover::after {
+    scale: 1 1;
+  }
+}
+
+/* ── Movimiento reducido: sin escalas ni desplazamientos; quedan los fundidos ── */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal="media"] [data-media-frame],
+  [data-react-card] [data-media-frame],
+  [data-level] [data-level-price],
+  [data-route-arrow] > svg,
+  [data-quote-arrow] > svg {
+    transition: none;
+    scale: none !important;
+    translate: none !important;
+  }
+  /* La foto de la tarjeta no se acerca: se aclara un poco, con fundido. */
+  [data-react-card] [data-media-sharp] {
+    transition:
+      opacity 500ms var(--ease-out),
+      filter var(--dur-ui) var(--ease);
+  }
+  [data-react-card]:has(:focus-visible) [data-media-sharp] {
+    filter: brightness(1.12);
+  }
+  @media (hover: hover) {
+    [data-react-card]:hover [data-media-sharp] {
+      filter: brightness(1.12);
+    }
+  }
+  [data-route-arrow],
+  [data-quote-arrow],
+  [data-route-row]:active [data-route-arrow],
+  [data-quote-kind]:active [data-quote-arrow] {
+    scale: none;
+  }
+  /* Los trazos claros y el subrayado aparecen con fundido en vez de crecer. */
+  [data-route-row] .route-line__track::after,
+  [data-route-row] .route-line[data-orientation="vertical"] .route-line__track::after,
+  [data-quote-kind]::before,
+  .footer-link::after {
+    scale: none !important;
+    opacity: 0;
+    transition: opacity var(--dur-micro) var(--ease);
+  }
+  [data-route-row]:focus-visible .route-line[data-orientation] .route-line__track::after,
+  [data-quote-kind]:focus-visible::before,
+  .footer-link:focus-visible::after {
+    opacity: 1;
+  }
+  [data-route-row] .route-line__end {
+    scale: none !important;
+    transition: background-color var(--dur-micro) var(--ease);
+  }
+  @media (hover: hover) {
+    [data-route-row]:hover .route-line[data-orientation] .route-line__track::after,
+    [data-quote-kind]:hover::before,
+    .footer-link:hover::after {
+      opacity: 1;
+    }
+  }
+  .broken-route__track {
+    animation: m-fade-in var(--dur-ui) var(--ease-out) var(--broken-delay) backwards;
+  }
+  .broken-route__end {
+    animation: m-fade-in var(--dur-ui) var(--ease-out) calc(var(--broken-delay) + var(--dur-layout)) backwards;
+  }
+}
+
+@media print {
+  .route-line[data-draw] .route-line__track,
+  .route-line[data-draw] .route-line__end,
+  .broken-route > *,
+  .stats-band__rule,
+  [data-media-frame] {
+    opacity: 1 !important;
+    scale: none !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
 /* ── Movimiento reducido: quedan los fundidos ─────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   html[data-motion] [data-reveal]:not([data-shown]),

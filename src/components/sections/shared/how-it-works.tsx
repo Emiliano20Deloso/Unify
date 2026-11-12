@@ -1,3 +1,4 @@
+import { Reveal, RevealGroup } from "@/components/motion";
 import { RouteLine, Section, SectionHeader } from "@/components/ui";
 import { howItWorksCopy } from "@/content";
 import type { Locale } from "@/i18n/config";
@@ -25,9 +26,10 @@ export function HowItWorks({ lang, tone = "surface" }: HowItWorksProps) {
                 <RouteLine draw className="absolute left-0 top-0 hidden w-[calc((200%+5rem)/3+0.5rem)] md:flex" />
                 {/* Móvil: vertical, a lo largo de toda la lista. */}
                 <RouteLine draw orientation="vertical" className="absolute bottom-0 left-0 top-1.5 md:hidden" />
-                <ol className="grid gap-10 pb-10 pl-10 md:grid-cols-3 md:gap-x-10 md:pb-0 md:pl-0 md:pt-12">
+                {/* Los pasos llegan detrás del trazo, uno a uno (60 ms), como paradas de la ruta. */}
+                <RevealGroup as="ol" className="grid gap-10 pb-10 pl-10 md:grid-cols-3 md:gap-x-10 md:pb-0 md:pl-0 md:pt-12">
                     {t.steps.map((step, i) => (
-                        <li key={step.title} className="relative flex flex-col gap-3">
+                        <Reveal as="li" key={step.title} variant="item" index={i} delay={120} className="relative flex flex-col gap-3">
                             {i > 0 ? (
                                 <span
                                     aria-hidden="true"
@@ -36,9 +38,9 @@ export function HowItWorks({ lang, tone = "surface" }: HowItWorksProps) {
                             ) : null}
                             <h3 className="type-subheading">{step.title}</h3>
                             <p className="max-w-[22rem] text-fg-subtle">{step.text}</p>
-                        </li>
+                        </Reveal>
                     ))}
-                </ol>
+                </RevealGroup>
             </div>
         </Section>
     );

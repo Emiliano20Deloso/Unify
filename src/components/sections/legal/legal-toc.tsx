@@ -1,8 +1,10 @@
 "use client";
 
-// Índice lateral (escritorio) con la sección en lectura resaltada: el punto de origen de La línea
-// se posa sobre el trazo vertical. Sin JS el índice funciona igual; solo falta el resaltado.
-import { useEffect, useRef, useState } from "react";
+// Índice lateral (escritorio) con la sección en lectura resaltada: un solo punto de origen de La línea
+// se desliza por el trazo vertical hasta el enlace activo (SlidingIndicator vertical, resorte ui).
+// Sin JS el índice funciona igual; solo falta el resaltado.
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { slideIndicatorTo } from "@/components/motion/sliding-indicator";
 import { cn } from "@/lib";
 
 export interface TocItem {
@@ -20,6 +22,7 @@ interface LegalTocProps {
 export function LegalToc({ items, label, headingId }: LegalTocProps) {
     const [active, setActive] = useState<string | null>(null);
     const listRef = useRef<HTMLOListElement>(null);
+    const scrollRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const sections = items
@@ -59,10 +62,20 @@ export function LegalToc({ items, label, headingId }: LegalTocProps) {
         };
     }, [items]);
 
+    // El punto viaja al enlace activo. La primera vez aparece ya en su sitio, con un fundido.
+    const dotRef = useRef<HTMLSpanElement>(null);
+    useLayoutEffect(() => {
+        const list = listRef.current;
+        const dot = dotRef.current;
+        if (!list || !dot || !active) return;
+        const link = list.querySelector<HTMLElement>(`[data-id="${CSS.escape(active)}"]`);
+        if (link) slideIndicatorTo(dot, link, "y");
+    }, [active]);
+
     // Mantiene visible el enlace activo dentro del índice cuando este tiene su propio scroll.
     useEffect(() => {
         const list = listRef.current;
-        const container = list?.parentElement;
+        const container = scrollRef.current;
         if (!list || !container || !active) return;
         const link = list.querySelector<HTMLElement>(`[data-id="${CSS.escape(active)}"]`);
         if (!link) return;
@@ -79,35 +92,32 @@ export function LegalToc({ items, label, headingId }: LegalTocProps) {
             <p id={headingId} className="type-label mb-4 text-fg-subtle">
                 {label}
             </p>
-            <div className="max-h-[calc(100dvh-var(--header-h)-7rem)] overflow-y-auto overscroll-contain pr-2 [scrollbar-width:thin]">
-                <ol ref={listRef} className="relative ml-1 border-l border-line">
-                    {items.map((item, index) => {
-                        const isActive = item.id === active;
-                        return (
-                            <li key={item.id}>
-                                <a
-                                    href={`#${item.id}`}
-                                    data-id={item.id}
-                                    aria-current={isActive ? "location" : undefined}
-                                    className={cn(
-                                        "relative flex min-h-11 items-baseline gap-2.5 rounded-sm py-2.5 pl-5 type-small transition-colors duration-fast ease",
-                                        isActive ? "text-fg" : "text-fg-subtle hover:text-fg",
-                                    )}
-                                >
-                                    <span
-                                        aria-hidden="true"
+            <div ref={scrollRef} className="max-h-[calc(100dvh-var(--header-h)-7rem)] overflow-y-auto overscroll-contain pr-2 [scrollbar-width:thin]">
+                {/* Un solo punto para todo el índice: --y es el offsetTop del enlace activo (relativo a este div). */}
+                <div className="relative ml-1">
+                    <span ref={dotRef} aria-hidden="true" data-toc-dot="" className="toc-dot sliding-indicator" />
+                    <ol ref={listRef} className="border-l border-line">
+                        {items.map((item, index) => {
+                            const isActive = item.id === active;
+                            return (
+                                <li key={item.id}>
+                                    <a
+                                        href={`#${item.id}`}
+                                        data-id={item.id}
+                                        aria-current={isActive ? "location" : undefined}
                                         className={cn(
-                                            "absolute -left-[4.5px] top-[1.15rem] size-2 rounded-full bg-brand-ink transition-[opacity,transform] duration-base ease-out",
-                                            isActive ? "scale-100 opacity-100" : "scale-50 opacity-0",
+                                            "toc-link relative flex min-h-11 items-baseline gap-2.5 rounded-sm py-2.5 pl-5 type-small",
+                                            isActive ? "text-fg" : "text-fg-subtle hover:text-fg",
                                         )}
-                                    />
-                                    <span className="tabular w-5 shrink-0 text-fg-subtle">{index + 1}.</span>
-                                    <span>{item.label}</span>
-                                </a>
-                            </li>
-                        );
-                    })}
-                </ol>
+                                    >
+                                        <span className="tabular w-5 shrink-0 text-fg-subtle">{index + 1}.</span>
+                                        <span>{item.label}</span>
+                                    </a>
+                                </li>
+                            );
+                        })}
+                    </ol>
+                </div>
             </div>
         </nav>
     );

@@ -1252,7 +1252,8 @@
     {
       "id": "L9-404",
       "vp": [
-        "d"
+        "d",
+        "m"
       ],
       "setup": [
         {
@@ -1271,12 +1272,26 @@
         "load": true
       },
       "settleMs": 700,
-      "maxMs": 4000
+      "maxMs": 4000,
+      "post": [
+        {
+          "op": "wait",
+          "ms": 800
+        },
+        {
+          "op": "eval",
+          "label": "la línea interrumpida se animó y terminó en su estado natural",
+          "expr": "(() => { const t = document.querySelector('.broken-route__track'); const e = document.querySelector('.broken-route__end'); const cs = getComputedStyle(t); return /m-(scale-x|fade)-in/.test(cs.animationName) && t.getAnimations().length === 0 && e.getAnimations().length === 0 && getComputedStyle(e).opacity === '1'; })()",
+          "equals": true
+        }
+      ],
+      "reduced": "both"
     },
     {
       "id": "L10-404-en",
       "vp": [
-        "m"
+        "m",
+        "d"
       ],
       "setup": [
         {
@@ -1295,17 +1310,36 @@
         "load": true
       },
       "settleMs": 700,
-      "maxMs": 4000
+      "maxMs": 4000,
+      "post": [
+        {
+          "op": "wait",
+          "ms": 800
+        },
+        {
+          "op": "eval",
+          "label": "la línea interrumpida se animó y terminó en su estado natural",
+          "expr": "(() => { const t = document.querySelector('.broken-route__track'); const e = document.querySelector('.broken-route__end'); const cs = getComputedStyle(t); return /m-(scale-x|fade)-in/.test(cs.animationName) && t.getAnimations().length === 0 && e.getAnimations().length === 0 && getComputedStyle(e).opacity === '1'; })()",
+          "equals": true
+        }
+      ],
+      "reduced": "both"
     },
     {
       "id": "S1-niveles",
       "vp": [
-        "d"
+        "d",
+        "m"
       ],
+      "reduced": "both",
       "setup": [
         {
           "op": "goto",
           "url": "/"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
         }
       ],
       "action": [
@@ -1317,17 +1351,30 @@
       "expect": {
         "animated": true
       },
-      "maxMs": 2000
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"niveles\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
     },
     {
       "id": "S2-rutas",
       "vp": [
-        "d"
+        "d",
+        "m"
       ],
       "setup": [
         {
           "op": "goto",
           "url": "/"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
         }
       ],
       "action": [
@@ -1339,17 +1386,30 @@
       "expect": {
         "animated": true
       },
-      "maxMs": 2000
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"rutas\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
     },
     {
       "id": "S3-testimonios",
       "vp": [
-        "m"
+        "m",
+        "d"
       ],
       "setup": [
         {
           "op": "goto",
           "url": "/"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
         }
       ],
       "action": [
@@ -1361,17 +1421,31 @@
       "expect": {
         "animated": true
       },
-      "maxMs": 2000
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"testimonios\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
     },
     {
       "id": "S4-cifras",
       "vp": [
-        "d"
+        "d",
+        "m"
       ],
+      "reduced": "both",
       "setup": [
         {
           "op": "goto",
           "url": "/"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
         }
       ],
       "action": [
@@ -1383,17 +1457,37 @@
       "expect": {
         "animated": true
       },
-      "maxMs": 2000
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('main section:nth-of-type(2)'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        },
+        {
+          "op": "eval",
+          "label": "las cifras rodaron hasta su valor exacto (con movimiento reducido, fijas)",
+          "expr": "(() => { const r = document.querySelector('main section:nth-of-type(2)'); const vals = [...r.querySelectorAll('p > span:first-child')].map((s) => (s.querySelector('.sr-only') ?? s).textContent.trim()); const flows = [...r.querySelectorAll('number-flow-react')]; const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches; const counted = flows.length === 2 && flows.every((f) => f.getAnimations({ subtree: true }).length === 0); return JSON.stringify(vals) === JSON.stringify(['+1,500', '98\\u202f%']) && (reduced ? flows.length === 0 : counted); })()",
+          "equals": true
+        }
+      ]
     },
     {
       "id": "S5-tipos-de-servicio",
       "vp": [
-        "d"
+        "d",
+        "m"
       ],
+      "reduced": "both",
       "setup": [
         {
           "op": "goto",
           "url": "/servicios"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
         }
       ],
       "action": [
@@ -1405,17 +1499,31 @@
       "expect": {
         "animated": true
       },
-      "maxMs": 2000
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"tipos-de-servicio\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
     },
     {
       "id": "S6-formula",
       "vp": [
-        "d"
+        "d",
+        "m"
       ],
+      "reduced": "both",
       "setup": [
         {
           "op": "goto",
           "url": "/tarifas"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
         }
       ],
       "action": [
@@ -1427,17 +1535,30 @@
       "expect": {
         "animated": true
       },
-      "maxMs": 2000
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"como-se-calcula\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
     },
     {
       "id": "S7-que-incluye",
       "vp": [
-        "m"
+        "m",
+        "d"
       ],
       "setup": [
         {
           "op": "goto",
           "url": "/tarifas"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
         }
       ],
       "action": [
@@ -1449,17 +1570,30 @@
       "expect": {
         "animated": true
       },
-      "maxMs": 2000
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"que-incluye\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
     },
     {
       "id": "S8-quienes-somos",
       "vp": [
         "d"
       ],
+      "reduced": "both",
       "setup": [
         {
           "op": "goto",
           "url": "/nosotros"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
         }
       ],
       "action": [
@@ -1471,17 +1605,30 @@
       "expect": {
         "animated": true
       },
-      "maxMs": 2000
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"quienes-somos\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
     },
     {
       "id": "S9-por-que-tesla",
       "vp": [
-        "m"
+        "m",
+        "d"
       ],
       "setup": [
         {
           "op": "goto",
           "url": "/nosotros"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
         }
       ],
       "action": [
@@ -1493,17 +1640,34 @@
       "expect": {
         "animated": true
       },
-      "maxMs": 2000
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"por-que-tesla\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
     },
     {
       "id": "S10-indice-legal",
       "vp": [
         "d"
       ],
+      "reduced": "both",
       "setup": [
         {
           "op": "goto",
           "url": "/privacidad"
+        },
+        {
+          "op": "scroll",
+          "selector": "article section:nth-of-type(1)"
+        },
+        {
+          "op": "wait",
+          "ms": 900
         }
       ],
       "action": [
@@ -1512,13 +1676,22 @@
           "selector": "article section:nth-of-type(3)"
         }
       ],
+      "track": [
+        "[data-toc-dot]"
+      ],
       "expect": {
         "animated": true
       },
       "maxMs": 2000,
-      "track": [
-        "nav a[aria-current=\"location\"]"
-      ]
+      "post": [
+        {
+          "op": "eval",
+          "label": "el punto quedó sobre el enlace activo (el tercero)",
+          "expr": "(() => { const a = document.querySelector('aside nav a[aria-current=\"location\"]'); const dot = document.querySelector('[data-toc-dot]'); return !!a && a === document.querySelectorAll('aside nav a')[2] && dot.style.getPropertyValue('--y') === a.offsetTop + 'px' && dot.getAnimations().length === 0 && getComputedStyle(dot).opacity === '1'; })()",
+          "equals": true
+        }
+      ],
+      "note": "El índice ya está pegado (sticky) antes de grabar: así solo se mide el punto, no el índice que sube con el scroll."
     },
     {
       "id": "A1-abrir-faq",
@@ -1602,6 +1775,7 @@
       "vp": [
         "m"
       ],
+      "reduced": "both",
       "setup": [
         {
           "op": "goto",
@@ -1611,12 +1785,20 @@
       "action": [
         {
           "op": "click",
-          "selector": "details > summary"
+          "selector": "[data-toc-mobile] button"
         }
       ],
       "expect": {
         "animated": true
-      }
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "abierto, con alto completo y enlaces visibles",
+          "expr": "(() => { const b = document.querySelector('[data-toc-mobile] button'); const nav = document.querySelector('[data-toc-mobile] nav'); return b.getAttribute('aria-expanded') === 'true' && nav.getBoundingClientRect().height > 300 && getComputedStyle(nav).opacity === '1' && getComputedStyle(nav).visibility === 'visible'; })()",
+          "equals": true
+        }
+      ]
     },
     {
       "id": "Q1-lista-abre",
@@ -5533,6 +5715,1211 @@
       "expect": {
         "animated": true
       }
+    },
+    {
+      "id": "S11-como-funciona",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#como-funciona"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"como-funciona\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S12-experiencia",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#experiencia"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"experiencia\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S13-empresas-con-foto",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#empresas"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"empresas\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S14-preguntas",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#preguntas"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"preguntas\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S15-cierre-portada",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#cierre"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"cierre\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S16-servicios-niveles",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/servicios"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#niveles"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"niveles\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S17-servicios-como-funciona",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/servicios"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#como-funciona"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"como-funciona\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S18-servicios-empresas",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/servicios"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#empresas"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"empresas\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S19-servicios-cierre",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/servicios"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#cierre"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"cierre\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S20-tarifas-rutas",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#rutas"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"rutas\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S21-tarifas-preguntas",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#preguntas"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"preguntas\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S22-a-la-medida",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#a-la-medida"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"a-la-medida\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S23-como-te-cuidamos",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/nosotros"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#como-te-cuidamos"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"como-te-cuidamos\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S24-medio-ambiente",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/nosotros"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#medio-ambiente"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"medio-ambiente\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S25-cotiza",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/nosotros"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#cotiza"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"cotiza\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S26-privacidad-secciones",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/privacidad"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "article section:nth-of-type(3)"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('article section:nth-of-type(3)'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S27-terminos-secciones",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/terminos"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "article section:nth-of-type(5)"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('article section:nth-of-type(5)'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S28-pie",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/nosotros"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "footer",
+          "block": "end"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('footer'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S29-pie-en",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/en/nosotros"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "footer",
+          "block": "end"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('footer'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S30-portada-en",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/en"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#niveles"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"niveles\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S10b-indice-legal-clic",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/privacidad"
+        },
+        {
+          "op": "wait",
+          "ms": 400
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "aside nav a",
+          "nth": 5
+        }
+      ],
+      "track": [
+        "[data-toc-dot]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 3000,
+      "settleMs": 500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "scroll suave hasta la sección 6 (o la 7, si la 6 es corta) y el punto en el enlace activo",
+          "expr": "(() => { const links = [...document.querySelectorAll('aside nav a')]; const a = links.find((l) => l.getAttribute('aria-current') === 'location'); const i = links.indexOf(a); const dot = document.querySelector('[data-toc-dot]'); const top = document.getElementById(links[5].getAttribute('href').slice(1)).getBoundingClientRect().top; return (i === 5 || i === 6) && dot.style.getPropertyValue('--y') === a.offsetTop + 'px' && top > 0 && top < 200; })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "A4b-indice-legal-movil-cierra",
+      "vp": [
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/privacidad"
+        },
+        {
+          "op": "click",
+          "selector": "[data-toc-mobile] button",
+          "wait": 1000
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "[data-toc-mobile] button"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "cerrado y fuera del Tab",
+          "expr": "(() => { const b = document.querySelector('[data-toc-mobile] button'); const nav = document.querySelector('[data-toc-mobile] nav'); return b.getAttribute('aria-expanded') === 'false' && getComputedStyle(nav).visibility === 'hidden'; })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "H1-tarjeta-nivel-hover",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "scroll",
+          "selector": "section[aria-labelledby=\"niveles\"] [data-react-card]",
+          "block": "center"
+        },
+        {
+          "op": "wait",
+          "ms": 1400
+        }
+      ],
+      "action": [
+        {
+          "op": "hover",
+          "selector": "section[aria-labelledby=\"niveles\"] [data-react-card]",
+          "nth": 1
+        }
+      ],
+      "roi": "section[aria-labelledby=\"niveles\"] article:has(#niveles-select)",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "la foto se acercó dentro del marco (reducido: se aclaró)",
+          "expr": "(() => { const c = document.querySelectorAll('[data-react-card]')[1]; const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches; return c.matches(':hover') && (reduced ? getComputedStyle(c.querySelector('[data-media-sharp]')).filter === 'brightness(1.12)' : getComputedStyle(c.querySelector('[data-media-frame]')).scale === '1.04'); })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "H1f-tarjeta-nivel-foco",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "scroll",
+          "selector": "section[aria-labelledby=\"niveles\"] [data-react-card]",
+          "block": "center"
+        },
+        {
+          "op": "wait",
+          "ms": 1400
+        },
+        {
+          "op": "focus",
+          "selector": "section[aria-labelledby=\"niveles\"] a[href=\"/tarifas\"]",
+          "wait": 600
+        }
+      ],
+      "action": [
+        {
+          "op": "key",
+          "key": "Tab"
+        }
+      ],
+      "roi": "section[aria-labelledby=\"niveles\"] article:has(#niveles-practico)",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "con el foco de teclado la tarjeta reacciona igual",
+          "expr": "(() => { const c = document.activeElement.closest('[data-react-card]'); return !!c && document.activeElement.matches(':focus-visible') && (matchMedia('(prefers-reduced-motion: reduce)').matches ? getComputedStyle(c.querySelector('[data-media-sharp]')).filter === 'brightness(1.12)' : getComputedStyle(c.querySelector('[data-media-frame]')).scale === '1.04'); })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "H2-ruta-hover",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "scroll",
+          "selector": "#rutas",
+          "block": "center"
+        },
+        {
+          "op": "wait",
+          "ms": 1400
+        }
+      ],
+      "action": [
+        {
+          "op": "hover",
+          "selector": "[data-route-row]",
+          "nth": 0
+        }
+      ],
+      "roi": "section[aria-labelledby=\"rutas\"] li:first-child",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "La línea se recorrió y la flecha avanzó",
+          "expr": "(() => { const r = document.querySelector('[data-route-row]'); const t = [...r.querySelectorAll('.route-line__track')].find((e) => e.getClientRects().length); const o = getComputedStyle(t, '::after'); const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches; return r.matches(':hover') && (reduced ? o.opacity === '1' : (o.scale === '1' || o.scale === '1 1') && getComputedStyle(r.querySelector('[data-route-arrow] svg')).translate === '4px'); })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "H2f-ruta-foco",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "scroll",
+          "selector": "#rutas",
+          "block": "center"
+        },
+        {
+          "op": "wait",
+          "ms": 1400
+        },
+        {
+          "op": "focus",
+          "selector": "section[aria-labelledby=\"rutas\"] a[href=\"/tarifas\"]",
+          "wait": 600
+        }
+      ],
+      "action": [
+        {
+          "op": "key",
+          "key": "Tab"
+        }
+      ],
+      "roi": "section[aria-labelledby=\"rutas\"] li:first-child",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "con el foco de teclado La línea se recorre",
+          "expr": "(() => { const r = document.activeElement; const t = [...r.querySelectorAll('.route-line__track')].find((e) => e.getClientRects().length); const o = getComputedStyle(t, '::after'); return r.matches('[data-route-row]:focus-visible') && (matchMedia('(prefers-reduced-motion: reduce)').matches ? o.opacity === '1' : (o.scale === '1' || o.scale === '1 1')); })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "H2b-ruta-sale",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "scroll",
+          "selector": "#rutas",
+          "block": "center"
+        },
+        {
+          "op": "wait",
+          "ms": 1400
+        },
+        {
+          "op": "hover",
+          "selector": "[data-route-row]",
+          "nth": 0,
+          "wait": 1000
+        }
+      ],
+      "action": [
+        {
+          "op": "unhover"
+        }
+      ],
+      "roi": "section[aria-labelledby=\"rutas\"] li:first-child",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "al salir La línea vuelve con transición",
+          "expr": "(() => { const r = document.querySelector('[data-route-row]'); const t = [...r.querySelectorAll('.route-line__track')].find((e) => e.getClientRects().length); const o = getComputedStyle(t, '::after'); return !r.matches(':hover') && (matchMedia('(prefers-reduced-motion: reduce)').matches ? o.opacity === '0' : o.scale === '0 1'); })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "H3-nivel-columna-hover",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/servicios"
+        },
+        {
+          "op": "scroll",
+          "selector": "[data-level=\"select\"]",
+          "block": "center"
+        },
+        {
+          "op": "wait",
+          "ms": 1400
+        }
+      ],
+      "action": [
+        {
+          "op": "hover",
+          "selector": "[data-level=\"select\"] h3"
+        }
+      ],
+      "roi": "[data-level=\"select\"]",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "la columna responde: título, precio y botón",
+          "expr": "(() => { const c = document.querySelector('[data-level=\"select\"]'); const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches; return c.matches(':hover') && getComputedStyle(c.querySelector('[data-level-cta]')).backgroundColor === 'rgb(28, 28, 31)' && (reduced || getComputedStyle(c.querySelector('[data-level-price]')).translate === '0px -3px'); })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "H4-tipo-a-la-medida-hover",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "scroll",
+          "selector": "#a-la-medida",
+          "block": "center"
+        },
+        {
+          "op": "wait",
+          "ms": 1400
+        }
+      ],
+      "action": [
+        {
+          "op": "hover",
+          "selector": "[data-quote-kind]",
+          "nth": 0
+        }
+      ],
+      "roi": "section[aria-labelledby=\"a-la-medida\"] ul li:first-child",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "el filete se recorre y la flecha avanza",
+          "expr": "(() => { const k = document.querySelector('[data-quote-kind]'); const o = getComputedStyle(k, '::before'); const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches; return k.matches(':hover') && (reduced ? o.opacity === '1' : (o.scale === '1' || o.scale === '1 1') && getComputedStyle(k.querySelector('[data-quote-arrow] svg')).translate === '4px'); })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "H4f-tipo-a-la-medida-foco",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "scroll",
+          "selector": "#a-la-medida",
+          "block": "center"
+        },
+        {
+          "op": "wait",
+          "ms": 1400
+        },
+        {
+          "op": "focus",
+          "selector": "section[aria-labelledby=\"a-la-medida\"] a[href*=\"wa.me\"]:not([data-quote-kind])",
+          "wait": 600
+        }
+      ],
+      "action": [
+        {
+          "op": "key",
+          "key": "Tab"
+        }
+      ],
+      "roi": "section[aria-labelledby=\"a-la-medida\"] ul li:first-child",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "con el foco de teclado reacciona igual",
+          "expr": "(() => { const k = document.activeElement; const o = getComputedStyle(k, '::before'); return k.matches('[data-quote-kind]:focus-visible') && (matchMedia('(prefers-reduced-motion: reduce)').matches ? o.opacity === '1' : (o.scale === '1' || o.scale === '1 1')); })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "H5-pie-enlace-hover",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/nosotros"
+        },
+        {
+          "op": "scroll",
+          "selector": "footer",
+          "block": "center"
+        },
+        {
+          "op": "wait",
+          "ms": 1400
+        }
+      ],
+      "action": [
+        {
+          "op": "hover",
+          "selector": "footer nav a[href=\"/servicios\"]"
+        }
+      ],
+      "roi": "footer nav a[href=\"/servicios\"]",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "el subrayado se trazó",
+          "expr": "(() => { const a = document.querySelector('footer nav a[href=\"/servicios\"]'); const o = getComputedStyle(a, '::after'); return a.matches(':hover') && (matchMedia('(prefers-reduced-motion: reduce)').matches ? o.opacity === '1' : (o.scale === '1' || o.scale === '1 1')); })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "H5f-pie-enlace-foco",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/nosotros"
+        },
+        {
+          "op": "scroll",
+          "selector": "footer",
+          "block": "center"
+        },
+        {
+          "op": "wait",
+          "ms": 1400
+        },
+        {
+          "op": "focus",
+          "selector": "footer a[aria-label]",
+          "wait": 600
+        }
+      ],
+      "action": [
+        {
+          "op": "key",
+          "key": "Tab"
+        }
+      ],
+      "roi": "footer nav",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "con el foco de teclado el subrayado se traza",
+          "expr": "(() => { const a = document.activeElement; const o = getComputedStyle(a, '::after'); return a.matches('footer .footer-link:focus-visible') && (matchMedia('(prefers-reduced-motion: reduce)').matches ? o.opacity === '1' : (o.scale === '1' || o.scale === '1 1')); })()",
+          "equals": true
+        }
+      ]
     }
   ]
 }

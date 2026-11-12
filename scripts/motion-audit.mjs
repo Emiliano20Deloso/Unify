@@ -380,6 +380,28 @@ const CASES = [
         not: ["CORTE", "CORTE?", "BRINCO", "RM-MOVIMIENTO", "FLASHAZO", "SIN REACCIÓN"],
     },
     {
+        // Con movimiento reducido, una animación por estilo en línea (rAF, como motion) sí es movimiento…
+        id: "z3-reducido-raf-desplaza",
+        reduced: true,
+        html: page(
+            `<div class="panel" id="p">${PANEL_TXT}</div>`,
+            `b.onclick=()=>{const t0=performance.now();const D=320;const step=(now)=>{const k=Math.min(1,(now-t0)/D);p.style.transform='translateY('+(40*(1-k)).toFixed(2)+'px)';p.style.opacity=String(0.4+0.6*k);if(k<1)requestAnimationFrame(step)};p.style.transform='translateY(40px)';requestAnimationFrame(step)}`,
+        ),
+        expect: { animated: true },
+        want: ["RM-MOVIMIENTO"],
+    },
+    {
+        // …pero varios cambios de alto sueltos e instantáneos (una lista que se ajusta con cada tecla) no.
+        id: "z4-reducido-pasos-sueltos",
+        reduced: true,
+        html: page(
+            `<div id="list"><div class="item grow" id="g" style="height:120px;transition:none">Lista</div>${[1, 2].map((i) => `<div class="item">Fila ${i}</div>`).join("")}</div><div class="panel" id="p" style="left:980px;width:300px;height:200px;opacity:0;transition:opacity 300ms ease">Visible</div>`,
+            `b.onclick=()=>{p.style.opacity=1;[180,90,240].forEach((h,i)=>setTimeout(()=>{g.style.height=h+'px'},120*i))}`,
+        ),
+        expect: { animated: true },
+        not: ["RM-MOVIMIENTO", "CORTE", "CORTE?", "FLASHAZO"],
+    },
+    {
         // …pero algo que aparece sin fundido sigue siendo un corte, también con movimiento reducido.
         id: "z2-reducido-aparece-de-golpe",
         reduced: true,

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { StaticImageData } from "next/image";
+import { Reveal, RevealGroup } from "@/components/motion";
 import { Button, Container, Media } from "@/components/ui";
 import { finalCtaCopy } from "@/content";
 import type { Locale } from "@/i18n/config";
@@ -35,14 +36,19 @@ type LayoutProps = Required<Pick<FinalCtaProps, "lang" | "image" | "id" | "separ
 function Copy({ lang, id }: { lang: Locale; id: string }) {
     const t = finalCtaCopy[lang];
     return (
+        // Dentro de un RevealGroup: el título lidera, la frase lo sigue y el botón (envuelto: tiene transición propia) cierra.
         <>
-            <h2 id={id} className="type-title">
+            <Reveal as="h2" variant="title" index={1} id={id} className="type-title">
                 {t.title}
-            </h2>
-            <p className="type-lead mt-4 text-fg-soft">{t.text}</p>
-            <Button asChild size="lg" className="mt-10">
-                <Link href={quoteHref(lang)}>{t.cta}</Link>
-            </Button>
+            </Reveal>
+            <Reveal as="p" variant="text" index={2} className="type-lead mt-4 text-fg-soft">
+                {t.text}
+            </Reveal>
+            <Reveal variant="text" index={3} className="mt-10">
+                <Button asChild size="lg">
+                    <Link href={quoteHref(lang)}>{t.cta}</Link>
+                </Button>
+            </Reveal>
         </>
     );
 }
@@ -57,7 +63,12 @@ function Overlay({ lang, image, id, separated }: LayoutProps) {
                 separated && "border-t border-line",
             )}
         >
-            <div className="relative aspect-[4/3] sm:aspect-[16/9] lg:absolute lg:inset-y-0 lg:left-[28%] lg:right-0 lg:aspect-auto">
+            {/* La foto a sangre se funde y su encuadre se asienta despacio (data-final-photo). */}
+            <Reveal
+                variant="media"
+                data-final-photo=""
+                className="relative aspect-[4/3] sm:aspect-[16/9] lg:absolute lg:inset-y-0 lg:left-[28%] lg:right-0 lg:aspect-auto"
+            >
                 <Media
                     src={image.src}
                     alt={image.alt}
@@ -67,11 +78,11 @@ function Overlay({ lang, image, id, separated }: LayoutProps) {
                     sizes="(min-width: 1024px) 72vw, 100vw"
                     position={image.position}
                 />
-            </div>
+            </Reveal>
             <Container className="relative -mt-8 pb-section-md lg:mt-0 lg:pt-section-md">
-                <div className="flex max-w-2xl flex-col items-start">
+                <RevealGroup className="flex max-w-2xl flex-col items-start">
                     <Copy lang={lang} id={id} />
-                </div>
+                </RevealGroup>
             </Container>
         </section>
     );
@@ -91,7 +102,8 @@ function Split({ lang, image, id, separated }: LayoutProps) {
             aria-labelledby={id}
             className={cn("relative flex flex-col overflow-hidden bg-bg lg:min-h-[680px]", separated && "border-t border-line")}
         >
-            <div
+            <Reveal
+                variant="media"
                 data-final-photo=""
                 className={cn("relative aspect-[4/3] sm:aspect-[16/9] lg:absolute lg:inset-y-0 lg:right-0 lg:aspect-auto", SPLIT_PHOTO_LEFT)}
             >
@@ -104,11 +116,11 @@ function Split({ lang, image, id, separated }: LayoutProps) {
                     sizes="(min-width: 1024px) 66vw, 100vw"
                     position={image.position}
                 />
-            </div>
+            </Reveal>
             <Container className="relative pb-section-md pt-6 sm:pt-10 lg:flex lg:min-h-[680px] lg:items-center lg:py-section-md">
-                <div className="flex max-w-[26rem] flex-col items-start xl:max-w-[31rem]">
+                <RevealGroup className="flex max-w-[26rem] flex-col items-start xl:max-w-[31rem]">
                     <Copy lang={lang} id={id} />
-                </div>
+                </RevealGroup>
             </Container>
         </section>
     );

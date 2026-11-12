@@ -1,12 +1,15 @@
 // Página de lectura para textos legales: cabecera con fecha, índice (lateral fijo en escritorio,
-// desplegable en móvil) y el documento con medida de lectura de ~70 caracteres. Servidor salvo el índice.
+// acordeón en móvil) y el documento con medida de lectura de ~70 caracteres. Servidor salvo el índice.
+// Cada sección del texto aparece al entrar en pantalla (Reveal text, sin escalonar, una sola vez).
 import Link from "next/link";
 import type { LegalBlock, LegalDocument as LegalDoc, Rich } from "@/content/legal/types";
-import { Button, Container, PlusIcon, RouteLine } from "@/components/ui";
+import { Reveal } from "@/components/motion";
+import { Button, Container, RouteLine } from "@/components/ui";
 import type { Locale } from "@/i18n/config";
 import type { LegalDictionary } from "@/i18n/types";
 import { cn } from "@/lib";
 import { LegalToc } from "./legal-toc";
+import { LegalTocMobile } from "./legal-toc-mobile";
 import { RichText } from "./rich-text";
 
 interface LegalDocumentProps {
@@ -64,34 +67,15 @@ export function LegalDocument({ lang, doc, title, text, ui, related }: LegalDocu
                     </aside>
 
                     <div className="min-w-0">
-                        <details className="group mb-12 rounded-card border border-line bg-surface lg:hidden print:hidden">
-                            <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 rounded-card px-5 font-medium [&::-webkit-details-marker]:hidden">
-                                <span>
-                                    {ui.toc}
-                                    <span className="tabular ml-2 font-normal text-fg-subtle">({toc.length})</span>
-                                </span>
-                                <PlusIcon className="transition-transform duration-base ease-out group-open:rotate-45" />
-                            </summary>
-                            <nav aria-label={ui.toc} className="border-t border-line px-2 pb-2 pt-1">
-                                <ol>
-                                    {toc.map((item, index) => (
-                                        <li key={item.id}>
-                                            <a
-                                                href={`#${item.id}`}
-                                                className="flex min-h-11 items-baseline gap-2.5 rounded-inner px-3 py-2.5 type-small text-fg-muted transition-colors duration-fast ease hover:bg-elevated hover:text-fg"
-                                            >
-                                                <span className="tabular w-6 shrink-0 text-fg-subtle">{index + 1}.</span>
-                                                <span>{item.label}</span>
-                                            </a>
-                                        </li>
-                                    ))}
-                                </ol>
-                            </nav>
-                        </details>
+                        <div className="mb-12 lg:hidden print:hidden">
+                            <LegalTocMobile items={toc} label={ui.toc} />
+                        </div>
 
                         <article className="max-w-[35rem]">
                             {doc.sections.map((section, index) => (
-                                <section
+                                <Reveal
+                                    as="section"
+                                    variant="text"
                                     key={section.id}
                                     id={section.id}
                                     aria-labelledby={`${section.id}-title`}
@@ -106,15 +90,15 @@ export function LegalDocument({ lang, doc, title, text, ui, related }: LegalDocu
                                             <Block key={i} block={block} lang={lang} />
                                         ))}
                                     </div>
-                                </section>
+                                </Reveal>
                             ))}
 
-                            <footer className="border-t border-line pt-8 print:hidden">
+                            <Reveal as="footer" variant="text" className="border-t border-line pt-8 print:hidden">
                                 <p className="type-small text-fg-subtle">{ui.related}</p>
                                 <Button variant="link" size="md" asChild className="mt-1">
                                     <Link href={related.href}>{related.label}</Link>
                                 </Button>
-                            </footer>
+                            </Reveal>
                         </article>
                     </div>
                 </div>

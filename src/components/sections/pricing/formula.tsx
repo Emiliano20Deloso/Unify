@@ -1,6 +1,6 @@
 // "Así se calcula": la fórmula del motor explicada en tres pasos y un ejemplo trabajado.
 // Todas las cifras se leen de la config de precios en el servidor; nada viaja al cliente.
-import { Reveal } from "@/components/motion";
+import { Reveal, RevealGroup } from "@/components/motion";
 import { Card, RouteLine, Section, SectionHeader } from "@/components/ui";
 import { catalogRouteKm, fill, levels, pricingExample } from "@/content";
 import type { Locale } from "@/i18n/config";
@@ -36,12 +36,14 @@ export function Formula({ lang, t, tone = "surface", id = "como-se-calcula" }: F
         <Section tone={tone} aria-labelledby={id}>
             <SectionHeader id={id} title={t.title} text={t.text} />
             <ol aria-label={t.stepsLabel} className="border-t border-line">
+                {/* Cada paso es un momento: su número y su explicación suben, y la gráfica llega detrás. */}
                 {steps.map((step, i) => (
-                    <li
+                    <RevealGroup
+                        as="li"
                         key={step.key}
                         className="grid gap-8 border-b border-line py-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16 lg:py-12"
                     >
-                        <div className="flex gap-5">
+                        <Reveal variant="text" index={0} className="flex gap-5">
                             <span aria-hidden="true" className="type-subheading tabular text-brand-ink">
                                 {i + 1}
                             </span>
@@ -49,9 +51,11 @@ export function Formula({ lang, t, tone = "surface", id = "como-se-calcula" }: F
                                 <h3 className="type-subheading">{step.title}</h3>
                                 <p className="max-w-[26rem] text-fg-subtle">{step.text}</p>
                             </div>
-                        </div>
-                        <Reveal>{step.visual}</Reveal>
-                    </li>
+                        </Reveal>
+                        <Reveal variant="item" index={2}>
+                            {step.visual}
+                        </Reveal>
+                    </RevealGroup>
                 ))}
             </ol>
             <Example lang={lang} t={t} names={levelNames} surfaceTone={tone} />
@@ -326,7 +330,7 @@ function Example({
     ];
 
     return (
-        <Reveal className="mt-section-sm">
+        <Reveal variant="item" className="mt-section-sm">
             <Card as="article" tone={surfaceTone === "surface" ? "elevated" : "surface"} aria-labelledby={`ejemplo-titulo`}>
                 {/* Móvil: intro → cálculo → niveles. Escritorio: intro y niveles a la izquierda, cálculo a la derecha. */}
                 <div className="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:grid-rows-[auto_1fr] lg:gap-x-16">

@@ -1,7 +1,7 @@
 // Los cinco tipos de servicio de los términos (§ 4). Dos se cotizan en línea (filas con foto
 // alternadas, al cotizador) y tres a la medida (una foto y una lista, a WhatsApp).
 import Link from "next/link";
-import { Reveal } from "@/components/motion";
+import { Reveal, RevealGroup } from "@/components/motion";
 import { Button, CheckIcon, Media, RouteLine, Section, SectionHeader } from "@/components/ui";
 import { CUSTOM_SERVICES, fill, ONLINE_SERVICES, servicesImages } from "@/content";
 import type { Locale } from "@/i18n/config";
@@ -42,7 +42,8 @@ export function ServiceTypes({ lang, t, tone = "bg", id = "tipos-de-servicio" }:
                             aria-labelledby={`${id}-${service.id}`}
                             className="grid gap-8 lg:grid-cols-12 lg:items-center lg:gap-16"
                         >
-                            <Reveal className={cn("lg:col-span-7", reversed && "lg:order-2")}>
+                            {/* Cada fila: la foto llega primero y el texto la sigue (+60 ms), de arriba abajo. */}
+                            <Reveal variant="media" className={cn("lg:col-span-7", reversed && "lg:order-2")}>
                                 <Media
                                     src={service.image.src}
                                     alt={item.imageAlt}
@@ -51,23 +52,27 @@ export function ServiceTypes({ lang, t, tone = "bg", id = "tipos-de-servicio" }:
                                     className="aspect-[4/3] lg:aspect-[3/2]"
                                 />
                             </Reveal>
-                            <div className="flex flex-col items-start lg:col-span-5">
-                                <h3 id={`${id}-${service.id}`} className="type-heading">
+                            <RevealGroup className="flex flex-col items-start lg:col-span-5 [--d:60ms]">
+                                <Reveal as="h3" variant="title" index={0} id={`${id}-${service.id}`} className="type-heading">
                                     {item.title}
-                                </h3>
-                                <p className="mt-4 max-w-[30rem] text-fg-subtle">{item.text}</p>
+                                </Reveal>
+                                <Reveal as="p" variant="text" index={1} className="mt-4 max-w-[30rem] text-fg-subtle">
+                                    {item.text}
+                                </Reveal>
                                 <ul aria-label={t.featuresLabel} className="type-small mt-6 flex w-full flex-col gap-2.5 border-t border-line pt-6">
-                                    {item.features.map((feature) => (
-                                        <li key={feature} className="flex items-start gap-3">
+                                    {item.features.map((feature, f) => (
+                                        <Reveal as="li" variant="item" index={2 + f} key={feature} className="flex items-start gap-3">
                                             <CheckIcon className="mt-[0.2rem] text-brand-ink" />
                                             {fill(feature, values)}
-                                        </li>
+                                        </Reveal>
                                     ))}
                                 </ul>
-                                <Button asChild variant="secondary" className="mt-8 w-full sm:w-auto">
-                                    <Link href={quoteHref(lang)}>{t.quoteCta}</Link>
-                                </Button>
-                            </div>
+                                <Reveal variant="text" index={2 + item.features.length} className="mt-8 w-full sm:w-auto">
+                                    <Button asChild variant="secondary" className="w-full sm:w-auto">
+                                        <Link href={quoteHref(lang)}>{t.quoteCta}</Link>
+                                    </Button>
+                                </Reveal>
+                            </RevealGroup>
                         </article>
                     );
                 })}
@@ -77,7 +82,7 @@ export function ServiceTypes({ lang, t, tone = "bg", id = "tipos-de-servicio" }:
                 <GroupLabel>{t.custom}</GroupLabel>
             </div>
             <div className="mt-10 grid gap-10 lg:mt-12 lg:grid-cols-12 lg:gap-16">
-                <Reveal className="lg:col-span-5">
+                <Reveal variant="media" className="lg:col-span-5">
                     <Media
                         src={servicesImages.custom.src}
                         alt={t.customImageAlt}
@@ -86,11 +91,11 @@ export function ServiceTypes({ lang, t, tone = "bg", id = "tipos-de-servicio" }:
                         className="aspect-[16/10] lg:aspect-[4/5]"
                     />
                 </Reveal>
-                <ul className="border-t border-line lg:col-span-7 lg:self-center">
-                    {CUSTOM_SERVICES.map((service) => {
+                <RevealGroup as="ul" className="border-t border-line lg:col-span-7 lg:self-center">
+                    {CUSTOM_SERVICES.map((service, i) => {
                         const item = t.items[service.id];
                         return (
-                            <li key={service.id} className="border-b border-line">
+                            <Reveal as="li" variant="item" index={i} key={service.id} className="border-b border-line">
                                 <article
                                     aria-labelledby={`${id}-${service.id}`}
                                     className="flex flex-col items-start gap-5 py-8 sm:flex-row sm:items-center sm:justify-between sm:gap-10"
@@ -111,21 +116,21 @@ export function ServiceTypes({ lang, t, tone = "bg", id = "tipos-de-servicio" }:
                                         </a>
                                     </Button>
                                 </article>
-                            </li>
+                            </Reveal>
                         );
                     })}
-                </ul>
+                </RevealGroup>
             </div>
         </Section>
     );
 }
 
-/** Rótulo de grupo seguido de La línea, que corre hasta el borde del contenido. */
+/** Rótulo de grupo seguido de La línea, que se traza hasta el borde del contenido al entrar. */
 function GroupLabel({ children }: { children: React.ReactNode }) {
     return (
         <div className="flex items-center gap-5">
             <p className="shrink-0 font-medium text-fg-muted">{children}</p>
-            <RouteLine className="flex-1" />
+            <RouteLine draw className="flex-1" />
         </div>
     );
 }

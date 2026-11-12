@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Reveal, RevealGroup } from "@/components/motion";
 import { JsonLd } from "@/components/seo/json-ld";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Button, Section } from "@/components/ui";
 import { faq, faqCopy, type FaqTopic } from "@/content";
@@ -37,23 +38,33 @@ export function Faq({ lang, topic = "all", tone = "bg", id = "preguntas", jsonLd
                 />
             ) : null}
             <div className="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
-                <div className="flex flex-col items-start gap-4 lg:sticky lg:top-[calc(var(--header-h)+2.5rem)] lg:self-start">
-                    <h2 id={id} className="type-title">
+                <RevealGroup className="flex flex-col items-start gap-4 lg:sticky lg:top-[calc(var(--header-h)+2.5rem)] lg:self-start">
+                    <Reveal as="h2" variant="title" index={0} id={id} className="type-title">
                         {t.title}
-                    </h2>
-                    <p className="type-lead max-w-[28rem] text-fg-subtle">{t.text}</p>
-                    <Button asChild variant="link" className="mt-2">
-                        <Link href={localizedHref(lang, "terms")}>{t.terms}</Link>
-                    </Button>
-                </div>
-                <Accordion type="single" collapsible>
-                    {items.map((item) => (
-                        <AccordionItem key={item.id} value={item.id}>
-                            <AccordionTrigger>{item.question}</AccordionTrigger>
-                            <AccordionContent>{item.answer}</AccordionContent>
-                        </AccordionItem>
-                    ))}
-                </Accordion>
+                    </Reveal>
+                    <Reveal as="p" variant="text" index={1} className="type-lead max-w-[28rem] text-fg-subtle">
+                        {t.text}
+                    </Reveal>
+                    {/* El enlace tiene transición propia: Reveal va en un envoltorio. */}
+                    <Reveal variant="text" index={2} className="mt-2">
+                        <Button asChild variant="link">
+                            <Link href={localizedHref(lang, "terms")}>{t.terms}</Link>
+                        </Button>
+                    </Reveal>
+                </RevealGroup>
+                {/* Las preguntas caen en escalonado corto (40 ms): es una lista, no tarjetas. */}
+                <RevealGroup className="[--stagger:var(--stagger-tight)]">
+                    <Accordion type="single" collapsible>
+                        {items.map((item, i) => (
+                            <Reveal key={item.id} variant="item" index={i}>
+                                <AccordionItem value={item.id}>
+                                    <AccordionTrigger>{item.question}</AccordionTrigger>
+                                    <AccordionContent>{item.answer}</AccordionContent>
+                                </AccordionItem>
+                            </Reveal>
+                        ))}
+                    </Accordion>
+                </RevealGroup>
             </div>
         </Section>
     );

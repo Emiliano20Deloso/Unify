@@ -1,4 +1,5 @@
 // Estructura de página: Container, Section, SectionHeader. Todo de servidor.
+import { Reveal, RevealGroup } from "@/components/motion/reveal";
 import { cn } from "@/lib";
 
 type ContainerProps = React.HTMLAttributes<HTMLElement> & {
@@ -57,11 +58,14 @@ interface SectionHeaderProps {
     className?: string;
 }
 
-/** Título de sección + texto opcional. Sin etiquetas sobre el título. */
+/**
+ * Título de sección + texto opcional. Sin etiquetas sobre el título.
+ * Aparece al entrar en pantalla: el título lidera (sube 18 px) y el texto y la acción lo siguen.
+ */
 export function SectionHeader({ title, text, id, as: Heading = "h2", align = "start", action, className }: SectionHeaderProps) {
     const centered = align === "center";
     return (
-        <div
+        <RevealGroup
             className={cn(
                 "mb-10 flex flex-col gap-6 md:mb-14",
                 !centered && action ? "md:flex-row md:items-end md:justify-between" : null,
@@ -70,12 +74,21 @@ export function SectionHeader({ title, text, id, as: Heading = "h2", align = "st
             )}
         >
             <div className={cn("flex max-w-3xl flex-col gap-4", centered && "items-center")}>
-                <Heading id={id} className="type-title">
+                <Reveal as={Heading} variant="title" index={0} id={id} className="type-title">
                     {title}
-                </Heading>
-                {text ? <p className="type-lead max-w-[36rem] text-fg-subtle">{text}</p> : null}
+                </Reveal>
+                {text ? (
+                    <Reveal as="p" variant="text" index={1} className="type-lead max-w-[36rem] text-fg-subtle">
+                        {text}
+                    </Reveal>
+                ) : null}
             </div>
-            {action ? <div className="shrink-0">{action}</div> : null}
-        </div>
+            {/* La acción (un botón con transición propia) va envuelta: Reveal pisa su transition. */}
+            {action ? (
+                <Reveal variant="text" index={2} className="shrink-0">
+                    {action}
+                </Reveal>
+            ) : null}
+        </RevealGroup>
     );
 }
