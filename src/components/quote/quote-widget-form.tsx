@@ -3,15 +3,18 @@
 // Barra del cotizador del hero. Escritorio: Origen | ●——○ | Destino | Fecha | Hora | [Ver tarifa].
 // Móvil y tableta: tarjeta apilada con La línea vertical entre Origen y Destino.
 // Escribe en el borrador compartido; al enviar navega a /tarifas#cotizar con el morph del panel.
+// Enviar con campos vacíos: el aviso se despliega (Collapse) y el campo que falta late una vez.
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Collapse } from "@/components/motion/collapse";
+import { Swap } from "@/components/motion/swap";
 import { ArrowIcon, RouteLine } from "@/components/ui";
 import type { Dictionary, Locale } from "@/i18n/types";
 import { localizedHref } from "@/i18n/routes";
 import { QUOTE_PANEL_TYPE } from "@/lib/motion";
 import { cn } from "@/lib";
 import { draftIssues } from "@/lib/quote/draft";
-import { updateDraft, useQuoteDraft } from "@/lib/quote/store";
+import { updateDraft, useDraftRestored, useQuoteDraft } from "@/lib/quote/store";
 import { useToday } from "./hooks";
 import { PlaceField, type PlaceFieldHandle } from "./place-field";
 import { cellFocus, DateCell, TimeCell } from "./when-fields";
@@ -27,6 +30,7 @@ export function QuoteWidgetForm({ lang, dict }: Props) {
     const router = useRouter();
     const draft = useQuoteDraft();
     const today = useToday();
+    useDraftRestored(draft);
     const [missing, setMissing] = useState<Missing[]>([]);
     const originRef = useRef<PlaceFieldHandle>(null);
     const destinationRef = useRef<PlaceFieldHandle>(null);
@@ -40,6 +44,8 @@ export function QuoteWidgetForm({ lang, dict }: Props) {
         if (issues.origin) next.push("origin");
         if (issues.destination === "chooseDestination") next.push("destination");
         setMissing(next);
+        if (next.includes("origin")) originRef.current?.flag();
+        if (next.includes("destination")) destinationRef.current?.flag();
         if (next[0] === "origin") return originRef.current?.focus();
         if (next[0] === "destination") return destinationRef.current?.focus();
         updateDraft({}); // asegura la copia en sessionStorage antes de navegar
@@ -53,6 +59,8 @@ export function QuoteWidgetForm({ lang, dict }: Props) {
     const stackCell = "h-[58px] justify-start gap-0.5 pt-[9px]";
     const barCell = "lg:h-auto lg:justify-center lg:gap-1.5 lg:pt-0 lg:px-6";
     const value = "text-base lg:text-lg";
+    // La línea responde cuando cambia la ruta: el punto de destino late una vez.
+    const routeKey = `${draft.origin?.id ?? ""}>${draft.destination?.id ?? ""}`;
 
     return (
         <div>
@@ -63,7 +71,7 @@ export function QuoteWidgetForm({ lang, dict }: Props) {
                 className="flex flex-col gap-2.5 rounded-card border border-line bg-elevated p-3.5 shadow-bar lg:h-[120px] lg:flex-row lg:items-center lg:gap-0 lg:py-4 lg:pl-2 lg:pr-4"
             >
                 <div className="relative rounded-inner bg-surface lg:flex lg:min-w-0 lg:flex-[2.3] lg:items-center lg:self-stretch lg:bg-transparent">
-                    <RouteLine orientation="vertical" className="absolute left-4 top-[25px] h-[66px] lg:hidden" />
+                    <RouteLine orientation="vertical" pulse={routeKey} className="absolute left-4 top-[25px] h-[66px] lg:hidden" />
                     <PlaceField
                         ref={originRef}
                         lang={lang}
@@ -80,7 +88,7 @@ export function QuoteWidgetForm({ lang, dict }: Props) {
                         className={cn(stackCell, barCell, "rounded-inner pl-10 pr-3.5 lg:flex-1 lg:self-stretch", cellFocus)}
                         inputClassName={value}
                     />
-                    <RouteLine className="mt-[22px] hidden w-24 shrink-0 lg:flex" />
+                    <RouteLine pulse={routeKey} className="mt-[22px] hidden w-24 shrink-0 lg:flex" />
                     <PlaceField
                         ref={destinationRef}
                         lang={lang}
@@ -111,6 +119,7 @@ export function QuoteWidgetForm({ lang, dict }: Props) {
                         lang={lang}
                         value={draft.date}
                         min={today}
+                        fill
                         onChange={(date) => updateDraft({ date })}
                         className={cn(stackCell, barCell, "rounded-inner bg-surface px-3.5 lg:w-[168px] lg:bg-transparent", cellFocus)}
                         valueClassName={value}
@@ -133,9 +142,15 @@ export function QuoteWidgetForm({ lang, dict }: Props) {
                     <ArrowIcon />
                 </button>
             </form>
-            <p id={errorId} role="alert" className="type-label mt-3 min-h-[1.4em] px-1 text-brand-ink empty:hidden lg:px-2">
-                {message}
-            </p>
+            <div id={errorId} role="alert" className="type-label px-1 text-brand-ink lg:px-2">
+                <Collapse open={!!message}>
+                    <p className="pt-3">
+                        <Swap inline id={message ?? ""}>
+                            {message}
+                        </Swap>
+                    </p>
+                </Collapse>
+            </div>
         </div>
     );
 }

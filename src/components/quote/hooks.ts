@@ -13,21 +13,6 @@ export function useToday(): string {
     return useSyncExternalStore(noop, () => todayInTz(SERVICE_TZ), () => "");
 }
 
-const SMALL = "(max-width: 767px)";
-
-/** Pantalla chica (móvil): los campos de dirección se abren como hoja a pantalla completa. */
-export function useSmallScreen(): boolean {
-    return useSyncExternalStore(
-        (cb) => {
-            const mq = window.matchMedia(SMALL);
-            mq.addEventListener("change", cb);
-            return () => mq.removeEventListener("change", cb);
-        },
-        () => window.matchMedia(SMALL).matches,
-        () => false,
-    );
-}
-
 const DEBOUNCE_MS = 450;
 const MAX_CACHED = 40;
 

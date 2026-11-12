@@ -8,6 +8,7 @@
 //   [data-reveal][data-instant]   ya estaba en pantalla en la primera pintura: visible sin animar
 //   [data-media][data-loaded]     la foto nítida cargó: se funde sobre la borrosa
 //   [data-enter][data-enter-late] cabecera insertada al navegar: su secuencia arranca más tarde
+//   html[data-quote-restore]      hay borrador del cotizador por aplicar (lo quita la isla)
 // Si React borra los atributos de <html> (montaje doble de Strict Mode en desarrollo o cambio de
 // idioma), se vuelven a poner. Si el script falla antes de poner data-motion, nada se oculta.
 // Atrás/adelante: ver el listener de popstate más abajo.
@@ -276,6 +277,23 @@ function boot() {
 
     if (doc.body) scan(doc.body);
     html.setAttribute("data-motion", "");
+
+    // Cotizador: con un borrador guardado (sessionStorage "unify.quote.v1", ver src/lib/quote/store.ts)
+    // o con o/d en la URL, los valores que dependen de él ([data-draft-value]) se pintan transparentes
+    // hasta que la isla los aplica y quita el atributo (se funden en vez de saltar). Seguros: si la
+    // página no tiene cotizador, o si la isla no llega, el atributo se va solo.
+    try {
+        if (sessionStorage.getItem("unify.quote.v1") !== null || /[?&][od]=/.test(location.search)) {
+            html.setAttribute("data-quote-restore", "");
+            const release = () => html.removeAttribute("data-quote-restore");
+            setTimeout(release, 4000);
+            doc.addEventListener("DOMContentLoaded", () => {
+                if (!doc.querySelector("[data-draft-value]")) release();
+            });
+        }
+    } catch {
+        /* almacenamiento bloqueado: no hay borrador que restaurar */
+    }
 }
 
 /** Sin JS nada se oculta (todo depende de html[data-motion]); esto es un seguro extra para <noscript>. */

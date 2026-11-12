@@ -53,6 +53,11 @@ export async function recordRun(run) {
             if (!p.frame.parentId && out.recording) out.navs++;
         });
         await b.send("Page.addScriptToEvaluateOnNewDocument", { source: samplerSource() });
+        // Cada corrida es un visitante distinto: el límite de peticiones del cotizador es por IP (12 por
+        // minuto en /api/estimate) y, con todas las corridas desde la misma, las últimas medían el panel
+        // de "demasiadas solicitudes" en vez de su interacción.
+        const ip = `10.${1 + Math.floor(Math.random() * 250)}.${Math.floor(Math.random() * 255)}.${1 + Math.floor(Math.random() * 250)}`;
+        await b.send("Network.setExtraHTTPHeaders", { headers: { "x-forwarded-for": ip } });
         await runOp(b, { op: "viewport", ...vp });
         await runOp(b, { op: "media", reducedMotion: !!reduced });
 

@@ -830,7 +830,7 @@
         {
           "op": "eval",
           "label": "borde inferior de la barra = alto de pantalla",
-          "expr": "(() => { const b = document.querySelector('article[aria-labelledby=\"quote-result-title\"] > [data-site-chrome]'); return b ? Math.round(b.getBoundingClientRect().bottom) === innerHeight : 'sin barra'; })()",
+          "expr": "(() => { const b = document.querySelector('body > [data-quote-bar]'); return b ? Math.round(b.getBoundingClientRect().bottom) === innerHeight : 'sin barra'; })()",
           "equals": true
         }
       ]
@@ -957,7 +957,15 @@
       ],
       "expect": {
         "animated": true
-      }
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "aparecen fecha y hora de regreso",
+          "expr": "document.querySelectorAll('#cotizar input[type=date]').length",
+          "equals": 2
+        }
+      ]
     },
     {
       "id": "L1-carga-portada",
@@ -1089,12 +1097,21 @@
       "maxMs": 4000,
       "track": [
         "#cotizar input[type=\"date\"]"
+      ],
+      "post": [
+        {
+          "op": "eval",
+          "label": "la fecha se ve desde la primera pintura",
+          "expr": "document.querySelector('#cotizar [data-date-text]').textContent.trim().length > 0",
+          "equals": true
+        }
       ]
     },
     {
       "id": "L6-tarifas-con-borrador",
       "vp": [
-        "d"
+        "d",
+        "m"
       ],
       "setup": [
         {
@@ -1148,7 +1165,19 @@
       },
       "settleMs": 700,
       "maxMs": 4000,
-      "note": "sessionStorage es por origen: se escribe en /tarifas y luego se sale a una página oscura"
+      "note": "sessionStorage es por origen: se escribe en /tarifas y luego se sale a una página oscura",
+      "post": [
+        {
+          "op": "wait",
+          "ms": 1500
+        },
+        {
+          "op": "eval",
+          "label": "borrador aplicado y visible",
+          "expr": "!document.documentElement.hasAttribute('data-quote-restore') && document.querySelectorAll('#cotizar input[role=combobox]')[0].value === 'Polanco' && document.querySelectorAll('#cotizar input[role=combobox]')[1].value === 'AICM Terminal 1'",
+          "equals": true
+        }
+      ]
     },
     {
       "id": "L7-tarifas-con-url",
@@ -1172,7 +1201,19 @@
         "load": true
       },
       "settleMs": 700,
-      "maxMs": 4000
+      "maxMs": 4000,
+      "post": [
+        {
+          "op": "wait",
+          "ms": 1500
+        },
+        {
+          "op": "eval",
+          "label": "enlace aplicado y visible",
+          "expr": "!document.documentElement.hasAttribute('data-quote-restore') && document.querySelectorAll('#cotizar input[role=combobox]')[0].value === 'Polanco' && document.querySelector('#cotizar [aria-labelledby=quote-passengers]').getAttribute('aria-valuenow') === '2'",
+          "equals": true
+        }
+      ]
     },
     {
       "id": "L8-foto-lenta",
@@ -1596,7 +1637,51 @@
       ],
       "expect": {
         "animated": true
-      }
+      },
+      "reduced": "both",
+      "post": [
+        {
+          "op": "eval",
+          "label": "la lista quedó abierta y con opciones",
+          "expr": "(() => { const i = document.querySelector('form[aria-label] input[role=combobox]'); return i.getAttribute('aria-expanded') === 'true' && document.querySelectorAll('[role=listbox] [role=option]').length > 0; })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "Q1b-lista-cierra",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "form[aria-label] input[role=\"combobox\"]",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "key",
+          "key": "Escape"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "lista cerrada",
+          "expr": "document.querySelector('form[aria-label] input[role=combobox]').getAttribute('aria-expanded')",
+          "equals": "false"
+        }
+      ]
     },
     {
       "id": "Q2-escribir",
@@ -1625,7 +1710,63 @@
       "expect": {
         "animated": true
       },
-      "maxMs": 2200
+      "maxMs": 2200,
+      "post": [
+        {
+          "op": "eval",
+          "label": "Polanco entre las opciones",
+          "expr": "[...document.querySelectorAll('[role=listbox] [role=option]')].some((o) => o.textContent.includes('Polanco'))",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "Q2b-teclear-rapido",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "form[aria-label] input[role=\"combobox\"]",
+          "wait": 800
+        }
+      ],
+      "action": [
+        {
+          "op": "type",
+          "text": "santa",
+          "delay": 25
+        },
+        {
+          "op": "key",
+          "key": "Backspace",
+          "times": 3,
+          "gap": 40
+        },
+        {
+          "op": "type",
+          "text": "nta fe",
+          "delay": 25
+        }
+      ],
+      "roi": "[role=\"listbox\"]",
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "Santa Fe entre las opciones y un solo listbox",
+          "expr": "document.querySelectorAll('[role=listbox]').length === 2 && [...document.querySelectorAll('[role=listbox] [role=option]')].some((o) => o.textContent.includes('Santa Fe'))",
+          "equals": true
+        }
+      ]
     },
     {
       "id": "Q3-elegir-con-teclado",
@@ -1664,7 +1805,109 @@
       ],
       "expect": {
         "animated": true
-      }
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "lista cerrada y valor elegido",
+          "expr": "(() => { const i = document.querySelector('form[aria-label] input[role=combobox]'); return i.getAttribute('aria-expanded') === 'false' && i.value.length > 0; })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "Q3b-resaltado-teclado",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "form[aria-label] input[role=\"combobox\"]",
+          "wait": 900
+        },
+        {
+          "op": "key",
+          "key": "ArrowDown",
+          "wait": 500
+        }
+      ],
+      "action": [
+        {
+          "op": "key",
+          "key": "ArrowDown",
+          "times": 3,
+          "gap": 90
+        }
+      ],
+      "roi": "[role=\"listbox\"]",
+      "track": [
+        "[role=\"listbox\"] > span[aria-hidden=\"true\"]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "cuarta opción activa",
+          "expr": "document.querySelector('form[aria-label] input[role=combobox]').getAttribute('aria-activedescendant')?.endsWith('-o-3')",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "Q3c-resaltado-cursor",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "form[aria-label] input[role=\"combobox\"]",
+          "wait": 900
+        },
+        {
+          "op": "hover",
+          "selector": "[role=\"listbox\"] [role=\"option\"]",
+          "nth": 0
+        },
+        {
+          "op": "wait",
+          "ms": 500
+        }
+      ],
+      "action": [
+        {
+          "op": "hover",
+          "selector": "[role=\"listbox\"] [role=\"option\"]",
+          "nth": 2
+        }
+      ],
+      "roi": "[role=\"listbox\"]",
+      "track": [
+        "[role=\"listbox\"] > span[aria-hidden=\"true\"]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "tercera opción activa",
+          "expr": "document.querySelector('form[aria-label] input[role=combobox]').getAttribute('aria-activedescendant')?.endsWith('-o-2')",
+          "equals": true
+        }
+      ]
     },
     {
       "id": "Q4-validacion",
@@ -1683,10 +1926,107 @@
           "selector": "form[aria-label] button[type=\"submit\"]"
         }
       ],
-      "roi": "#quote-widget-error",
+      "roi": "div:has(> form[aria-label=\"Cotizar un viaje\"])",
       "expect": {
         "animated": true
-      }
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "aviso desplegado",
+          "expr": "document.querySelector('#quote-widget-error').textContent.trim()",
+          "equals": "Elige el origen de la lista."
+        }
+      ]
+    },
+    {
+      "id": "Q4b-validacion-destino",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": null,
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "form[aria-label] button[type=\"submit\"]"
+        }
+      ],
+      "roi": "div:has(> form[aria-label=\"Cotizar un viaje\"])",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "aviso del destino",
+          "expr": "document.querySelector('#quote-widget-error').textContent.trim()",
+          "equals": "Elige el destino de la lista."
+        }
+      ]
+    },
+    {
+      "id": "Q4c-validacion-movil",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "form[aria-label] button[type=\"submit\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "aviso visible y sin hoja abierta",
+          "expr": "!document.querySelector('[role=dialog]') && document.querySelector('#quote-widget-error').textContent.trim()",
+          "equals": "Elige el origen de la lista."
+        }
+      ]
     },
     {
       "id": "Q5-morph-hero-tarifas",
@@ -1748,7 +2088,15 @@
       "expect": {
         "animated": true
       },
-      "maxMs": 2500
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "llegó a /tarifas con el panel",
+          "expr": "location.pathname === '/tarifas' && !!document.querySelector('form[aria-labelledby=\"quote-form-title\"]')",
+          "equals": true
+        }
+      ]
     },
     {
       "id": "Q6-hoja-movil",
@@ -1769,7 +2117,51 @@
       ],
       "expect": {
         "animated": true
-      }
+      },
+      "reduced": "both",
+      "post": [
+        {
+          "op": "eval",
+          "label": "hoja abierta",
+          "expr": "!!document.querySelector('[role=dialog] input[role=combobox]')",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "Q6b-hoja-cierra",
+      "vp": [
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "form[aria-label] input",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "[role=\"dialog\"] button[aria-label=\"Cerrar\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "hoja cerrada",
+          "expr": "!document.querySelector('[role=dialog]')",
+          "equals": true
+        }
+      ]
     },
     {
       "id": "Q7-elegir-en-hoja",
@@ -1800,7 +2192,15 @@
       ],
       "expect": {
         "animated": true
-      }
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "hoja cerrada y origen elegido",
+          "expr": "!document.querySelector('[role=dialog]') && document.querySelector('form[aria-label] input[role=combobox]').value.length > 0",
+          "equals": true
+        }
+      ]
     },
     {
       "id": "T1-invertir",
@@ -1857,7 +2257,16 @@
       "expect": {
         "animated": true
       },
-      "maxMs": 2500
+      "maxMs": 2500,
+      "reduced": "both",
+      "post": [
+        {
+          "op": "eval",
+          "label": "origen y destino invertidos",
+          "expr": "document.querySelectorAll('#cotizar input[role=combobox]')[0].value === 'AICM Terminal 1' && document.querySelectorAll('#cotizar input[role=combobox]')[1].value === 'Polanco'",
+          "equals": true
+        }
+      ]
     },
     {
       "id": "T2-ida-y-vuelta-on",
@@ -1914,7 +2323,16 @@
       "expect": {
         "animated": true
       },
-      "maxMs": 2500
+      "maxMs": 2500,
+      "reduced": "both",
+      "post": [
+        {
+          "op": "eval",
+          "label": "fecha y hora de regreso",
+          "expr": "document.querySelectorAll('#cotizar input[type=date]').length",
+          "equals": 2
+        }
+      ]
     },
     {
       "id": "T3-ida-y-vuelta-off",
@@ -1971,7 +2389,105 @@
       "expect": {
         "animated": true
       },
-      "maxMs": 2500
+      "maxMs": 2500,
+      "reduced": "both",
+      "post": [
+        {
+          "op": "eval",
+          "label": "sin campos de regreso",
+          "expr": "document.querySelectorAll('#cotizar input[type=date]').length",
+          "equals": 1
+        }
+      ]
+    },
+    {
+      "id": "T3b-ida-y-vuelta-rafaga",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#cotizar label:has(input[role=\"switch\"])"
+        },
+        {
+          "op": "wait",
+          "ms": 140
+        },
+        {
+          "op": "click",
+          "selector": "#cotizar label:has(input[role=\"switch\"])"
+        },
+        {
+          "op": "wait",
+          "ms": 140
+        },
+        {
+          "op": "click",
+          "selector": "#cotizar label:has(input[role=\"switch\"])"
+        },
+        {
+          "op": "wait",
+          "ms": 140
+        },
+        {
+          "op": "click",
+          "selector": "#cotizar label:has(input[role=\"switch\"])"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "termina sin regreso y sin restos",
+          "expr": "document.querySelectorAll('#cotizar input[type=date]').length",
+          "equals": 1
+        }
+      ]
     },
     {
       "id": "T4-pasajero-mas",
@@ -2028,7 +2544,118 @@
       "expect": {
         "animated": true
       },
-      "maxMs": 2500
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "2 pasajeros",
+          "expr": "document.querySelector('#cotizar [aria-labelledby=quote-passengers]').getAttribute('aria-valuenow')",
+          "equals": "2"
+        },
+        {
+          "op": "wait",
+          "ms": 1500
+        },
+        {
+          "op": "eval",
+          "label": "precio vigente (sin aria-busy)",
+          "expr": "document.querySelector('article[aria-labelledby=quote-result-title]').getAttribute('aria-busy')",
+          "equals": "false"
+        }
+      ],
+      "roi": "article[aria-labelledby=\"quote-result-title\"]"
+    },
+    {
+      "id": "T4b-pasajeros-rafaga",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "button[aria-label=\"Agregar un pasajero\"]"
+        },
+        {
+          "op": "wait",
+          "ms": 90
+        },
+        {
+          "op": "click",
+          "selector": "button[aria-label=\"Agregar un pasajero\"]"
+        },
+        {
+          "op": "wait",
+          "ms": 90
+        },
+        {
+          "op": "click",
+          "selector": "button[aria-label=\"Agregar un pasajero\"]"
+        }
+      ],
+      "roi": "article[aria-labelledby=\"quote-result-title\"]",
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 3000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "4 pasajeros",
+          "expr": "document.querySelector('#cotizar [aria-labelledby=quote-passengers]').getAttribute('aria-valuenow')",
+          "equals": "4"
+        },
+        {
+          "op": "wait",
+          "ms": 1500
+        },
+        {
+          "op": "eval",
+          "label": "precio vigente (sin aria-busy)",
+          "expr": "document.querySelector('article[aria-labelledby=quote-result-title]').getAttribute('aria-busy')",
+          "equals": "false"
+        }
+      ]
     },
     {
       "id": "T5-maleta-menos",
@@ -2085,7 +2712,26 @@
       "expect": {
         "animated": true
       },
-      "maxMs": 2500
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "1 maleta",
+          "expr": "document.querySelector('#cotizar [aria-labelledby=quote-luggage]').getAttribute('aria-valuenow')",
+          "equals": "1"
+        },
+        {
+          "op": "wait",
+          "ms": 1500
+        },
+        {
+          "op": "eval",
+          "label": "precio vigente (sin aria-busy)",
+          "expr": "document.querySelector('article[aria-labelledby=quote-result-title]').getAttribute('aria-busy')",
+          "equals": "false"
+        }
+      ],
+      "roi": "span:has(> div > [aria-labelledby=\"quote-luggage\"])"
     },
     {
       "id": "T6-nivel",
@@ -2161,6 +2807,90 @@
       ]
     },
     {
+      "id": "T6b-nivel-mientras-carga",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "button[aria-label=\"Agregar un pasajero\"]"
+        },
+        {
+          "op": "wait",
+          "ms": 120
+        },
+        {
+          "op": "click",
+          "selector": "#cotizar label:has(input[name=\"quote-level\"][value=\"premium\"])"
+        }
+      ],
+      "roi": "article[aria-labelledby=\"quote-result-title\"]",
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 3000,
+      "post": [
+        {
+          "op": "wait",
+          "ms": 1500
+        },
+        {
+          "op": "eval",
+          "label": "Premium elegido",
+          "expr": "document.querySelector('input[name=quote-level]:checked').value",
+          "equals": "premium"
+        },
+        {
+          "op": "eval",
+          "label": "precio vigente (sin aria-busy)",
+          "expr": "document.querySelector('article[aria-labelledby=quote-result-title]').getAttribute('aria-busy')",
+          "equals": "false"
+        }
+      ]
+    },
+    {
       "id": "T7-vacio-a-precio",
       "vp": [
         "d"
@@ -2216,7 +2946,25 @@
         "animated": true
       },
       "maxMs": 3000,
-      "settleMs": 500
+      "settleMs": 500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "destino elegido",
+          "expr": "document.querySelectorAll('#cotizar input[role=combobox]')[1].value.length > 0",
+          "equals": true
+        },
+        {
+          "op": "wait",
+          "ms": 1500
+        },
+        {
+          "op": "eval",
+          "label": "precio vigente (sin aria-busy)",
+          "expr": "document.querySelector('article[aria-labelledby=quote-result-title]').getAttribute('aria-busy')",
+          "equals": "false"
+        }
+      ]
     },
     {
       "id": "T8-cambio-de-hora",
@@ -2273,7 +3021,26 @@
       "expect": {
         "animated": true
       },
-      "maxMs": 2500
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "hora 12:00",
+          "expr": "document.querySelector('#cotizar select').value",
+          "equals": "12:00"
+        },
+        {
+          "op": "wait",
+          "ms": 1500
+        },
+        {
+          "op": "eval",
+          "label": "precio vigente (sin aria-busy)",
+          "expr": "document.querySelector('article[aria-labelledby=quote-result-title]').getAttribute('aria-busy')",
+          "equals": "false"
+        }
+      ],
+      "roi": "article[aria-labelledby=\"quote-result-title\"]"
     },
     {
       "id": "T9-especial-gdl",
@@ -2325,7 +3092,162 @@
         "load": true
       },
       "settleMs": 700,
-      "maxMs": 4000
+      "maxMs": 4000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "cotización especial",
+          "expr": "document.querySelector('article[aria-labelledby=quote-result-title]').textContent.includes('Cotizar por WhatsApp')",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "T9b-precio-a-especial",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 4,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "button[aria-label=\"Agregar un pasajero\"]"
+        }
+      ],
+      "roi": "article[aria-labelledby=\"quote-result-title\"]",
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 3000,
+      "post": [
+        {
+          "op": "wait",
+          "ms": 1500
+        },
+        {
+          "op": "eval",
+          "label": "cotización especial",
+          "expr": "document.querySelector('article[aria-labelledby=quote-result-title]').textContent.includes('Cotizar por WhatsApp')",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "T9c-especial-a-precio",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 5,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "button[aria-label=\"Quitar un pasajero\"]"
+        }
+      ],
+      "roi": "article[aria-labelledby=\"quote-result-title\"]",
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 3000,
+      "post": [
+        {
+          "op": "wait",
+          "ms": 1500
+        },
+        {
+          "op": "eval",
+          "label": "de vuelta al precio",
+          "expr": "!!document.querySelector('input[name=quote-level]')",
+          "equals": true
+        },
+        {
+          "op": "eval",
+          "label": "precio vigente (sin aria-busy)",
+          "expr": "document.querySelector('article[aria-labelledby=quote-result-title]').getAttribute('aria-busy')",
+          "equals": "false"
+        }
+      ]
     },
     {
       "id": "T10a-error-de-red",
@@ -2388,7 +3310,15 @@
       "expect": {
         "animated": true
       },
-      "maxMs": 2500
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "panel de error con reintentar",
+          "expr": "!!document.querySelector('article button:has(.lucide-rotate-cw)')",
+          "equals": true
+        }
+      ]
     },
     {
       "id": "T10b-reintento",
@@ -2460,7 +3390,25 @@
       "expect": {
         "animated": true
       },
-      "maxMs": 2500
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "wait",
+          "ms": 1500
+        },
+        {
+          "op": "eval",
+          "label": "sin panel de error",
+          "expr": "!document.querySelector('article button:has(.lucide-rotate-cw)')",
+          "equals": true
+        },
+        {
+          "op": "eval",
+          "label": "precio vigente (sin aria-busy)",
+          "expr": "document.querySelector('article[aria-labelledby=quote-result-title]').getAttribute('aria-busy')",
+          "equals": "false"
+        }
+      ]
     },
     {
       "id": "T11-campo-de-vuelo",
@@ -2495,7 +3443,15 @@
       "expect": {
         "animated": true
       },
-      "maxMs": 2500
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "campo de vuelo",
+          "expr": "!!document.querySelector('#cotizar input[maxlength=\"10\"]')",
+          "equals": true
+        }
+      ]
     },
     {
       "id": "T12-error-de-fecha",
@@ -2560,7 +3516,8 @@
           "expr": "!!document.querySelector('[id^=\"quote-err-\"]')",
           "equals": true
         }
-      ]
+      ],
+      "roi": "form[aria-labelledby=\"quote-form-title\"]"
     },
     {
       "id": "T13a-barra-movil-entra",
@@ -2611,13 +3568,22 @@
       "action": [
         {
           "op": "scroll",
-          "y": 1400
+          "y": 620
         }
       ],
       "expect": {
         "animated": true
       },
-      "maxMs": 2000
+      "maxMs": 2000,
+      "reduced": "both",
+      "post": [
+        {
+          "op": "eval",
+          "label": "barra visible y anclada abajo",
+          "expr": "(() => { const b = document.querySelector('body > [data-quote-bar]'); return !!b && Math.round(b.getBoundingClientRect().bottom) === innerHeight; })()",
+          "equals": true
+        }
+      ]
     },
     {
       "id": "T13b-barra-movil-sale",
@@ -2666,8 +3632,8 @@
         },
         {
           "op": "scroll",
-          "y": 1400,
-          "wait": 1200
+          "y": 620,
+          "wait": 1500
         }
       ],
       "action": [
@@ -2679,7 +3645,16 @@
       "expect": {
         "animated": true
       },
-      "maxMs": 2000
+      "maxMs": 2000,
+      "reduced": "both",
+      "post": [
+        {
+          "op": "eval",
+          "label": "la barra salió",
+          "expr": "!document.querySelector('body > [data-quote-bar]')",
+          "equals": true
+        }
+      ]
     },
     {
       "id": "T14-whatsapp-sin-parpadeo",
@@ -2734,13 +3709,25 @@
         }
       ],
       "track": [
-        "article a[href^=\"https://wa.me\"]",
-        "article [aria-disabled]"
+        "article[aria-labelledby=\"quote-result-title\"] a[target=\"_blank\"]"
       ],
       "expect": {
         "animated": true
       },
-      "maxMs": 2500
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "wait",
+          "ms": 1500
+        },
+        {
+          "op": "eval",
+          "label": "un solo enlace de reservar, con href",
+          "expr": "(() => { const a = document.querySelectorAll('article[aria-labelledby=quote-result-title] a[target=_blank]'); return [...a].filter((x) => x.textContent.includes('Reservar')).map((x) => x.hasAttribute('href')).join(); })()",
+          "equals": "true"
+        }
+      ],
+      "roi": "article[aria-labelledby=\"quote-result-title\"]"
     },
     {
       "id": "T15a-reducido-navegacion",

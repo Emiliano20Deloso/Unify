@@ -2,12 +2,24 @@
 
 // Tarjeta de resultado (maqueta: "Resultado de la cotización"). Mantiene su estructura en todos los
 // estados —vacío, cargando, precio, especial, error— para que llegar el precio no mueva la página.
-import { useEffect, useRef, useState } from "react";
+// Movimiento: un solo cuerpo que pasa de un estado a otro con fundido cruzado y alto animado (Swap +
+// AutoHeight); los tres niveles siguen montados y su cifra rueda de "Desde $X" al precio; el desglose
+// y los avisos entran y salen fila por fila; títulos, distancia y atribución se funden; mientras
+// llega un precio nuevo las cifras se atenúan (aria-busy). La barra móvil vive en <body> (portal).
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { createPortal } from "react-dom";
+import { AnimatePresence, useIsPresent, useReducedMotion } from "motion/react";
+import * as m from "motion/react-m";
 import { RotateCw } from "lucide-react";
+import { AutoHeight } from "@/components/motion/auto-height";
+import { Collapse } from "@/components/motion/collapse";
+import { Presence } from "@/components/motion/presence";
+import { Swap } from "@/components/motion/swap";
 import { Button, Price, RouteLine, Segmented } from "@/components/ui";
 import type { Dictionary, Locale } from "@/i18n/types";
 import { cn } from "@/lib";
 import type { EstimateRequest, EstimateResponse } from "@/lib/estimate/schema";
+import { FADE_IN, FADE_OUT, SPRING } from "@/lib/motion";
 import { formatMXN } from "@/lib/pricing/format";
 import { breakdownRows } from "@/lib/quote/breakdown";
 import { fill, formatDuration, formatKm, formatShortDate } from "@/lib/quote/format";
@@ -16,6 +28,7 @@ import { updateDraft } from "@/lib/quote/store";
 import { LEVELS, type Level, type QuoteDraft } from "@/lib/quote/types";
 import { buildSpecialQuoteUrl, buildWhatsAppUrl } from "@/lib/whatsapp";
 import type { EstimateState } from "./hooks";
+import { spin, useSlideOnChange } from "./motion";
 
 type Dict = Dictionary<"quote">;
 
@@ -56,6 +69,16 @@ function viewFor(draft: QuoteDraft, estimate: EstimateState, hasFieldErrors: boo
     }
 }
 
+const noop = () => () => {};
+/** true solo en el cliente ya hidratado (el portal de la barra necesita document.body). */
+function useMounted(): boolean {
+    return useSyncExternalStore(
+        noop,
+        () => true,
+        () => false,
+    );
+}
+
 export function QuoteResult({ lang, dict, draft, fromPrices, estimate, hasFieldErrors }: Props) {
     const t = dict.result;
     const view = viewFor(draft, estimate, hasFieldErrors);
@@ -70,8 +93,8 @@ export function QuoteResult({ lang, dict, draft, fromPrices, estimate, hasFieldE
             ? buildWhatsAppUrl({ request: view.request, estimate: view.data, level, lang, flightNumber: draft.flight })
             : null;
 
-    // Barra fija inferior (móvil): visible cuando hay precio, el cotizador está en pantalla y el
-    // botón propio de la tarjeta no.
+    // Barra fija inferior (móvil): visible cuando hay precio (también mientras llega el siguiente), el
+    // cotizador está en pantalla y el botón propio de la tarjeta no.
     const ctaRef = useRef<HTMLDivElement>(null);
     const cardRef = useRef<HTMLElement>(null);
     const [ctaVisible, setCtaVisible] = useState(true);
@@ -90,7 +113,8 @@ export function QuoteResult({ lang, dict, draft, fromPrices, estimate, hasFieldE
         io.observe(card);
         return () => io.disconnect();
     }, []);
-    const showBar = !!waUrl && !!tiers && cardVisible && !ctaVisible;
+    const mounted = useMounted();
+    const showBar = !!tiers && cardVisible && !ctaVisible;
 
     const announce =
         view.kind === "price" && !view.stale && tiers
@@ -109,6 +133,9 @@ export function QuoteResult({ lang, dict, draft, fromPrices, estimate, hasFieldE
                 : "";
 
     const loading = view.kind === "skeleton" || (view.kind === "price" && view.stale);
+    const body = view.kind === "special" ? "special" : view.kind === "error" ? "error" : "levels";
+    const meta = leg ? `${fill(t.distance, { km: formatKm(leg.distanceKm) })} · ${formatDuration(leg.durationMin, lang)}` : null;
+    const note = leg ? (leg.distanceSource === "google" ? dict.places.attribution : t.approx) : view.kind === "empty" ? t.emptyText : null;
 
     return (
         <article
@@ -122,101 +149,92 @@ export function QuoteResult({ lang, dict, draft, fromPrices, estimate, hasFieldE
             </p>
 
             <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between md:gap-6">
-                <h2 id="quote-result-title" className="type-subheading min-w-0">
-                    {draft.origin && draft.destination ? (
-                        <span className="flex flex-wrap items-center gap-x-4 gap-y-1">
-                            <span className="min-w-0">{draft.origin.label}</span>
-                            <RouteLine key={estimate.key ?? "none"} draw label={t.routeTo} className="w-14 shrink-0" />
-                            <span className="min-w-0">{draft.destination.label}</span>
-                        </span>
-                    ) : (
-                        t.emptyTitle
-                    )}
+                <h2 id="quote-result-title" data-draft-value="" className="type-subheading min-w-0">
+                    <RouteTitle dict={dict} draft={draft} />
                 </h2>
-                <div className="type-small min-h-[1.6em] shrink-0 font-medium text-fg-subtle tabular md:mb-[3px] md:text-right">
-                    {leg ? (
-                        <p className="whitespace-nowrap">
-                            {fill(t.distance, { km: formatKm(leg.distanceKm) })} · {formatDuration(leg.durationMin, lang)}
-                        </p>
-                    ) : loading ? (
-                        <Bar className="h-4 w-36" />
-                    ) : null}
+                <div data-draft-value="" className="type-small min-h-[1.6em] shrink-0 font-medium text-fg-subtle tabular md:mb-[3px] md:text-right">
+                    <Swap inline id={meta ?? (loading ? "loading" : "none")} className="quote-dim whitespace-nowrap">
+                        {meta ? meta : loading ? <Bar className="h-4 w-36" /> : null}
+                    </Swap>
                 </div>
             </div>
-            <p className="type-label mt-2 min-h-[1.4em] font-normal text-fg-subtle md:text-right">
-                {leg ? (leg.distanceSource === "google" ? dict.places.attribution : t.approx) : view.kind === "empty" ? t.emptyText : null}
+            <p data-draft-value="" className="type-label mt-2 min-h-[1.4em] font-normal text-fg-subtle md:text-right">
+                <Swap inline id={note ?? ""}>
+                    {note}
+                </Swap>
             </p>
 
-            {view.kind === "special" ? (
-                <SpecialPanel lang={lang} dict={dict} draft={draft} data={view.data} />
-            ) : view.kind === "error" ? (
-                <ErrorPanel text={errorText(dict, view.reason)} retry={dict.errors.retry} onRetry={estimate.retry} />
-            ) : (
-                <>
-                    <Segmented
-                        name="quote-level"
-                        legend={t.levelLegend}
-                        value={level}
-                        onValueChange={(l) => updateDraft({ level: l })}
-                        selectedLabel={t.selected}
-                        className="mt-6 md:mt-8"
-                        options={LEVELS.map((l) => ({
-                            value: l,
-                            label: dict.levels[l],
-                            detail: tiers ? (
-                                <Price value={tiers[l].total} />
-                            ) : loading ? (
-                                <Bar className="mt-1 h-6 w-16" />
-                            ) : (
-                                <span className="flex flex-wrap items-baseline gap-x-1.5">
-                                    <span className="type-label font-normal text-fg-subtle">{t.from}</span>
-                                    <Price value={fromPrices[l]} />
-                                </span>
-                            ),
-                        }))}
-                    />
-
-                    <div className="mt-6 min-h-[13.5rem] rounded-control bg-elevated px-5 py-1 md:mt-7">
-                        {data && tiers ? (
-                            <Breakdown lang={lang} dict={dict} data={data} level={level} />
-                        ) : (
-                            <div className="flex min-h-[13rem] flex-col justify-center gap-3 py-4">
-                                {view.kind === "fix" ? (
-                                    <p className="type-small text-fg-subtle">{t.fixFields}</p>
-                                ) : loading ? (
-                                    <>
-                                        <span className="sr-only">{t.loading}</span>
-                                        <Bar className="h-4 w-2/3" />
-                                        <Bar className="h-4 w-1/2" />
-                                        <Bar className="h-4 w-3/5" />
-                                        <Bar className="mt-3 h-7 w-1/3 self-end" />
-                                    </>
-                                ) : (
-                                    <p className="type-small text-fg-subtle">{t.emptyText}</p>
-                                )}
+            <AutoHeight>
+                {/* Relleno y no margen arriba: el estado que sale (popLayout) no se recorre al salir del flujo. */}
+                <Swap id={body} className="pt-6 md:pt-8">
+                    {view.kind === "special" ? (
+                        <SpecialPanel lang={lang} dict={dict} draft={draft} data={view.data} />
+                    ) : view.kind === "error" ? (
+                        <ErrorPanel text={errorText(dict, view.reason)} retry={dict.errors.retry} onRetry={estimate.retry} />
+                    ) : (
+                        <>
+                            <div data-draft-value="">
+                                <Segmented
+                                    name="quote-level"
+                                    legend={t.levelLegend}
+                                    value={level}
+                                    onValueChange={(l) => updateDraft({ level: l })}
+                                    selectedLabel={t.selected}
+                                    className="quote-dim"
+                                    options={LEVELS.map((l) => ({
+                                        value: l,
+                                        label: dict.levels[l],
+                                        // Siempre la misma cifra montada: rueda de "Desde $X" al precio real.
+                                        detail: (
+                                            <span className="quote-detail">
+                                                <span className="quote-from" data-hidden={tiers ? "" : undefined} aria-hidden={tiers ? true : undefined}>
+                                                    <span className="type-label font-normal text-fg-subtle">{t.from}</span>
+                                                </span>
+                                                <Price value={tiers ? tiers[l].total : fromPrices[l]} />
+                                            </span>
+                                        ),
+                                    }))}
+                                />
                             </div>
-                        )}
+
+                            <div className="quote-dim mt-6 min-h-[13.5rem] rounded-control bg-elevated px-5 py-1 md:mt-7">
+                                <Swap id={data && tiers ? "price" : view.kind === "fix" ? "fix" : loading ? "loading" : "empty"}>
+                                        {data && tiers ? (
+                                            <Breakdown lang={lang} dict={dict} data={data} level={level} />
+                                        ) : (
+                                            <div className="flex min-h-[13rem] flex-col justify-center gap-3 py-4">
+                                                {view.kind === "fix" ? (
+                                                    <p className="type-small text-fg-subtle">{t.fixFields}</p>
+                                                ) : loading ? (
+                                                    <>
+                                                        <span className="sr-only">{t.loading}</span>
+                                                        <Bar className="h-4 w-2/3" />
+                                                        <Bar className="h-4 w-1/2" />
+                                                        <Bar className="h-4 w-3/5" />
+                                                        <Bar className="mt-3 h-7 w-1/3 self-end" />
+                                                    </>
+                                                ) : (
+                                                    <p className="type-small text-fg-subtle">{t.emptyText}</p>
+                                                )}
+                                            </div>
+                                        )}
+                                </Swap>
+                            </div>
+
+                            <Notices dict={dict} data={data && tiers ? data : null} />
+                        </>
+                    )}
+                </Swap>
+            </AutoHeight>
+
+            <div ref={ctaRef} className="mt-auto flex flex-col pt-8">
+                <Collapse open={view.kind !== "special"}>
+                    <div className="pb-3">
+                        <BookLink href={waUrl} size="lg" className="w-full" label={dict.cta.book} newTab={dict.cta.newTab} />
                     </div>
-
-                    {data && tiers ? <Notices dict={dict} data={data} /> : null}
-                </>
-            )}
-
-            <div ref={ctaRef} className="mt-auto flex flex-col gap-3 pt-8">
-                {view.kind === "special" ? null : waUrl ? (
-                    <Button asChild size="lg" className="w-full">
-                        <a href={waUrl} target="_blank" rel="noopener noreferrer">
-                            {dict.cta.book}
-                            <span className="sr-only"> {dict.cta.newTab}</span>
-                        </a>
-                    </Button>
-                ) : (
-                    <Button size="lg" className="w-full" disabled>
-                        {dict.cta.book}
-                    </Button>
-                )}
+                </Collapse>
                 <p className="type-label text-center font-normal text-fg-subtle">{dict.cta.hours}</p>
-                <Button asChild variant="link" size="sm" className="max-w-full self-center whitespace-normal text-center text-[0.9375rem]">
+                <Button asChild variant="link" size="sm" className="mt-3 max-w-full self-center whitespace-normal text-center text-[0.9375rem]">
                     <a href={buildSpecialQuoteUrl({ kind: "general", lang })} target="_blank" rel="noopener noreferrer">
                         {dict.cta.custom}
                         <span className="sr-only"> {dict.cta.newTab}</span>
@@ -224,21 +242,92 @@ export function QuoteResult({ lang, dict, draft, fromPrices, estimate, hasFieldE
                 </Button>
             </div>
 
-            {showBar && tiers && waUrl ? (
-                <div data-site-chrome className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-between gap-4 border-t border-line bg-bg px-gutter pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 duration-base animate-in fade-in-0 slide-in-from-bottom-2 lg:hidden">
-                    <p className="flex min-w-0 flex-col">
-                        <span className="type-label font-normal text-fg-subtle">{fill(dict.mobileBar.label, { level: dict.levels[level] })}</span>
-                        <Price value={tiers[level].total} currency className="text-xl font-medium" />
-                    </p>
-                    <Button asChild size="md" className="px-5">
-                        <a href={waUrl} target="_blank" rel="noopener noreferrer">
-                            {dict.cta.book}
-                            <span className="sr-only"> {dict.cta.newTab}</span>
-                        </a>
-                    </Button>
-                </div>
-            ) : null}
+            {/* Fuera de la tarjeta (en <body>): un ancestro con transform o recorte la dejaría mal anclada. */}
+            {mounted
+                ? createPortal(
+                      <Presence
+                          show={showBar}
+                          preset="drop"
+                          data-site-chrome=""
+                          data-quote-bar=""
+                          className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-between gap-4 border-t border-line bg-bg px-gutter pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 lg:hidden"
+                      >
+                          {tiers ? (
+                              <>
+                                  <p className="flex min-w-0 flex-col">
+                                      <span className="type-label font-normal text-fg-subtle">
+                                          <Swap inline id={level}>
+                                              {fill(dict.mobileBar.label, { level: dict.levels[level] })}
+                                          </Swap>
+                                      </span>
+                                      <Price value={tiers[level].total} currency className="text-xl font-medium" />
+                                  </p>
+                                  <BookLink href={waUrl} size="md" className="px-5" label={dict.cta.book} newTab={dict.cta.newTab} />
+                              </>
+                          ) : null}
+                      </Presence>,
+                      document.body,
+                  )
+                : null}
         </article>
+    );
+}
+
+/**
+ * Reservar por WhatsApp: un único enlace. Sin precio vigente no lleva href (aria-disabled, sigue
+ * enfocable para no perder el foco) y se atenúa con retraso: una actualización rápida no parpadea.
+ */
+function BookLink({ href, size, className, label, newTab }: { href: string | null; size: "md" | "lg"; className?: string; label: string; newTab: string }) {
+    return (
+        <Button asChild size={size} className={cn("quote-book", className)}>
+            <a
+                href={href ?? undefined}
+                role={href ? undefined : "link"}
+                tabIndex={href ? undefined : 0}
+                aria-disabled={href ? undefined : true}
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                {label}
+                <span className="sr-only"> {newTab}</span>
+            </a>
+        </Button>
+    );
+}
+
+/** Origen ●——○ Destino. Las etiquetas se funden al cambiar; La línea no se vuelve a montar. */
+function RouteTitle({ dict, draft }: { dict: Dict; draft: QuoteDraft }) {
+    const t = dict.result;
+    const line = useRef<HTMLSpanElement>(null);
+    const end = useRef<HTMLSpanElement>(null);
+    const origin = draft.origin?.label ?? "";
+    const destination = draft.destination?.label ?? "";
+    const route = !!draft.origin && !!draft.destination;
+    const routeKey = route ? `${draft.origin!.id}>${draft.destination!.id}` : "";
+    // Si cambia el ancho de una etiqueta, La línea y el destino se deslizan a su sitio nuevo.
+    useSlideOnChange(line, `${origin}|${destination}`);
+    useSlideOnChange(end, `${origin}|${destination}`);
+
+    return (
+        <Swap inline id={route ? "route" : "empty"} className="block">
+            {route ? (
+                <span className="flex flex-wrap items-center gap-x-4 gap-y-1">
+                    <Swap inline id={origin} className="min-w-0">
+                        {origin}
+                    </Swap>
+                    <span ref={line} className="flex w-14 shrink-0">
+                        <RouteLine draw redraw={routeKey} label={t.routeTo} className="w-14 shrink-0" />
+                    </span>
+                    <span ref={end} className="min-w-0">
+                        <Swap inline id={destination}>
+                            {destination}
+                        </Swap>
+                    </span>
+                </span>
+            ) : (
+                t.emptyTitle
+            )}
+        </Swap>
     );
 }
 
@@ -250,6 +339,40 @@ function Bar({ className }: { className?: string }) {
     return <span aria-hidden="true" className={cn("block animate-pulse rounded-sm bg-line motion-reduce:animate-none", className)} />;
 }
 
+/** Fila que entra y sale con alto animado y fundido (mismos tiempos que Collapse), dentro de AnimatePresence. */
+const ROW = {
+    initial: { height: 0, opacity: 0 },
+    animate: { height: "auto", opacity: 1, transition: { height: SPRING.layout, opacity: { ...FADE_IN, delay: 0.06 } } },
+    exit: { height: 0, opacity: 0, transition: { height: SPRING.ui, opacity: FADE_OUT } },
+} as const;
+
+/** Movimiento reducido: solo fundido (el alto cambia de una vez al entrar y al salir, no en dos cuadros). */
+const ROW_REDUCED = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1, transition: FADE_IN },
+    exit: { opacity: 0, transition: FADE_OUT },
+} as const;
+
+function Row({ className, li = false, children }: { className?: string; li?: boolean; children: React.ReactNode }) {
+    // Sin relleno propio: con alto 0 no quedaría nada asomando (el relleno va en los hijos).
+    const present = useIsPresent();
+    const v = useReducedMotion() ? ROW_REDUCED : ROW;
+    const Tag = li ? m.li : m.div;
+    return (
+        <Tag
+            className={className}
+            aria-hidden={present ? undefined : true}
+            inert={!present}
+            initial={v.initial}
+            animate={v.animate}
+            exit={v.exit}
+            style={{ overflow: "clip", overflowClipMargin: 6 }}
+        >
+            {children}
+        </Tag>
+    );
+}
+
 function Breakdown({ lang, dict, data, level }: { lang: Locale; dict: Dict; data: EstimateResponse; level: Level }) {
     const tier = data.tiers![level];
     const t = dict.result;
@@ -257,38 +380,59 @@ function Breakdown({ lang, dict, data, level }: { lang: Locale; dict: Dict; data
     return (
         <div>
             <h3 className="type-label pt-3.5 font-normal text-fg-subtle">{t.breakdownTitle}</h3>
-            {data.legs.map((leg, i) => {
-                const tierLeg = tier.legs[i]!;
-                const rows = breakdownRows(tierLeg, { distanceKm: leg.distanceKm, flags: leg.flags }, dict.lines);
-                return (
-                    <div key={leg.direction}>
-                        {round ? (
-                            <h4 className="pt-3 text-[0.9375rem] font-medium">
-                                {fill(leg.direction === "outbound" ? t.outbound : t.return, {
-                                    date: formatShortDate(leg.date, lang),
-                                    time: leg.time,
-                                })}
-                            </h4>
-                        ) : null}
-                        <dl className="type-small tabular">
-                        {rows.map((r) => (
-                            <div key={r.key} className="flex justify-between gap-4 border-b border-line py-[13px]">
-                                <dt className="text-fg-subtle">{r.label}</dt>
-                                <dd className="font-medium">{r.amount === null ? r.note : formatMXN(r.amount)}</dd>
-                            </div>
-                        ))}
-                        {round ? (
-                            <div className="flex justify-between gap-4 border-b border-line py-[13px]">
-                                <dt className="font-medium">{dict.result.total}</dt>
-                                <dd className="font-medium">{formatMXN(tierLeg.total)}</dd>
-                            </div>
-                        ) : null}
-                        </dl>
-                    </div>
-                );
-            })}
+            <AnimatePresence initial={false}>
+                {data.legs.map((leg, i) => {
+                    const tierLeg = tier.legs[i]!;
+                    const rows = breakdownRows(tierLeg, { distanceKm: leg.distanceKm, flags: leg.flags }, dict.lines);
+                    const heading = fill(leg.direction === "outbound" ? t.outbound : t.return, {
+                        date: formatShortDate(leg.date, lang),
+                        time: leg.time,
+                    });
+                    return (
+                        <Row key={leg.direction}>
+                            <AnimatePresence initial={false}>
+                                {round ? (
+                                    <Row key="heading">
+                                        <h4 className="pt-3 text-[0.9375rem] font-medium">
+                                            <Swap inline id={heading}>
+                                                {heading}
+                                            </Swap>
+                                        </h4>
+                                    </Row>
+                                ) : null}
+                            </AnimatePresence>
+                            <dl className="type-small tabular">
+                                <AnimatePresence initial={false}>
+                                    {rows.map((r) => (
+                                        <Row key={r.key} className="flex justify-between gap-4 border-b border-line">
+                                            <dt className="py-[13px] text-fg-subtle">
+                                                <Swap inline id={r.label}>
+                                                    {r.label}
+                                                </Swap>
+                                            </dt>
+                                            <dd className="py-[13px] font-medium">{r.amount === null ? r.note : <Price value={r.amount} />}</dd>
+                                        </Row>
+                                    ))}
+                                    {round ? (
+                                        <Row key="leg-total" className="flex justify-between gap-4 border-b border-line">
+                                            <dt className="py-[13px] font-medium">{dict.result.total}</dt>
+                                            <dd className="py-[13px] font-medium">
+                                                <Price value={tierLeg.total} />
+                                            </dd>
+                                        </Row>
+                                    ) : null}
+                                </AnimatePresence>
+                            </dl>
+                        </Row>
+                    );
+                })}
+            </AnimatePresence>
             <div className="flex items-baseline justify-between gap-4 pb-3.5 pt-4">
-                <span className="font-medium">{round ? t.roundTripTotal : t.total}</span>
+                <span className="font-medium">
+                    <Swap inline id={round ? "round" : "one"}>
+                        {round ? t.roundTripTotal : t.total}
+                    </Swap>
+                </span>
                 <span className="flex items-baseline gap-2.5">
                     <span className="type-label text-fg-subtle">{t.taxIncluded}</span>
                     <Price value={tier.total} currency className="text-[1.625rem] font-medium" />
@@ -298,21 +442,34 @@ function Breakdown({ lang, dict, data, level }: { lang: Locale; dict: Dict; data
     );
 }
 
-function Notices({ dict, data }: { dict: Dict; data: EstimateResponse }) {
-    const keys = noticeKeys(data);
-    if (keys.length === 0) return null;
+/** Avisos: el bloque se despliega y cada aviso entra o sale con su propio alto. */
+function Notices({ dict, data }: { dict: Dict; data: EstimateResponse | null }) {
+    const keys = data ? noticeKeys(data) : [];
     return (
-        <div className="mt-6">
-            <h3 className="sr-only">{dict.notices.label}</h3>
-            <ul className="type-small flex flex-col gap-2 text-fg-subtle">
-                {keys.map((k) => (
-                    <li key={k} className={cn("flex gap-3", (k === "shortNotice" || k === "peak" || k === "night") && "text-fg-muted")}>
-                        <span aria-hidden="true" className={cn("mt-[0.6em] size-1.5 shrink-0 rounded-full", k === "shortNotice" ? "bg-brand-ink" : "bg-route")} />
-                        {dict.notices[k]}
-                    </li>
-                ))}
-            </ul>
-        </div>
+        <AnimatePresence initial={false}>
+            {keys.length > 0 ? (
+                <Row key="notices">
+            <div className="pt-6">
+                <h3 className="sr-only">{dict.notices.label}</h3>
+                <ul className="type-small flex flex-col text-fg-subtle">
+                    <AnimatePresence initial={false}>
+                        {keys.map((k) => (
+                            <Row key={k} li>
+                                <span className={cn("flex gap-3 pb-2", (k === "shortNotice" || k === "peak" || k === "night") && "text-fg-muted")}>
+                                    <span
+                                        aria-hidden="true"
+                                        className={cn("mt-[0.6em] size-1.5 shrink-0 rounded-full", k === "shortNotice" ? "bg-brand-ink" : "bg-route")}
+                                    />
+                                    {dict.notices[k]}
+                                </span>
+                            </Row>
+                        ))}
+                    </AnimatePresence>
+                </ul>
+            </div>
+                </Row>
+            ) : null}
+        </AnimatePresence>
     );
 }
 
@@ -328,9 +485,17 @@ function SpecialPanel({ lang, dict, draft, data }: { lang: Locale; dict: Dict; d
     });
     const url = buildSpecialQuoteUrl({ kind: specialKind(reason), context: `${context}\n${data.ref}`, lang });
     return (
-        <div className="mt-6 flex min-h-[13.5rem] flex-col items-start gap-4 rounded-control bg-elevated p-5 md:mt-8 md:p-6">
-            <h3 className="type-subheading">{copy.title}</h3>
-            <p className="type-small max-w-prose text-fg-subtle">{copy.text}</p>
+        <div className="flex min-h-[13.5rem] flex-col items-start gap-4 rounded-control bg-elevated p-5 md:p-6">
+            <h3 className="type-subheading">
+                <Swap inline id={reason}>
+                    {copy.title}
+                </Swap>
+            </h3>
+            <p className="type-small max-w-prose text-fg-subtle">
+                <Swap inline id={reason}>
+                    {copy.text}
+                </Swap>
+            </p>
             <Button asChild size="md" className="mt-auto">
                 <a href={url} target="_blank" rel="noopener noreferrer">
                     {dict.special.cta}
@@ -342,11 +507,24 @@ function SpecialPanel({ lang, dict, draft, data }: { lang: Locale; dict: Dict; d
 }
 
 function ErrorPanel({ text, retry, onRetry }: { text: string; retry: string; onRetry: () => void }) {
+    const icon = useRef<SVGSVGElement>(null);
     return (
-        <div className="mt-6 flex min-h-[13.5rem] flex-col items-start justify-center gap-4 rounded-control bg-elevated p-5 md:mt-8 md:p-6">
-            <p className="type-small max-w-prose">{text}</p>
-            <Button variant="secondary" size="sm" onClick={onRetry}>
-                <RotateCw aria-hidden="true" strokeWidth={1.6} className="size-[18px]" />
+        <div className="flex min-h-[13.5rem] flex-col items-start justify-center gap-4 rounded-control bg-elevated p-5 md:p-6">
+            <p className="type-small max-w-prose">
+                <Swap inline id={text}>
+                    {text}
+                </Swap>
+            </p>
+            <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => {
+                    // El icono da una vuelta mientras el panel se funde hacia la espera del precio.
+                    spin(icon.current, 360);
+                    onRetry();
+                }}
+            >
+                <RotateCw ref={icon} aria-hidden="true" strokeWidth={1.6} className="size-[18px]" />
                 {retry}
             </Button>
         </div>

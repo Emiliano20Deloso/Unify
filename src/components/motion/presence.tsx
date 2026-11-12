@@ -1,7 +1,7 @@
 "use client";
 
 // Entrada y salida animadas de algo que aparece por una interacción (barra móvil, avisos sueltos).
-import { AnimatePresence, useIsPresent, type HTMLMotionProps } from "motion/react";
+import { AnimatePresence, useIsPresent, useReducedMotion, type HTMLMotionProps } from "motion/react";
 import * as m from "motion/react-m";
 import { FADE_IN, FADE_OUT, SPRING } from "@/lib/motion";
 
@@ -32,6 +32,12 @@ const PRESETS = {
     },
 } as const;
 
+/**
+ * Movimiento reducido: solo el fundido. Sin esto motion aplica el desplazamiento al instante y, al
+ * salir, el elemento se va de su sitio de golpe antes de que termine de desvanecerse.
+ */
+const REDUCED = PRESETS.fade;
+
 export type PresencePreset = keyof typeof PRESETS;
 
 type PresenceProps = Omit<HTMLMotionProps<"div">, "initial" | "animate" | "exit" | "variants" | "transition"> & {
@@ -42,7 +48,8 @@ type PresenceProps = Omit<HTMLMotionProps<"div">, "initial" | "animate" | "exit"
 /**
  * `<Presence show={x} preset="fade|rise|drop|sheet-bottom" className=…>…</Presence>`. Monta y desmonta
  * con animación de entrada y de salida; mientras sale lleva `aria-hidden` e `inert`. Si ya se ve al
- * cargar, no anima. Acepta las props de un div (id, role, className, style…).
+ * cargar, no anima. Con movimiento reducido todos los presets son solo fundido. Acepta las props de
+ * un div (id, role, className, style…).
  */
 export function Presence({ show, preset = "fade", ...props }: PresenceProps) {
     return <AnimatePresence initial={false}>{show ? <Item key="presence" preset={preset} {...props} /> : null}</AnimatePresence>;
@@ -50,7 +57,8 @@ export function Presence({ show, preset = "fade", ...props }: PresenceProps) {
 
 function Item({ preset, ...props }: Omit<PresenceProps, "show"> & { preset: PresencePreset }) {
     const present = useIsPresent();
-    const p = PRESETS[preset];
+    const reduce = useReducedMotion();
+    const p = reduce ? REDUCED : PRESETS[preset];
     return (
         <m.div
             aria-hidden={present ? undefined : true}

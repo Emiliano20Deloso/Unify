@@ -16,7 +16,7 @@ node scripts/motion-audit.mjs scripts/motion/escenarios.json --check  # solo ver
 
 - `--only` acepta prefijos separados por coma (`N`, `T6`, `Q5-morph`).
 - `--out <carpeta>` cambia la salida (por defecto `.shots/motion/<fecha_hora>/`).
-- Cada corrida lanza un Chrome sin cabeza nuevo (perfil temporal, puerto libre): no choca con `shot.mjs`.
+- Cada corrida lanza un Chrome sin cabeza nuevo (perfil temporal, puerto libre): no choca con `shot.mjs`. Va con su propia cabecera `x-forwarded-for`, así cada escenario cuenta como un visitante distinto para el límite de peticiones del cotizador.
 - Código de salida: **1** si algo da `CORTE`, `BRINCO`, `FLASHAZO`, `SIN REACCIÓN`, `RM-MOVIMIENTO` o `POST FALLÓ`; **2** si nada de eso pero algún escenario no se pudo medir (`ERROR`); **0** si todo pasó. Un `ERROR` nunca cuenta como aprobado.
 
 **Antes de aceptar trabajo de animación, corre primero la autoprueba.** Si no pasa, la herramienta no es de fiar en esa máquina.

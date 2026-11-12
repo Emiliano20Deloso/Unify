@@ -840,6 +840,142 @@ body > a[href="#main"]:focus {
   }
 }
 
+/* ══ Cotizador (src/components/quote) ══════════════════════════════════════
+   Hero y /tarifas. Lo que entra y sale por estado lo anima motion (Collapse, Swap, AutoHeight,
+   Presence); aquí van la lista de sugerencias, el borrador restaurado, la espera del precio y el
+   botón de reservar. */
+
+/* Borrador restaurado o enlace con o/d: los valores se pintan transparentes hasta que la isla los
+   aplica (html[data-quote-restore], lo quita useDraftRestored) y entonces se funden. */
+[data-draft-value] {
+  transition: opacity 240ms var(--ease-out);
+}
+html[data-quote-restore] [data-draft-value] {
+  opacity: 0;
+  transition: none;
+}
+
+/* Lista de sugerencias: siempre montada. Entra con fundido, 4 px y .98 → 1 desde arriba; sale más
+   rápido y queda fuera del árbol de accesibilidad (visibility con retraso). */
+.quote-popover {
+  transform-origin: top left;
+  transition:
+    opacity 180ms var(--ease-out),
+    translate var(--spring-ui-dur) var(--spring-ui),
+    scale var(--spring-ui-dur) var(--spring-ui),
+    visibility 0s;
+}
+.quote-popover[data-state="closed"] {
+  opacity: 0;
+  translate: 0 -4px;
+  scale: 0.98;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 140ms var(--ease-exit),
+    translate 140ms var(--ease-exit),
+    scale 140ms var(--ease-exit),
+    visibility 0s 140ms;
+}
+/* En pantalla chica el campo abre la hoja inferior: la lista en línea no existe (ni desborda). */
+@media (max-width: 767.98px) {
+  .quote-popover {
+    display: none;
+  }
+}
+/* Resaltado de la opción activa (SlidingIndicator vertical; el alto lo pone JS). */
+.quote-option-indicator {
+  height: 3rem;
+}
+.quote-option-indicator:not([data-visible]) {
+  opacity: 0;
+}
+
+/* Celda con contorno transparente: puede latir en rojo cuando falta (el anillo de foco lo pisa). */
+.quote-cell {
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  transition:
+    outline-color var(--dur-micro) var(--ease-out),
+    outline-offset var(--dur-micro) var(--ease-out);
+}
+
+/* Esperando el precio nuevo (aria-busy): las cifras y el desglose se atenúan al instante, como
+   respuesta a la acción, y vuelven cuando llega el precio (que rueda). */
+.quote-dim {
+  transition: opacity var(--dur-ui) var(--ease-out);
+}
+[aria-busy="true"] .quote-dim {
+  opacity: 0.5;
+  transition: opacity var(--dur-micro) var(--ease);
+}
+
+/* "Desde": se pliega cuando llega el precio real (que rueda desde el "Desde $X"). En columnas
+   estrechas va encima de la cifra y se pliega en alto; en las anchas, a su lado y en ancho. */
+.quote-detail {
+  display: flex;
+  align-items: baseline;
+}
+.quote-from {
+  display: inline-grid;
+  max-width: 6em;
+  margin-inline-end: 0.375rem;
+  overflow: clip;
+  white-space: nowrap;
+  transition:
+    max-width var(--spring-ui-dur) var(--spring-ui),
+    margin var(--spring-ui-dur) var(--spring-ui),
+    grid-template-rows var(--spring-ui-dur) var(--spring-ui),
+    opacity var(--dur-ui) var(--ease-out) 60ms;
+}
+.quote-from[data-hidden] {
+  max-width: 0;
+  margin-inline-end: 0;
+  opacity: 0;
+  transition:
+    max-width var(--spring-ui-dur) var(--spring-ui),
+    margin var(--spring-ui-dur) var(--spring-ui),
+    grid-template-rows var(--spring-ui-dur) var(--spring-ui),
+    opacity var(--dur-exit) var(--ease-exit);
+}
+@media (max-width: 639.98px) {
+  .quote-detail {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .quote-from {
+    display: grid;
+    grid-template-rows: 1fr;
+    max-width: none;
+    margin-inline-end: 0;
+  }
+  .quote-from > span {
+    min-height: 0;
+  }
+  .quote-from[data-hidden] {
+    grid-template-rows: 0fr;
+    max-width: none;
+  }
+}
+
+/* Reservar por WhatsApp: un solo enlace. Se atenúa con retraso (una actualización rápida del precio
+   no lo hace parpadear) y vuelve sin retraso. El 4.º tiempo de .ctl es el de la opacidad. */
+.quote-book[aria-disabled="true"] {
+  transition-delay: 0s, 0s, 0s, 800ms, 0s, 0s, 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quote-popover,
+  .quote-popover[data-state="closed"] {
+    translate: none;
+    scale: none;
+  }
+  .quote-from,
+  .quote-from[data-hidden] {
+    transition: opacity var(--dur-ui) var(--ease-out);
+  }
+}
+
 /* ── Movimiento reducido: quedan los fundidos ─────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   html[data-motion] [data-reveal]:not([data-shown]),
