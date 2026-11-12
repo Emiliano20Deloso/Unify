@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
 import { quoteRequestSchema } from "@/lib/validation";
-import { getDistance, MapsError } from "@/lib/maps";
-import { calculatePrice } from "@/lib/pricing";
-import { getServiceClient } from "@/lib/supabase";
+import { resolveLegDistance } from "@/lib/distance";
+import { computeRoute } from "@/lib/google/routes";
+import { GoogleApiError, hasGoogleKey } from "@/lib/google/key";
+import { isInZone } from "@/lib/places/zone";
+import { calculatePrice, pricingConfig, round2 } from "@/lib/pricing";
+import { getServiceClient, isServiceClientConfigured } from "@/lib/supabase";
 
 export const runtime = "nodejs";
 
@@ -23,27 +26,58 @@ export async function POST(req: Request) {
     }
     const q = parsed.data;
 
+    if (!isServiceClientConfigured()) {
+        return NextResponse.json({ error: "not_configured" }, { status: 503 });
+    }
+
     let distanceKm: number | null = null;
     let durationMin: number | null = null;
     let pricePreliminary: number | null = null;
     let mapsError: string | null = null;
 
-    try {
-        const distance = await getDistance(q.origin, q.destination);
-        distanceKm = distance.distanceKm;
-        durationMin = distance.durationMin;
+    const pickupAt = new Date(q.pickupAt);
+    const hasCoords =
+        q.originLat != null && q.originLng != null && q.destinationLat != null && q.destinationLng != null;
 
-        const breakdown = calculatePrice({
-            serviceLevel: q.serviceLevel,
-            distanceKm,
-            pickupAt: new Date(q.pickupAt),
-            passengers: q.passengers,
-            luggage: q.luggage,
-        });
-        pricePreliminary = breakdown.total;
+    try {
+        if (hasCoords) {
+            // Con coordenadas: Routes API si hay llave, aproximado si no (nunca lanza).
+            const origin = { lat: q.originLat!, lng: q.originLng! };
+            const destination = { lat: q.destinationLat!, lng: q.destinationLng! };
+            const leg = await resolveLegDistance(origin, destination, pickupAt);
+            distanceKm = leg.km;
+            durationMin = leg.min;
+        } else if (hasGoogleKey()) {
+            // Solo texto y con llave: waypoints por dirección.
+            const r = await computeRoute({ address: q.origin }, { address: q.destination }, pickupAt);
+            distanceKm = round2(r.distanceMeters / 1000);
+            durationMin = Math.max(1, Math.round(r.durationSec / 60));
+        } else {
+            // Solo texto y sin llave: se guarda para cotización manual.
+            mapsError = "NO_API_KEY";
+        }
+
+        const outOfZone =
+            hasCoords &&
+            (!isInZone({ lat: q.originLat!, lng: q.originLng! }) ||
+                !isInZone({ lat: q.destinationLat!, lng: q.destinationLng! }));
+        const overCapacity =
+            q.passengers > pricingConfig.capacity.max_passengers || q.luggage > pricingConfig.capacity.max_luggage;
+        const tooFar = distanceKm !== null && distanceKm > pricingConfig.service_area.max_leg_km;
+
+        // Fuera de zona, exceso de capacidad o tramo muy largo: sin precio (cotización manual).
+        if (distanceKm !== null && !outOfZone && !overCapacity && !tooFar) {
+            pricePreliminary = calculatePrice({
+                serviceLevel: q.serviceLevel,
+                distanceKm,
+                pickupAt,
+                passengers: q.passengers,
+                luggage: q.luggage,
+            }).total;
+        }
     } catch (e) {
-        mapsError = e instanceof MapsError ? e.code : "UNKNOWN";
-        console.warn("[/api/quote] distancia falló, se guarda sin precio:", e);
+        mapsError = e instanceof GoogleApiError ? e.code : "UNKNOWN";
+        console.warn(`[/api/quote] distancia falló (${mapsError}); se guarda sin precio`);
     }
 
     const supabase = getServiceClient();

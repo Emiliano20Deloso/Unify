@@ -2,12 +2,17 @@
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 import type { Database } from "./db-types";
+import { getSupabasePublicEnv } from "./supabase-env";
 
+/** Devuelve el cliente de servidor, o null si Supabase no está configurado. */
 export async function getServerSupabase() {
+    // cookies() va primero para que las páginas que usan esto sigan siendo dinámicas aunque falte la config.
     const cookieStore = await cookies();
+    const env = getSupabasePublicEnv();
+    if (!env) return null;
     return createServerClient<Database>(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        env.url,
+        env.anonKey,
         {
             cookies: {
                 getAll() {
@@ -19,7 +24,7 @@ export async function getServerSupabase() {
                             cookieStore.set(name, value, options)
                         );
                     } catch {
-                        // RSC puede intentar setear cookies — está OK, el middleware lo refresca.
+                        // RSC puede intentar setear cookies — está OK, el proxy lo refresca.
                     }
                 },
             },
@@ -29,6 +34,7 @@ export async function getServerSupabase() {
 
 export async function getSessionUser() {
     const supabase = await getServerSupabase();
+    if (!supabase) return null;
     const {
         data: { user },
     } = await supabase.auth.getUser();
@@ -37,6 +43,7 @@ export async function getSessionUser() {
 
 export async function isUserAdmin(userId: string): Promise<boolean> {
     const supabase = await getServerSupabase();
+    if (!supabase) return false;
     const { data, error } = await supabase
         .from("profiles")
         .select("role")

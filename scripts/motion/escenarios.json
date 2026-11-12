@@ -1,0 +1,7375 @@
+{
+  "base": "http://localhost:3100",
+  "viewports": {
+    "d": {
+      "width": 1440,
+      "height": 900
+    },
+    "m": {
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dpr": 2
+    }
+  },
+  "defaults": {
+    "maxMs": 1600,
+    "settleMs": 350,
+    "mask": [
+      ".animate-spin",
+      ".animate-pulse"
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "N1-inicio-servicios",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "header nav a[href=\"/servicios\"]"
+        }
+      ],
+      "track": [
+        "header nav a[aria-current=\"page\"]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200,
+      "reduced": "both"
+    },
+    {
+      "id": "N2-servicios-tarifas",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/servicios"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "header nav a[href=\"/tarifas\"]"
+        }
+      ],
+      "track": [
+        "header nav a[aria-current=\"page\"]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200
+    },
+    {
+      "id": "N3-tarifas-nosotros",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "header nav a[href=\"/nosotros\"]"
+        }
+      ],
+      "track": [
+        "header nav a[aria-current=\"page\"]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200
+    },
+    {
+      "id": "N4-logo-inicio",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/nosotros"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "header a[href=\"/\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200
+    },
+    {
+      "id": "N5-cta-cotizar",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "header a[href=\"/tarifas#cotizar\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200
+    },
+    {
+      "id": "N6-pie-terminos",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "scroll",
+          "selector": "footer",
+          "block": "end"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "footer a[href=\"/terminos\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200
+    },
+    {
+      "id": "N7-atras",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "header nav a[href=\"/servicios\"]",
+          "wait": 1500
+        },
+        {
+          "op": "click",
+          "selector": "header nav a[href=\"/tarifas\"]",
+          "wait": 1500
+        }
+      ],
+      "action": [
+        {
+          "op": "eval",
+          "expr": "history.back()"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200
+    },
+    {
+      "id": "N7b-atras-movil",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "header a[href=\"/tarifas#cotizar\"]",
+          "wait": 1500
+        }
+      ],
+      "action": [
+        {
+          "op": "eval",
+          "expr": "history.back()"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200
+    },
+    {
+      "id": "N7c-adelante",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "header nav a[href=\"/servicios\"]",
+          "wait": 1500
+        },
+        {
+          "op": "eval",
+          "expr": "history.back()"
+        },
+        {
+          "op": "wait",
+          "ms": 1500
+        }
+      ],
+      "action": [
+        {
+          "op": "eval",
+          "expr": "history.forward()"
+        }
+      ],
+      "track": [
+        "header nav a[aria-current=\"page\"]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200
+    },
+    {
+      "id": "N8-idioma-es-en",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "eval",
+          "expr": "window.__boot = 1"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "header a[hreflang=\"en\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200,
+      "post": [
+        {
+          "op": "eval",
+          "label": "idioma y misma sesión JS (navegación de cliente)",
+          "expr": "[document.documentElement.lang.slice(0,2), window.__boot ?? null]",
+          "equals": [
+            "en",
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "N9-idioma-desde-menu",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/en/tarifas"
+        },
+        {
+          "op": "click",
+          "selector": "header button[aria-label=\"Open menu\"]",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "[role=\"dialog\"] a[hreflang^=\"es\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200
+    },
+    {
+      "id": "N10-hover-menu",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "hover",
+          "selector": "header nav a[href=\"/servicios\"]"
+        },
+        {
+          "op": "wait",
+          "ms": 350
+        },
+        {
+          "op": "hover",
+          "selector": "header nav a[href=\"/nosotros\"]"
+        }
+      ],
+      "roi": "header",
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "N11-menu-solido",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "y": 160
+        }
+      ],
+      "roi": "header",
+      "expect": {
+        "animated": true
+      },
+      "reduced": "both"
+    },
+    {
+      "id": "N12-abrir-menu",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "header button[aria-label=\"Abrir menú\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "reduced": "both"
+    },
+    {
+      "id": "N13-cerrar-menu",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "header button[aria-label=\"Abrir menú\"]",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "[role=\"dialog\"] button[aria-label=\"Cerrar menú\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "reduced": "both"
+    },
+    {
+      "id": "N14-escape-menu",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "header button[aria-label=\"Abrir menú\"]",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "key",
+          "key": "Escape"
+        }
+      ],
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "N15-navegar-desde-menu",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "header button[aria-label=\"Abrir menú\"]",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "[role=\"dialog\"] a[href=\"/tarifas\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200
+    },
+    {
+      "id": "X1-atras-a-pagina-con-scroll",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "scroll",
+          "y": 2400,
+          "wait": 900
+        },
+        {
+          "op": "eval",
+          "expr": "document.querySelector('a[href=\"/servicios\"]').click()"
+        },
+        {
+          "op": "wait",
+          "ms": 1800
+        }
+      ],
+      "action": [
+        {
+          "op": "eval",
+          "expr": "history.back()"
+        }
+      ],
+      "expect": {
+        "animated": true,
+        "maxScrollFrames": 1
+      },
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "ruta y scroll finales",
+          "expr": "[location.pathname, Math.round(scrollY)]",
+          "equals": [
+            "/",
+            2400
+          ]
+        }
+      ]
+    },
+    {
+      "id": "X2-atras-desde-pagina-con-scroll",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "eval",
+          "expr": "document.querySelector('a[href=\"/servicios\"]').click()"
+        },
+        {
+          "op": "wait",
+          "ms": 1800
+        },
+        {
+          "op": "scroll",
+          "y": 1800,
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "eval",
+          "expr": "history.back()"
+        }
+      ],
+      "expect": {
+        "animated": true,
+        "maxScrollFrames": 1
+      },
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "ruta y scroll finales",
+          "expr": "[location.pathname, Math.round(scrollY)]",
+          "equals": [
+            "/",
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "X3-adelante-a-pagina-con-scroll",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "eval",
+          "expr": "document.querySelector('a[href=\"/servicios\"]').click()"
+        },
+        {
+          "op": "wait",
+          "ms": 1800
+        },
+        {
+          "op": "scroll",
+          "y": 1500,
+          "wait": 900
+        },
+        {
+          "op": "eval",
+          "expr": "history.back()"
+        },
+        {
+          "op": "wait",
+          "ms": 1800
+        }
+      ],
+      "action": [
+        {
+          "op": "eval",
+          "expr": "history.forward()"
+        }
+      ],
+      "expect": {
+        "animated": true,
+        "maxScrollFrames": 1
+      },
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "ruta y scroll finales",
+          "expr": "[location.pathname, Math.round(scrollY)]",
+          "equals": [
+            "/servicios",
+            1500
+          ]
+        }
+      ]
+    },
+    {
+      "id": "X4-dos-atras-rapidos",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "header nav a[href=\"/servicios\"]",
+          "wait": 1800
+        },
+        {
+          "op": "click",
+          "selector": "header nav a[href=\"/tarifas\"]",
+          "wait": 1800
+        }
+      ],
+      "action": [
+        {
+          "op": "eval",
+          "expr": "history.back(); setTimeout(() => history.back(), 120)"
+        }
+      ],
+      "expect": {
+        "animated": true,
+        "maxScrollFrames": 1
+      },
+      "maxMs": 3000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "ruta y scroll finales",
+          "expr": "[location.pathname, Math.round(scrollY)]",
+          "equals": [
+            "/",
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "X5-atras-entre-anclas",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/privacidad"
+        },
+        {
+          "op": "click",
+          "selector": "nav a[href=\"#datos\"]",
+          "wait": 1200
+        },
+        {
+          "op": "click",
+          "selector": "nav a[href=\"#arco\"]",
+          "wait": 1200
+        }
+      ],
+      "action": [
+        {
+          "op": "eval",
+          "expr": "history.back()"
+        }
+      ],
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "ruta y ancla",
+          "expr": "location.pathname + location.hash",
+          "equals": "/privacidad#datos"
+        },
+        {
+          "op": "eval",
+          "label": "la sección de regreso quedó arriba",
+          "expr": "(() => { const r = document.getElementById('datos').getBoundingClientRect(); return r.top > 0 && r.top < 260; })()",
+          "equals": true
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "note": "Recorrido entre anclas de la misma página: sin transición de página y con scroll suave (no se fuerza al instante)."
+    },
+    {
+      "id": "X6-recarga-a-media-pagina",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/servicios"
+        },
+        {
+          "op": "scroll",
+          "y": 1600,
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "reload"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 700,
+      "maxMs": 4000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "ruta y scroll finales",
+          "expr": "[location.pathname, Math.round(scrollY)]",
+          "equals": [
+            "/servicios",
+            1600
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F1-barra-fija-anclada",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 3500
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "y": 620
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "borde inferior de la barra = alto de pantalla",
+          "expr": "(() => { const b = document.querySelector('body > [data-quote-bar]'); return b ? Math.round(b.getBoundingClientRect().bottom) === innerHeight : 'sin barra'; })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "N1d-inicio-servicios-denso",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "header nav a[href=\"/servicios\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 800,
+      "settleMs": 150
+    },
+    {
+      "id": "B1-presion",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-botones",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "press",
+          "selector": "#ctl-primario",
+          "ms": 150
+        }
+      ],
+      "roi": "#ctl-primario",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-primario').dataset.count",
+          "equals": "1"
+        }
+      ]
+    },
+    {
+      "id": "B2-foco-tab",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "key",
+          "key": "Tab",
+          "times": 2
+        }
+      ],
+      "roi": "header",
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "B3-enlace-flecha",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "hover",
+          "selector": "section[aria-labelledby=\"preguntas\"] a[href=\"/terminos\"]"
+        }
+      ],
+      "roi": "section[aria-labelledby=\"preguntas\"] a[href=\"/terminos\"]",
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "B4-interruptor",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#cotizar label:has(input[role=\"switch\"])"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "aparecen fecha y hora de regreso",
+          "expr": "document.querySelectorAll('#cotizar input[type=date]').length",
+          "equals": 2
+        }
+      ]
+    },
+    {
+      "id": "L1-carga-portada",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "nocache"
+        },
+        {
+          "op": "goto",
+          "url": "data:text/html,<body style='background:%230b0b0c'>",
+          "wait": 300
+        }
+      ],
+      "action": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 700,
+      "maxMs": 4000
+    },
+    {
+      "id": "L2-carga-portada-movil",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "nocache"
+        },
+        {
+          "op": "goto",
+          "url": "data:text/html,<body style='background:%230b0b0c'>",
+          "wait": 300
+        }
+      ],
+      "action": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 700,
+      "maxMs": 4000
+    },
+    {
+      "id": "L3-carga-servicios",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "data:text/html,<body style='background:%230b0b0c'>",
+          "wait": 300
+        }
+      ],
+      "action": [
+        {
+          "op": "goto",
+          "url": "/servicios"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 700,
+      "maxMs": 4000
+    },
+    {
+      "id": "L4-carga-nosotros",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "data:text/html,<body style='background:%230b0b0c'>",
+          "wait": 300
+        }
+      ],
+      "action": [
+        {
+          "op": "goto",
+          "url": "/nosotros"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 700,
+      "maxMs": 4000,
+      "reduced": "both"
+    },
+    {
+      "id": "L5-carga-tarifas",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "data:text/html,<body style='background:%230b0b0c'>",
+          "wait": 300
+        }
+      ],
+      "action": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 700,
+      "maxMs": 4000,
+      "track": [
+        "#cotizar input[type=\"date\"]"
+      ],
+      "post": [
+        {
+          "op": "eval",
+          "label": "la fecha se ve desde la primera pintura",
+          "expr": "document.querySelector('#cotizar [data-date-text]').textContent.trim().length > 0",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "L6-tarifas-con-borrador",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "data:text/html,<body style='background:%230b0b0c'>",
+          "wait": 300
+        }
+      ],
+      "action": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 700,
+      "maxMs": 4000,
+      "note": "sessionStorage es por origen: se escribe en /tarifas y luego se sale a una página oscura",
+      "post": [
+        {
+          "op": "wait",
+          "ms": 1500
+        },
+        {
+          "op": "eval",
+          "label": "borrador aplicado y visible",
+          "expr": "!document.documentElement.hasAttribute('data-quote-restore') && document.querySelectorAll('#cotizar input[role=combobox]')[0].value === 'Polanco' && document.querySelectorAll('#cotizar input[role=combobox]')[1].value === 'AICM Terminal 1'",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "L7-tarifas-con-url",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "data:text/html,<body style='background:%230b0b0c'>",
+          "wait": 300
+        }
+      ],
+      "action": [
+        {
+          "op": "goto",
+          "url": "/tarifas?o=cat:polanco&d=cat:aicm-t1&n=select&p=2"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 700,
+      "maxMs": 4000,
+      "post": [
+        {
+          "op": "wait",
+          "ms": 1500
+        },
+        {
+          "op": "eval",
+          "label": "enlace aplicado y visible",
+          "expr": "!document.documentElement.hasAttribute('data-quote-restore') && document.querySelectorAll('#cotizar input[role=combobox]')[0].value === 'Polanco' && document.querySelector('#cotizar [aria-labelledby=quote-passengers]').getAttribute('aria-valuenow') === '2'",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "L8-foto-lenta",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "throttle",
+          "latency": 400,
+          "down": 187500,
+          "up": 93750
+        },
+        {
+          "op": "nocache"
+        },
+        {
+          "op": "goto",
+          "url": "data:text/html,<body style='background:%230b0b0c'>",
+          "wait": 300
+        }
+      ],
+      "action": [
+        {
+          "op": "goto",
+          "url": "/servicios"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 900,
+      "maxMs": 9000,
+      "roi": "main img"
+    },
+    {
+      "id": "L9-404",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "data:text/html,<body style='background:%230b0b0c'>",
+          "wait": 300
+        }
+      ],
+      "action": [
+        {
+          "op": "goto",
+          "url": "/no-existe"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 700,
+      "maxMs": 4000,
+      "post": [
+        {
+          "op": "wait",
+          "ms": 800
+        },
+        {
+          "op": "eval",
+          "label": "la línea interrumpida se animó y terminó en su estado natural",
+          "expr": "(() => { const t = document.querySelector('.broken-route__track'); const e = document.querySelector('.broken-route__end'); const cs = getComputedStyle(t); return /m-(scale-x|fade)-in/.test(cs.animationName) && t.getAnimations().length === 0 && e.getAnimations().length === 0 && getComputedStyle(e).opacity === '1'; })()",
+          "equals": true
+        }
+      ],
+      "reduced": "both"
+    },
+    {
+      "id": "L10-404-en",
+      "vp": [
+        "m",
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "data:text/html,<body style='background:%230b0b0c'>",
+          "wait": 300
+        }
+      ],
+      "action": [
+        {
+          "op": "goto",
+          "url": "/en/no-existe"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 700,
+      "maxMs": 4000,
+      "post": [
+        {
+          "op": "wait",
+          "ms": 800
+        },
+        {
+          "op": "eval",
+          "label": "la línea interrumpida se animó y terminó en su estado natural",
+          "expr": "(() => { const t = document.querySelector('.broken-route__track'); const e = document.querySelector('.broken-route__end'); const cs = getComputedStyle(t); return /m-(scale-x|fade)-in/.test(cs.animationName) && t.getAnimations().length === 0 && e.getAnimations().length === 0 && getComputedStyle(e).opacity === '1'; })()",
+          "equals": true
+        }
+      ],
+      "reduced": "both"
+    },
+    {
+      "id": "S1-niveles",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#niveles"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"niveles\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S2-rutas",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#rutas"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"rutas\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S4-cifras",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "main section:nth-of-type(2)"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('main section:nth-of-type(2)'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        },
+        {
+          "op": "eval",
+          "label": "las cifras rodaron hasta su valor exacto (con movimiento reducido, fijas)",
+          "expr": "(() => { const r = document.querySelector('main section:nth-of-type(2)'); const vals = [...r.querySelectorAll('p > span:first-child')].map((s) => (s.querySelector('.sr-only') ?? s).textContent.trim()); const flows = [...r.querySelectorAll('number-flow-react')]; const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches; const counted = flows.length === 2 && flows.every((f) => f.getAnimations({ subtree: true }).length === 0); return JSON.stringify(vals) === JSON.stringify(['+1,500', '98\\u202f%']) && (reduced ? flows.length === 0 : counted); })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "S5-tipos-de-servicio",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/servicios"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#tipos-de-servicio"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"tipos-de-servicio\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S6-formula",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#como-se-calcula"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"como-se-calcula\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S7-que-incluye",
+      "vp": [
+        "m",
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#que-incluye"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"que-incluye\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S8-quienes-somos",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/nosotros"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#quienes-somos"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"quienes-somos\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S9-por-que-tesla",
+      "vp": [
+        "m",
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/nosotros"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#por-que-tesla"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"por-que-tesla\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S10-indice-legal",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/privacidad"
+        },
+        {
+          "op": "scroll",
+          "selector": "article section:nth-of-type(1)"
+        },
+        {
+          "op": "wait",
+          "ms": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "article section:nth-of-type(3)"
+        }
+      ],
+      "track": [
+        "[data-toc-dot]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "el punto quedó sobre el enlace activo (el tercero)",
+          "expr": "(() => { const a = document.querySelector('aside nav a[aria-current=\"location\"]'); const dot = document.querySelector('[data-toc-dot]'); return !!a && a === document.querySelectorAll('aside nav a')[2] && dot.style.getPropertyValue('--y') === a.offsetTop + 'px' && dot.getAnimations().length === 0 && getComputedStyle(dot).opacity === '1'; })()",
+          "equals": true
+        }
+      ],
+      "note": "El índice ya está pegado (sticky) antes de grabar: así solo se mide el punto, no el índice que sube con el scroll."
+    },
+    {
+      "id": "A1-abrir-faq",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "section[aria-labelledby=\"preguntas\"] h3 button"
+        }
+      ],
+      "roi": "section[aria-labelledby=\"preguntas\"]",
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "A2-cambiar-faq",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "section[aria-labelledby=\"preguntas\"] h3 button",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "section[aria-labelledby=\"preguntas\"] h3 button",
+          "nth": 1
+        }
+      ],
+      "roi": "section[aria-labelledby=\"preguntas\"]",
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "A3-cerrar-faq",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "section[aria-labelledby=\"preguntas\"] h3 button",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "section[aria-labelledby=\"preguntas\"] h3 button"
+        }
+      ],
+      "roi": "section[aria-labelledby=\"preguntas\"]",
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "A4-indice-legal-movil",
+      "vp": [
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/privacidad"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "[data-toc-mobile] button"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "abierto, con alto completo y enlaces visibles",
+          "expr": "(() => { const b = document.querySelector('[data-toc-mobile] button'); const nav = document.querySelector('[data-toc-mobile] nav'); return b.getAttribute('aria-expanded') === 'true' && nav.getBoundingClientRect().height > 300 && getComputedStyle(nav).opacity === '1' && getComputedStyle(nav).visibility === 'visible'; })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "Q1-lista-abre",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "form[aria-label] input[role=\"combobox\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "reduced": "both",
+      "post": [
+        {
+          "op": "eval",
+          "label": "la lista quedó abierta y con opciones",
+          "expr": "(() => { const i = document.querySelector('form[aria-label] input[role=combobox]'); return i.getAttribute('aria-expanded') === 'true' && document.querySelectorAll('[role=listbox] [role=option]').length > 0; })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "Q1b-lista-cierra",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "form[aria-label] input[role=\"combobox\"]",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "key",
+          "key": "Escape"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "lista cerrada",
+          "expr": "document.querySelector('form[aria-label] input[role=combobox]').getAttribute('aria-expanded')",
+          "equals": "false"
+        }
+      ]
+    },
+    {
+      "id": "Q2-escribir",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "form[aria-label] input[role=\"combobox\"]",
+          "wait": 800
+        }
+      ],
+      "action": [
+        {
+          "op": "type",
+          "text": "pol",
+          "delay": 90
+        }
+      ],
+      "roi": "[role=\"listbox\"]",
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200,
+      "post": [
+        {
+          "op": "eval",
+          "label": "Polanco entre las opciones",
+          "expr": "[...document.querySelectorAll('[role=listbox] [role=option]')].some((o) => o.textContent.includes('Polanco'))",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "Q2b-teclear-rapido",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "form[aria-label] input[role=\"combobox\"]",
+          "wait": 800
+        }
+      ],
+      "action": [
+        {
+          "op": "type",
+          "text": "santa",
+          "delay": 25
+        },
+        {
+          "op": "key",
+          "key": "Backspace",
+          "times": 3,
+          "gap": 40
+        },
+        {
+          "op": "type",
+          "text": "nta fe",
+          "delay": 25
+        }
+      ],
+      "roi": "[role=\"listbox\"]",
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "Santa Fe entre las opciones y un solo listbox",
+          "expr": "document.querySelectorAll('[role=listbox]').length === 2 && [...document.querySelectorAll('[role=listbox] [role=option]')].some((o) => o.textContent.includes('Santa Fe'))",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "Q3-elegir-con-teclado",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "form[aria-label] input[role=\"combobox\"]",
+          "wait": 600
+        },
+        {
+          "op": "type",
+          "text": "pol",
+          "wait": 1200
+        }
+      ],
+      "action": [
+        {
+          "op": "key",
+          "key": "ArrowDown"
+        },
+        {
+          "op": "wait",
+          "ms": 200
+        },
+        {
+          "op": "key",
+          "key": "Enter"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "lista cerrada y valor elegido",
+          "expr": "(() => { const i = document.querySelector('form[aria-label] input[role=combobox]'); return i.getAttribute('aria-expanded') === 'false' && i.value.length > 0; })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "Q3b-resaltado-teclado",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "form[aria-label] input[role=\"combobox\"]",
+          "wait": 900
+        },
+        {
+          "op": "key",
+          "key": "ArrowDown",
+          "wait": 500
+        }
+      ],
+      "action": [
+        {
+          "op": "key",
+          "key": "ArrowDown",
+          "times": 3,
+          "gap": 90
+        }
+      ],
+      "roi": "[role=\"listbox\"]",
+      "track": [
+        "[role=\"listbox\"] > span[aria-hidden=\"true\"]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "cuarta opción activa",
+          "expr": "document.querySelector('form[aria-label] input[role=combobox]').getAttribute('aria-activedescendant')?.endsWith('-o-3')",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "Q3c-resaltado-cursor",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "form[aria-label] input[role=\"combobox\"]",
+          "wait": 900
+        },
+        {
+          "op": "hover",
+          "selector": "[role=\"listbox\"] [role=\"option\"]",
+          "nth": 0
+        },
+        {
+          "op": "wait",
+          "ms": 500
+        }
+      ],
+      "action": [
+        {
+          "op": "hover",
+          "selector": "[role=\"listbox\"] [role=\"option\"]",
+          "nth": 2
+        }
+      ],
+      "roi": "[role=\"listbox\"]",
+      "track": [
+        "[role=\"listbox\"] > span[aria-hidden=\"true\"]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "tercera opción activa",
+          "expr": "document.querySelector('form[aria-label] input[role=combobox]').getAttribute('aria-activedescendant')?.endsWith('-o-2')",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "Q4-validacion",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "form[aria-label] button[type=\"submit\"]"
+        }
+      ],
+      "roi": "div:has(> form[aria-label=\"Cotizar un viaje\"])",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "aviso desplegado",
+          "expr": "document.querySelector('#quote-widget-error').textContent.trim()",
+          "equals": "Elige el origen de la lista."
+        }
+      ]
+    },
+    {
+      "id": "Q4b-validacion-destino",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": null,
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "form[aria-label] button[type=\"submit\"]"
+        }
+      ],
+      "roi": "div:has(> form[aria-label=\"Cotizar un viaje\"])",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "aviso del destino",
+          "expr": "document.querySelector('#quote-widget-error').textContent.trim()",
+          "equals": "Elige el destino de la lista."
+        }
+      ]
+    },
+    {
+      "id": "Q4c-validacion-movil",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "form[aria-label] button[type=\"submit\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "aviso visible y sin hoja abierta",
+          "expr": "!document.querySelector('[role=dialog]') && document.querySelector('#quote-widget-error').textContent.trim()",
+          "equals": "Elige el origen de la lista."
+        }
+      ]
+    },
+    {
+      "id": "Q5-morph-hero-tarifas",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "form[aria-label] button[type=\"submit\"]"
+        }
+      ],
+      "track": [
+        "form[aria-label]",
+        "form[aria-labelledby=\"quote-form-title\"]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "llegó a /tarifas con el panel",
+          "expr": "location.pathname === '/tarifas' && !!document.querySelector('form[aria-labelledby=\"quote-form-title\"]')",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "Q6-hoja-movil",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "form[aria-label] input"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "reduced": "both",
+      "post": [
+        {
+          "op": "eval",
+          "label": "hoja abierta",
+          "expr": "!!document.querySelector('[role=dialog] input[role=combobox]')",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "Q6b-hoja-cierra",
+      "vp": [
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "form[aria-label] input",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "[role=\"dialog\"] button[aria-label=\"Cerrar\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "hoja cerrada",
+          "expr": "!document.querySelector('[role=dialog]')",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "Q7-elegir-en-hoja",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "click",
+          "selector": "form[aria-label] input",
+          "wait": 900
+        },
+        {
+          "op": "type",
+          "text": "pol",
+          "wait": 1200
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "[role=\"dialog\"] [role=\"option\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "hoja cerrada y origen elegido",
+          "expr": "!document.querySelector('[role=dialog]') && document.querySelector('form[aria-label] input[role=combobox]').value.length > 0",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "T1-invertir",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "button[aria-label=\"Invertir origen y destino\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500,
+      "reduced": "both",
+      "post": [
+        {
+          "op": "eval",
+          "label": "origen y destino invertidos",
+          "expr": "document.querySelectorAll('#cotizar input[role=combobox]')[0].value === 'AICM Terminal 1' && document.querySelectorAll('#cotizar input[role=combobox]')[1].value === 'Polanco'",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "T2-ida-y-vuelta-on",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#cotizar label:has(input[role=\"switch\"])"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500,
+      "reduced": "both",
+      "post": [
+        {
+          "op": "eval",
+          "label": "fecha y hora de regreso",
+          "expr": "document.querySelectorAll('#cotizar input[type=date]').length",
+          "equals": 2
+        }
+      ]
+    },
+    {
+      "id": "T3-ida-y-vuelta-off",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": true,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#cotizar label:has(input[role=\"switch\"])"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500,
+      "reduced": "both",
+      "post": [
+        {
+          "op": "eval",
+          "label": "sin campos de regreso",
+          "expr": "document.querySelectorAll('#cotizar input[type=date]').length",
+          "equals": 1
+        }
+      ]
+    },
+    {
+      "id": "T3b-ida-y-vuelta-rafaga",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#cotizar label:has(input[role=\"switch\"])"
+        },
+        {
+          "op": "wait",
+          "ms": 140
+        },
+        {
+          "op": "click",
+          "selector": "#cotizar label:has(input[role=\"switch\"])"
+        },
+        {
+          "op": "wait",
+          "ms": 140
+        },
+        {
+          "op": "click",
+          "selector": "#cotizar label:has(input[role=\"switch\"])"
+        },
+        {
+          "op": "wait",
+          "ms": 140
+        },
+        {
+          "op": "click",
+          "selector": "#cotizar label:has(input[role=\"switch\"])"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "termina sin regreso y sin restos",
+          "expr": "document.querySelectorAll('#cotizar input[type=date]').length",
+          "equals": 1
+        }
+      ]
+    },
+    {
+      "id": "T4-pasajero-mas",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "button[aria-label=\"Agregar un pasajero\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "2 pasajeros",
+          "expr": "document.querySelector('#cotizar [aria-labelledby=quote-passengers]').getAttribute('aria-valuenow')",
+          "equals": "2"
+        },
+        {
+          "op": "wait",
+          "ms": 1500
+        },
+        {
+          "op": "eval",
+          "label": "precio vigente (sin aria-busy)",
+          "expr": "document.querySelector('article[aria-labelledby=quote-result-title]').getAttribute('aria-busy')",
+          "equals": "false"
+        }
+      ],
+      "roi": "article[aria-labelledby=\"quote-result-title\"]"
+    },
+    {
+      "id": "T4b-pasajeros-rafaga",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "button[aria-label=\"Agregar un pasajero\"]"
+        },
+        {
+          "op": "wait",
+          "ms": 90
+        },
+        {
+          "op": "click",
+          "selector": "button[aria-label=\"Agregar un pasajero\"]"
+        },
+        {
+          "op": "wait",
+          "ms": 90
+        },
+        {
+          "op": "click",
+          "selector": "button[aria-label=\"Agregar un pasajero\"]"
+        }
+      ],
+      "roi": "article[aria-labelledby=\"quote-result-title\"]",
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 3000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "4 pasajeros",
+          "expr": "document.querySelector('#cotizar [aria-labelledby=quote-passengers]').getAttribute('aria-valuenow')",
+          "equals": "4"
+        },
+        {
+          "op": "wait",
+          "ms": 1500
+        },
+        {
+          "op": "eval",
+          "label": "precio vigente (sin aria-busy)",
+          "expr": "document.querySelector('article[aria-labelledby=quote-result-title]').getAttribute('aria-busy')",
+          "equals": "false"
+        }
+      ]
+    },
+    {
+      "id": "T5-maleta-menos",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 2,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "button[aria-label=\"Quitar una maleta\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "1 maleta",
+          "expr": "document.querySelector('#cotizar [aria-labelledby=quote-luggage]').getAttribute('aria-valuenow')",
+          "equals": "1"
+        },
+        {
+          "op": "wait",
+          "ms": 1500
+        },
+        {
+          "op": "eval",
+          "label": "precio vigente (sin aria-busy)",
+          "expr": "document.querySelector('article[aria-labelledby=quote-result-title]').getAttribute('aria-busy')",
+          "equals": "false"
+        }
+      ],
+      "roi": "span:has(> div > [aria-labelledby=\"quote-luggage\"])"
+    },
+    {
+      "id": "T6-nivel",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#cotizar label:has(input[name=\"quote-level\"][value=\"premium\"])"
+        }
+      ],
+      "roi": "article[aria-labelledby=\"quote-result-title\"]",
+      "track": [
+        "#cotizar label:has(input[name=\"quote-level\"]:checked)"
+      ],
+      "expect": {
+        "animated": true,
+        "minMs": 150,
+        "maxMs": 900
+      },
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "resultado sin aria-busy",
+          "expr": "document.querySelector('[aria-labelledby=quote-result-title]')?.getAttribute('aria-busy')",
+          "equals": "false"
+        }
+      ]
+    },
+    {
+      "id": "T6b-nivel-mientras-carga",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "button[aria-label=\"Agregar un pasajero\"]"
+        },
+        {
+          "op": "wait",
+          "ms": 120
+        },
+        {
+          "op": "click",
+          "selector": "#cotizar label:has(input[name=\"quote-level\"][value=\"premium\"])"
+        }
+      ],
+      "roi": "article[aria-labelledby=\"quote-result-title\"]",
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 3000,
+      "post": [
+        {
+          "op": "wait",
+          "ms": 1500
+        },
+        {
+          "op": "eval",
+          "label": "Premium elegido",
+          "expr": "document.querySelector('input[name=quote-level]:checked').value",
+          "equals": "premium"
+        },
+        {
+          "op": "eval",
+          "label": "precio vigente (sin aria-busy)",
+          "expr": "document.querySelector('article[aria-labelledby=quote-result-title]').getAttribute('aria-busy')",
+          "equals": "false"
+        }
+      ]
+    },
+    {
+      "id": "T7-vacio-a-precio",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": null,
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        },
+        {
+          "op": "click",
+          "selector": "#cotizar input[role=\"combobox\"]",
+          "nth": 1,
+          "wait": 1000
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "[role=\"option\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 3000,
+      "settleMs": 500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "destino elegido",
+          "expr": "document.querySelectorAll('#cotizar input[role=combobox]')[1].value.length > 0",
+          "equals": true
+        },
+        {
+          "op": "wait",
+          "ms": 1500
+        },
+        {
+          "op": "eval",
+          "label": "precio vigente (sin aria-busy)",
+          "expr": "document.querySelector('article[aria-labelledby=quote-result-title]').getAttribute('aria-busy')",
+          "equals": "false"
+        }
+      ]
+    },
+    {
+      "id": "T8-cambio-de-hora",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "eval",
+          "expr": "(()=>{const s=document.querySelector('#cotizar select');const o=[...s.options].find(x=>x.value==='12:00')??s.options[s.selectedIndex+4];s.value=o.value;s.dispatchEvent(new Event('change',{bubbles:true}));return s.value})()"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "hora 12:00",
+          "expr": "document.querySelector('#cotizar select').value",
+          "equals": "12:00"
+        },
+        {
+          "op": "wait",
+          "ms": 1500
+        },
+        {
+          "op": "eval",
+          "label": "precio vigente (sin aria-busy)",
+          "expr": "document.querySelector('article[aria-labelledby=quote-result-title]').getAttribute('aria-busy')",
+          "equals": "false"
+        }
+      ],
+      "roi": "article[aria-labelledby=\"quote-result-title\"]"
+    },
+    {
+      "id": "T9-especial-gdl",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "auditoria-gdl",
+              "label": "Guadalajara, Jal.",
+              "lat": 20.67,
+              "lng": -103.35,
+              "kind": "address"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        }
+      ],
+      "action": [
+        {
+          "op": "reload"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 700,
+      "maxMs": 4000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "cotización especial",
+          "expr": "document.querySelector('article[aria-labelledby=quote-result-title]').textContent.includes('Cotizar por WhatsApp')",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "T9b-precio-a-especial",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 4,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "button[aria-label=\"Agregar un pasajero\"]"
+        }
+      ],
+      "roi": "article[aria-labelledby=\"quote-result-title\"]",
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 3000,
+      "post": [
+        {
+          "op": "wait",
+          "ms": 1500
+        },
+        {
+          "op": "eval",
+          "label": "cotización especial",
+          "expr": "document.querySelector('article[aria-labelledby=quote-result-title]').textContent.includes('Cotizar por WhatsApp')",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "T9c-especial-a-precio",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 5,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "button[aria-label=\"Quitar un pasajero\"]"
+        }
+      ],
+      "roi": "article[aria-labelledby=\"quote-result-title\"]",
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 3000,
+      "post": [
+        {
+          "op": "wait",
+          "ms": 1500
+        },
+        {
+          "op": "eval",
+          "label": "de vuelta al precio",
+          "expr": "!!document.querySelector('input[name=quote-level]')",
+          "equals": true
+        },
+        {
+          "op": "eval",
+          "label": "precio vigente (sin aria-busy)",
+          "expr": "document.querySelector('article[aria-labelledby=quote-result-title]').getAttribute('aria-busy')",
+          "equals": "false"
+        }
+      ]
+    },
+    {
+      "id": "T10a-error-de-red",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        },
+        {
+          "op": "intercept",
+          "pattern": "*/api/estimate*",
+          "mode": "fail"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "button[aria-label=\"Agregar un pasajero\"]"
+        }
+      ],
+      "roi": "article[aria-labelledby=\"quote-result-title\"]",
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "panel de error con reintentar",
+          "expr": "!!document.querySelector('article button:has(.lucide-rotate-cw)')",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "T10b-reintento",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        },
+        {
+          "op": "intercept",
+          "pattern": "*/api/estimate*",
+          "mode": "fail"
+        },
+        {
+          "op": "click",
+          "selector": "button[aria-label=\"Agregar un pasajero\"]",
+          "wait": 2000
+        },
+        {
+          "op": "intercept",
+          "off": true
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "article button:has(.lucide-rotate-cw)"
+        }
+      ],
+      "roi": "article[aria-labelledby=\"quote-result-title\"]",
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "wait",
+          "ms": 1500
+        },
+        {
+          "op": "eval",
+          "label": "sin panel de error",
+          "expr": "!document.querySelector('article button:has(.lucide-rotate-cw)')",
+          "equals": true
+        },
+        {
+          "op": "eval",
+          "label": "precio vigente (sin aria-busy)",
+          "expr": "document.querySelector('article[aria-labelledby=quote-result-title]').getAttribute('aria-busy')",
+          "equals": "false"
+        }
+      ]
+    },
+    {
+      "id": "T11-campo-de-vuelo",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "click",
+          "selector": "#cotizar input[role=\"combobox\"]",
+          "wait": 600
+        },
+        {
+          "op": "type",
+          "text": "aicm",
+          "wait": 1200
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "[role=\"option\"]"
+        }
+      ],
+      "track": [
+        "#cotizar input[maxlength=\"10\"]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "campo de vuelo",
+          "expr": "!!document.querySelector('#cotizar input[maxlength=\"10\"]')",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "T12-error-de-fecha",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": true,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "eval",
+          "expr": "(()=>{const ds=document.querySelectorAll('#cotizar input[type=date]');const r=ds[ds.length-1];const set=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;set.call(r,r.min||ds[0].value);r.dispatchEvent(new Event('input',{bubbles:true}));r.dispatchEvent(new Event('change',{bubbles:true}));const d=ds[0];const t=new Date(Date.now()+5*864e5).toISOString().slice(0,10);set.call(d,t);d.dispatchEvent(new Event('input',{bubbles:true}));d.dispatchEvent(new Event('change',{bubbles:true}));return [d.value,r.value]})()"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "aparece el error de fecha",
+          "expr": "!!document.querySelector('[id^=\"quote-err-\"]')",
+          "equals": true
+        }
+      ],
+      "roi": "form[aria-labelledby=\"quote-form-title\"]"
+    },
+    {
+      "id": "T13a-barra-movil-entra",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "y": 620
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "reduced": "both",
+      "post": [
+        {
+          "op": "eval",
+          "label": "barra visible y anclada abajo",
+          "expr": "(() => { const b = document.querySelector('body > [data-quote-bar]'); return !!b && Math.round(b.getBoundingClientRect().bottom) === innerHeight; })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "T13b-barra-movil-sale",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        },
+        {
+          "op": "scroll",
+          "y": 620,
+          "wait": 1500
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "y": 0
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "reduced": "both",
+      "post": [
+        {
+          "op": "eval",
+          "label": "la barra salió",
+          "expr": "!document.querySelector('body > [data-quote-bar]')",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "T14-whatsapp-sin-parpadeo",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "button[aria-label=\"Agregar un pasajero\"]"
+        }
+      ],
+      "track": [
+        "article[aria-labelledby=\"quote-result-title\"] a[target=\"_blank\"]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "wait",
+          "ms": 1500
+        },
+        {
+          "op": "eval",
+          "label": "un solo enlace de reservar, con href",
+          "expr": "(() => { const a = document.querySelectorAll('article[aria-labelledby=quote-result-title] a[target=_blank]'); return [...a].filter((x) => x.textContent.includes('Reservar')).map((x) => x.hasAttribute('href')).join(); })()",
+          "equals": "true"
+        }
+      ],
+      "roi": "article[aria-labelledby=\"quote-result-title\"]"
+    },
+    {
+      "id": "T15a-reducido-navegacion",
+      "vp": [
+        "d"
+      ],
+      "reduced": "only",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "header nav a[href=\"/servicios\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200
+    },
+    {
+      "id": "T15b-reducido-nivel",
+      "vp": [
+        "d"
+      ],
+      "reduced": "only",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "storage",
+          "area": "session",
+          "key": "unify.quote.v1",
+          "value": {
+            "origin": {
+              "id": "cat:polanco",
+              "label": "Polanco",
+              "lat": 19.4295,
+              "lng": -99.1971,
+              "kind": "zone"
+            },
+            "destination": {
+              "id": "cat:aicm-t1",
+              "label": "AICM Terminal 1",
+              "lat": 19.4352,
+              "lng": -99.0827,
+              "kind": "airport"
+            },
+            "date": "",
+            "time": "10:00",
+            "passengers": 1,
+            "luggage": 0,
+            "level": "select",
+            "roundTrip": false,
+            "returnDate": "",
+            "returnTime": "",
+            "flight": ""
+          }
+        },
+        {
+          "op": "goto",
+          "url": "/tarifas",
+          "wait": 2500
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#cotizar label:has(input[name=\"quote-level\"][value=\"premium\"])"
+        }
+      ],
+      "roi": "article[aria-labelledby=\"quote-result-title\"]",
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500
+    },
+    {
+      "id": "T15c-reducido-faq",
+      "vp": [
+        "d"
+      ],
+      "reduced": "only",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "section[aria-labelledby=\"preguntas\"] h3 button"
+        }
+      ],
+      "roi": "section[aria-labelledby=\"preguntas\"]",
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "E1-404-a-inicio",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/x"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "main a[href=\"/\"]"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 700,
+      "maxMs": 4000
+    },
+    {
+      "id": "C1-boton-presion-movil",
+      "vp": [
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-botones",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "press",
+          "selector": "#ctl-primario",
+          "ms": 150
+        }
+      ],
+      "roi": "#ctl-primario",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-primario').dataset.count",
+          "equals": "1"
+        }
+      ]
+    },
+    {
+      "id": "C2-boton-deshabilitar",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-botones",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-deshabilitar)"
+        }
+      ],
+      "roi": "#ctl-botones",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-objetivo').disabled",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "C3-boton-habilitar",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-botones",
+          "block": "center"
+        },
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-deshabilitar)",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-deshabilitar)"
+        }
+      ],
+      "roi": "#ctl-botones",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-objetivo').disabled",
+          "equals": false
+        }
+      ]
+    },
+    {
+      "id": "C4-foco-boton",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-botones",
+          "block": "center"
+        },
+        {
+          "op": "focus",
+          "selector": "#ctl-primario",
+          "wait": 600
+        }
+      ],
+      "action": [
+        {
+          "op": "key",
+          "key": "Tab"
+        }
+      ],
+      "roi": "#ctl-botones",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.activeElement.id + ':' + document.activeElement.matches(':focus-visible')",
+          "equals": "ctl-secundario:true"
+        }
+      ]
+    },
+    {
+      "id": "C5-enlace-hover",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-botones",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "hover",
+          "selector": "#ctl-enlace"
+        }
+      ],
+      "roi": "#ctl-enlace",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-enlace').matches(':hover')",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "C6-foco-enlace",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-botones",
+          "block": "center"
+        },
+        {
+          "op": "focus",
+          "selector": "#ctl-botones button:nth-of-type(3)",
+          "wait": 600
+        }
+      ],
+      "action": [
+        {
+          "op": "key",
+          "key": "Tab"
+        }
+      ],
+      "roi": "#ctl-botones",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.activeElement.id + ':' + document.activeElement.matches(':focus-visible')",
+          "equals": "ctl-enlace:true"
+        }
+      ]
+    },
+    {
+      "id": "C7-nivel",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-nivel",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#ctl-nivel label:has(input[value=\"premium\"])"
+        }
+      ],
+      "roi": "#ctl-nivel",
+      "track": [
+        "#ctl-nivel [data-indicator]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-nivel input:checked').value",
+          "equals": "premium"
+        }
+      ]
+    },
+    {
+      "id": "C8-nivel-dos-cambios-rapidos",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-nivel",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#ctl-nivel label:has(input[value=\"premium\"])"
+        },
+        {
+          "op": "wait",
+          "ms": 120
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-nivel label:has(input[value=\"practico\"])"
+        }
+      ],
+      "roi": "#ctl-nivel",
+      "track": [
+        "#ctl-nivel [data-indicator]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-nivel input:checked').value",
+          "equals": "practico"
+        }
+      ]
+    },
+    {
+      "id": "C9-contador-mas",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-contador",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#ctl-contador button[aria-label=\"Agregar un pasajero\"]"
+        }
+      ],
+      "roi": "#ctl-contador",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-contador [role=spinbutton]').getAttribute('aria-valuenow')",
+          "equals": "2"
+        }
+      ]
+    },
+    {
+      "id": "C10-contador-tope",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-contador",
+          "block": "center"
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-contador button[aria-label=\"Agregar un pasajero\"]",
+          "wait": 500
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-contador button[aria-label=\"Agregar un pasajero\"]",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#ctl-contador button[aria-label=\"Agregar un pasajero\"]"
+        }
+      ],
+      "roi": "#ctl-contador",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "[document.querySelector('#ctl-contador [role=spinbutton]').getAttribute('aria-valuenow'), document.querySelector('#ctl-contador button[aria-label=\\\"Agregar un pasajero\\\"]').getAttribute('aria-disabled')]",
+          "equals": [
+            "4",
+            "true"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C11-contador-clics-rapidos",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-contador",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#ctl-contador button[aria-label=\"Agregar un pasajero\"]"
+        },
+        {
+          "op": "wait",
+          "ms": 70
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-contador button[aria-label=\"Agregar un pasajero\"]"
+        },
+        {
+          "op": "wait",
+          "ms": 70
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-contador button[aria-label=\"Agregar un pasajero\"]"
+        }
+      ],
+      "roi": "#ctl-contador",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-contador [role=spinbutton]').getAttribute('aria-valuenow')",
+          "equals": "4"
+        }
+      ]
+    },
+    {
+      "id": "C11b-contador-baja-rapido",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-contador",
+          "block": "center"
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-contador button[aria-label=\"Agregar un pasajero\"]",
+          "wait": 300
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-contador button[aria-label=\"Agregar un pasajero\"]",
+          "wait": 300
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-contador button[aria-label=\"Agregar un pasajero\"]",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#ctl-contador button[aria-label=\"Quitar un pasajero\"]"
+        },
+        {
+          "op": "wait",
+          "ms": 70
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-contador button[aria-label=\"Quitar un pasajero\"]"
+        },
+        {
+          "op": "wait",
+          "ms": 70
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-contador button[aria-label=\"Quitar un pasajero\"]"
+        }
+      ],
+      "roi": "#ctl-contador",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "[document.querySelector('#ctl-contador [role=spinbutton]').getAttribute('aria-valuenow'), document.querySelector('#ctl-contador button[aria-label=\\\"Quitar un pasajero\\\"]').getAttribute('aria-disabled')]",
+          "equals": [
+            "1",
+            "true"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C12-interruptor-on",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-interruptor",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-ida-vuelta)"
+        }
+      ],
+      "roi": "#ctl-interruptor",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-ida-vuelta').checked",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "C13-interruptor-off",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-interruptor",
+          "block": "center"
+        },
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-ida-vuelta)",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-ida-vuelta)"
+        }
+      ],
+      "roi": "#ctl-interruptor",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-ida-vuelta').checked",
+          "equals": false
+        }
+      ]
+    },
+    {
+      "id": "C14-interruptor-doble-rapido",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-interruptor",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-ida-vuelta)"
+        },
+        {
+          "op": "wait",
+          "ms": 120
+        },
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-ida-vuelta)"
+        }
+      ],
+      "roi": "#ctl-interruptor",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-ida-vuelta').checked",
+          "equals": false
+        }
+      ]
+    },
+    {
+      "id": "C15-campo-error-aparece",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-campo",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-con-error)"
+        }
+      ],
+      "roi": "#ctl-campo",
+      "track": [
+        "#ctl-campo [data-debajo]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "[document.querySelector('#ctl-telefono').getAttribute('aria-invalid'), document.querySelector('#ctl-telefono').getAttribute('aria-describedby'), !!document.getElementById('ctl-telefono-error')]",
+          "equals": [
+            "true",
+            "ctl-telefono-error",
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C16-campo-error-se-va",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-campo",
+          "block": "center"
+        },
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-con-error)",
+          "wait": 1200
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-con-error)"
+        }
+      ],
+      "roi": "#ctl-campo",
+      "track": [
+        "#ctl-campo [data-debajo]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "[document.querySelector('#ctl-telefono').getAttribute('aria-invalid'), !!document.getElementById('ctl-telefono-error')]",
+          "equals": [
+            null,
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C17-campo-ayuda-aparece",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-campo",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-con-ayuda)"
+        }
+      ],
+      "roi": "#ctl-campo",
+      "track": [
+        "#ctl-campo [data-debajo]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-telefono').getAttribute('aria-describedby')",
+          "equals": "ctl-telefono-hint"
+        }
+      ]
+    },
+    {
+      "id": "C18-campo-error-ida-y-vuelta-rapida",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-campo",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-con-error)"
+        },
+        {
+          "op": "wait",
+          "ms": 150
+        },
+        {
+          "op": "click",
+          "selector": "label:has(#ctl-con-error)"
+        }
+      ],
+      "roi": "#ctl-campo",
+      "track": [
+        "#ctl-campo [data-debajo]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "!!document.getElementById('ctl-telefono-error')",
+          "equals": false
+        }
+      ]
+    },
+    {
+      "id": "C19-acordeon-abre",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-acordeon",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#ctl-acordeon h3 button"
+        }
+      ],
+      "roi": "#ctl-acordeon",
+      "track": [
+        "#ctl-acordeon [data-debajo]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelectorAll('#ctl-acordeon h3 button')[0].getAttribute('aria-expanded')",
+          "equals": "true"
+        }
+      ]
+    },
+    {
+      "id": "C20-acordeon-cambia",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-acordeon",
+          "block": "center"
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-acordeon h3 button",
+          "wait": 1200
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#ctl-acordeon h3 button",
+          "nth": 1
+        }
+      ],
+      "roi": "#ctl-acordeon",
+      "track": [
+        "#ctl-acordeon [data-debajo]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "[document.querySelectorAll('#ctl-acordeon h3 button')[0].getAttribute('aria-expanded'), document.querySelectorAll('#ctl-acordeon h3 button')[1].getAttribute('aria-expanded')]",
+          "equals": [
+            "false",
+            "true"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C21-acordeon-cierra",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-acordeon",
+          "block": "center"
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-acordeon h3 button",
+          "wait": 1200
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#ctl-acordeon h3 button"
+        }
+      ],
+      "roi": "#ctl-acordeon",
+      "track": [
+        "#ctl-acordeon [data-debajo]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelectorAll('#ctl-acordeon h3 button')[0].getAttribute('aria-expanded')",
+          "equals": "false"
+        }
+      ]
+    },
+    {
+      "id": "C22-acordeon-cierra-a-media-apertura",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-acordeon",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#ctl-acordeon h3 button"
+        },
+        {
+          "op": "wait",
+          "ms": 160
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-acordeon h3 button"
+        }
+      ],
+      "roi": "#ctl-acordeon",
+      "track": [
+        "#ctl-acordeon [data-debajo]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "[document.querySelectorAll('#ctl-acordeon h3 button')[0].getAttribute('aria-expanded'), getComputedStyle(document.querySelector('#ctl-acordeon .accordion-panel')).visibility]",
+          "equals": [
+            "false",
+            "hidden"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C22b-acordeon-cambia-a-media-apertura",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-acordeon",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#ctl-acordeon h3 button"
+        },
+        {
+          "op": "wait",
+          "ms": 160
+        },
+        {
+          "op": "click",
+          "selector": "#ctl-acordeon h3 button",
+          "nth": 1
+        }
+      ],
+      "roi": "#ctl-acordeon",
+      "track": [
+        "#ctl-acordeon [data-debajo]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "[document.querySelectorAll('#ctl-acordeon h3 button')[0].getAttribute('aria-expanded'), document.querySelectorAll('#ctl-acordeon h3 button')[1].getAttribute('aria-expanded')]",
+          "equals": [
+            "false",
+            "true"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C23-precio",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-precio",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#ctl-cambiar-precio"
+        }
+      ],
+      "roi": "#ctl-precio",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-precio .sr-only').textContent.includes('1,280')",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "C24-ruta-redibujo",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#ctl-ruta",
+          "block": "center"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#ctl-cambiar-ruta"
+        }
+      ],
+      "roi": "#ctl-ruta",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "expr": "document.querySelector('#ctl-cambiar-ruta').dataset.route",
+          "equals": "1"
+        }
+      ]
+    },
+    {
+      "id": "P1-collapse-abre",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#mov-collapse"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#mov-collapse button[aria-controls=\"mov-collapse-panel\"]"
+        }
+      ],
+      "roi": "#mov-collapse",
+      "track": [
+        "#mov-collapse > p"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "reduced": "both"
+    },
+    {
+      "id": "P2-collapse-cierra",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#mov-collapse"
+        },
+        {
+          "op": "click",
+          "selector": "#mov-collapse button[aria-controls=\"mov-collapse-panel\"]",
+          "wait": 1200
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#mov-collapse button[aria-controls=\"mov-collapse-panel\"]"
+        }
+      ],
+      "roi": "#mov-collapse",
+      "track": [
+        "#mov-collapse > p"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "reduced": "both"
+    },
+    {
+      "id": "P3-swap-crece",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#mov-swap"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#mov-swap [role=\"group\"] button:nth-of-type(3)"
+        }
+      ],
+      "roi": "#mov-swap",
+      "track": [
+        "#mov-swap > p"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "reduced": "both"
+    },
+    {
+      "id": "P4-swap-encoge",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#mov-swap"
+        },
+        {
+          "op": "click",
+          "selector": "#mov-swap [role=\"group\"] button:nth-of-type(3)",
+          "wait": 1200
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#mov-swap [role=\"group\"] button:nth-of-type(1)"
+        }
+      ],
+      "roi": "#mov-swap",
+      "track": [
+        "#mov-swap > p"
+      ],
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "P5-swap-en-linea",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#mov-swap"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#mov-swap p button"
+        }
+      ],
+      "roi": "#mov-swap p button",
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "P6-presence-fade-entra",
+      "vp": [
+        "d"
+      ],
+      "reduced": "no",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#mov-presence"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#mov-presence button[data-preset=\"fade\"]"
+        }
+      ],
+      "roi": "#mov-presence",
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "P6-presence-fade-sale",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#mov-presence"
+        },
+        {
+          "op": "click",
+          "selector": "#mov-presence button[data-preset=\"fade\"]",
+          "wait": 1200
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#mov-presence button[data-preset=\"fade\"]"
+        }
+      ],
+      "roi": "#mov-presence",
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "P6-presence-rise-entra",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#mov-presence"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#mov-presence button[data-preset=\"rise\"]"
+        }
+      ],
+      "roi": "#mov-presence",
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "P6-presence-rise-sale",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#mov-presence"
+        },
+        {
+          "op": "click",
+          "selector": "#mov-presence button[data-preset=\"rise\"]",
+          "wait": 1200
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#mov-presence button[data-preset=\"rise\"]"
+        }
+      ],
+      "roi": "#mov-presence",
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "P6-presence-drop-entra",
+      "vp": [
+        "d"
+      ],
+      "reduced": "no",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#mov-presence"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#mov-presence button[data-preset=\"drop\"]"
+        }
+      ],
+      "roi": "#mov-presence",
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "P6-presence-drop-sale",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#mov-presence"
+        },
+        {
+          "op": "click",
+          "selector": "#mov-presence button[data-preset=\"drop\"]",
+          "wait": 1200
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#mov-presence button[data-preset=\"drop\"]"
+        }
+      ],
+      "roi": "#mov-presence",
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "P6-presence-sheet-bottom-entra",
+      "vp": [
+        "d"
+      ],
+      "reduced": "no",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#mov-presence"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#mov-presence button[data-preset=\"sheet-bottom\"]"
+        }
+      ],
+      "roi": "#mov-presence",
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "P6-presence-sheet-bottom-sale",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "#mov-presence"
+        },
+        {
+          "op": "click",
+          "selector": "#mov-presence button[data-preset=\"sheet-bottom\"]",
+          "wait": 1200
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "#mov-presence button[data-preset=\"sheet-bottom\"]"
+        }
+      ],
+      "roi": "#mov-presence",
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "P7-reveal-grupo",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#mov-reveal"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000
+    },
+    {
+      "id": "P8-dialogo-abre",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "section[aria-label=\"Preguntas, diálogo y hoja\"]"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "text": "Abrir diálogo"
+        }
+      ],
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "P9-dialogo-cierra",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "section[aria-label=\"Preguntas, diálogo y hoja\"]"
+        },
+        {
+          "op": "click",
+          "text": "Abrir diálogo",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "key",
+          "key": "Escape"
+        }
+      ],
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "P10-hoja-lateral-abre",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "section[aria-label=\"Preguntas, diálogo y hoja\"]"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "text": "Abrir hoja"
+        }
+      ],
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "P11-hoja-lateral-cierra",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "section[aria-label=\"Preguntas, diálogo y hoja\"]"
+        },
+        {
+          "op": "click",
+          "text": "Abrir hoja",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "[role=\"dialog\"] button[aria-label=\"Cerrar\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "P12-hoja-inferior-abre",
+      "vp": [
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "section[aria-label=\"Preguntas, diálogo y hoja\"]"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "text": "Abrir hoja inferior"
+        }
+      ],
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "P13-hoja-inferior-cierra",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/dev/ui"
+        },
+        {
+          "op": "scroll",
+          "selector": "section[aria-label=\"Preguntas, diálogo y hoja\"]"
+        },
+        {
+          "op": "click",
+          "text": "Abrir hoja inferior",
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "key",
+          "key": "Escape"
+        }
+      ],
+      "expect": {
+        "animated": true
+      }
+    },
+    {
+      "id": "S11-como-funciona",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#como-funciona"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"como-funciona\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S12-experiencia",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#experiencia"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"experiencia\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S13-empresas-con-foto",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#empresas"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"empresas\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S14-preguntas",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#preguntas"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"preguntas\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S15-cierre-portada",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#cierre"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"cierre\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S16-servicios-niveles",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/servicios"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#niveles"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"niveles\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S17-servicios-como-funciona",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/servicios"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#como-funciona"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"como-funciona\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S18-servicios-empresas",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/servicios"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#empresas"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"empresas\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S19-servicios-cierre",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/servicios"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#cierre"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"cierre\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S20-tarifas-rutas",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#rutas"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"rutas\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S21-tarifas-preguntas",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#preguntas"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"preguntas\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S22-a-la-medida",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#a-la-medida"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"a-la-medida\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S23-como-te-cuidamos",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/nosotros"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#como-te-cuidamos"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"como-te-cuidamos\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S24-medio-ambiente",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/nosotros"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#medio-ambiente"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"medio-ambiente\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S25-cotiza",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/nosotros"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#cotiza"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"cotiza\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S26-privacidad-secciones",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/privacidad"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "article section:nth-of-type(3)"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('article section:nth-of-type(3)'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S27-terminos-secciones",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/terminos"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "article section:nth-of-type(5)"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('article section:nth-of-type(5)'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S28-pie",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/nosotros"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "footer",
+          "block": "end"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('footer'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S29-pie-en",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/en/nosotros"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "footer",
+          "block": "end"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('footer'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S30-portada-en",
+      "vp": [
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/en"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#niveles"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"niveles\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S10b-indice-legal-clic",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/privacidad"
+        },
+        {
+          "op": "wait",
+          "ms": 400
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "aside nav a",
+          "nth": 5
+        }
+      ],
+      "track": [
+        "[data-toc-dot]"
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 3000,
+      "settleMs": 500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "scroll suave hasta la sección 6 (o la 7, si la 6 es corta) y el punto en el enlace activo",
+          "expr": "(() => { const links = [...document.querySelectorAll('aside nav a')]; const a = links.find((l) => l.getAttribute('aria-current') === 'location'); const i = links.indexOf(a); const dot = document.querySelector('[data-toc-dot]'); const top = document.getElementById(links[5].getAttribute('href').slice(1)).getBoundingClientRect().top; return (i === 5 || i === 6) && dot.style.getPropertyValue('--y') === a.offsetTop + 'px' && top > 0 && top < 200; })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "A4b-indice-legal-movil-cierra",
+      "vp": [
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/privacidad"
+        },
+        {
+          "op": "click",
+          "selector": "[data-toc-mobile] button",
+          "wait": 1000
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "[data-toc-mobile] button"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "cerrado y fuera del Tab",
+          "expr": "(() => { const b = document.querySelector('[data-toc-mobile] button'); const nav = document.querySelector('[data-toc-mobile] nav'); return b.getAttribute('aria-expanded') === 'false' && getComputedStyle(nav).visibility === 'hidden'; })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "H1-tarjeta-nivel-hover",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "scroll",
+          "selector": "section[aria-labelledby=\"niveles\"] [data-react-card]",
+          "block": "center"
+        },
+        {
+          "op": "wait",
+          "ms": 1400
+        }
+      ],
+      "action": [
+        {
+          "op": "hover",
+          "selector": "section[aria-labelledby=\"niveles\"] [data-react-card]",
+          "nth": 1
+        }
+      ],
+      "roi": "section[aria-labelledby=\"niveles\"] article:has(#niveles-select)",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "la foto se acercó dentro del marco (reducido: se aclaró)",
+          "expr": "(() => { const c = document.querySelectorAll('[data-react-card]')[1]; const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches; return c.matches(':hover') && (reduced ? getComputedStyle(c.querySelector('[data-media-sharp]')).filter === 'brightness(1.12)' : getComputedStyle(c.querySelector('[data-media-frame]')).scale === '1.04'); })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "H1f-tarjeta-nivel-foco",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "scroll",
+          "selector": "section[aria-labelledby=\"niveles\"] [data-react-card]",
+          "block": "center"
+        },
+        {
+          "op": "wait",
+          "ms": 1400
+        },
+        {
+          "op": "focus",
+          "selector": "section[aria-labelledby=\"niveles\"] a[href=\"/tarifas\"]",
+          "wait": 600
+        }
+      ],
+      "action": [
+        {
+          "op": "key",
+          "key": "Tab"
+        }
+      ],
+      "roi": "section[aria-labelledby=\"niveles\"] article:has(#niveles-practico)",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "con el foco de teclado la tarjeta reacciona igual",
+          "expr": "(() => { const c = document.activeElement.closest('[data-react-card]'); return !!c && document.activeElement.matches(':focus-visible') && (matchMedia('(prefers-reduced-motion: reduce)').matches ? getComputedStyle(c.querySelector('[data-media-sharp]')).filter === 'brightness(1.12)' : getComputedStyle(c.querySelector('[data-media-frame]')).scale === '1.04'); })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "H2-ruta-hover",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "scroll",
+          "selector": "#rutas",
+          "block": "center"
+        },
+        {
+          "op": "wait",
+          "ms": 1400
+        }
+      ],
+      "action": [
+        {
+          "op": "hover",
+          "selector": "[data-route-row]",
+          "nth": 0
+        }
+      ],
+      "roi": "section[aria-labelledby=\"rutas\"] li:first-child",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "La línea se recorrió y la flecha avanzó",
+          "expr": "(() => { const r = document.querySelector('[data-route-row]'); const t = [...r.querySelectorAll('.route-line__track')].find((e) => e.getClientRects().length); const o = getComputedStyle(t, '::after'); const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches; return r.matches(':hover') && (reduced ? o.opacity === '1' : (o.scale === '1' || o.scale === '1 1') && getComputedStyle(r.querySelector('[data-route-arrow] svg')).translate === '4px'); })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "H2f-ruta-foco",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "scroll",
+          "selector": "#rutas",
+          "block": "center"
+        },
+        {
+          "op": "wait",
+          "ms": 1400
+        },
+        {
+          "op": "focus",
+          "selector": "section[aria-labelledby=\"rutas\"] a[href=\"/tarifas\"]",
+          "wait": 600
+        }
+      ],
+      "action": [
+        {
+          "op": "key",
+          "key": "Tab"
+        }
+      ],
+      "roi": "section[aria-labelledby=\"rutas\"] li:first-child",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "con el foco de teclado La línea se recorre",
+          "expr": "(() => { const r = document.activeElement; const t = [...r.querySelectorAll('.route-line__track')].find((e) => e.getClientRects().length); const o = getComputedStyle(t, '::after'); return r.matches('[data-route-row]:focus-visible') && (matchMedia('(prefers-reduced-motion: reduce)').matches ? o.opacity === '1' : (o.scale === '1' || o.scale === '1 1')); })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "H2b-ruta-sale",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "scroll",
+          "selector": "#rutas",
+          "block": "center"
+        },
+        {
+          "op": "wait",
+          "ms": 1400
+        },
+        {
+          "op": "hover",
+          "selector": "[data-route-row]",
+          "nth": 0,
+          "wait": 1000
+        }
+      ],
+      "action": [
+        {
+          "op": "unhover"
+        }
+      ],
+      "roi": "section[aria-labelledby=\"rutas\"] li:first-child",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "al salir La línea vuelve con transición",
+          "expr": "(() => { const r = document.querySelector('[data-route-row]'); const t = [...r.querySelectorAll('.route-line__track')].find((e) => e.getClientRects().length); const o = getComputedStyle(t, '::after'); return !r.matches(':hover') && (matchMedia('(prefers-reduced-motion: reduce)').matches ? o.opacity === '0' : o.scale === '0 1'); })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "H3-nivel-columna-hover",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/servicios"
+        },
+        {
+          "op": "scroll",
+          "selector": "[data-level=\"select\"]",
+          "block": "center"
+        },
+        {
+          "op": "wait",
+          "ms": 1400
+        }
+      ],
+      "action": [
+        {
+          "op": "hover",
+          "selector": "[data-level=\"select\"] h3"
+        }
+      ],
+      "roi": "[data-level=\"select\"]",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "la columna responde: título, precio y botón",
+          "expr": "(() => { const c = document.querySelector('[data-level=\"select\"]'); const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches; return c.matches(':hover') && getComputedStyle(c.querySelector('[data-level-cta]')).backgroundColor === 'rgb(28, 28, 31)' && (reduced || getComputedStyle(c.querySelector('[data-level-price]')).translate === '0px -3px'); })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "H4-tipo-a-la-medida-hover",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "scroll",
+          "selector": "#a-la-medida",
+          "block": "center"
+        },
+        {
+          "op": "wait",
+          "ms": 1400
+        }
+      ],
+      "action": [
+        {
+          "op": "hover",
+          "selector": "[data-quote-kind]",
+          "nth": 0
+        }
+      ],
+      "roi": "section[aria-labelledby=\"a-la-medida\"] ul li:first-child",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "el filete se recorre y la flecha avanza",
+          "expr": "(() => { const k = document.querySelector('[data-quote-kind]'); const o = getComputedStyle(k, '::before'); const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches; return k.matches(':hover') && (reduced ? o.opacity === '1' : (o.scale === '1' || o.scale === '1 1') && getComputedStyle(k.querySelector('[data-quote-arrow] svg')).translate === '4px'); })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "H4f-tipo-a-la-medida-foco",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "scroll",
+          "selector": "#a-la-medida",
+          "block": "center"
+        },
+        {
+          "op": "wait",
+          "ms": 1400
+        },
+        {
+          "op": "focus",
+          "selector": "section[aria-labelledby=\"a-la-medida\"] a[href*=\"wa.me\"]:not([data-quote-kind])",
+          "wait": 600
+        }
+      ],
+      "action": [
+        {
+          "op": "key",
+          "key": "Tab"
+        }
+      ],
+      "roi": "section[aria-labelledby=\"a-la-medida\"] ul li:first-child",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "con el foco de teclado reacciona igual",
+          "expr": "(() => { const k = document.activeElement; const o = getComputedStyle(k, '::before'); return k.matches('[data-quote-kind]:focus-visible') && (matchMedia('(prefers-reduced-motion: reduce)').matches ? o.opacity === '1' : (o.scale === '1' || o.scale === '1 1')); })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "H5-pie-enlace-hover",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/nosotros"
+        },
+        {
+          "op": "scroll",
+          "selector": "footer",
+          "block": "center"
+        },
+        {
+          "op": "wait",
+          "ms": 1400
+        }
+      ],
+      "action": [
+        {
+          "op": "hover",
+          "selector": "footer nav a[href=\"/servicios\"]"
+        }
+      ],
+      "roi": "footer nav a[href=\"/servicios\"]",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "el subrayado se trazó",
+          "expr": "(() => { const a = document.querySelector('footer nav a[href=\"/servicios\"]'); const o = getComputedStyle(a, '::after'); return a.matches(':hover') && (matchMedia('(prefers-reduced-motion: reduce)').matches ? o.opacity === '1' : (o.scale === '1' || o.scale === '1 1')); })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "H5f-pie-enlace-foco",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/nosotros"
+        },
+        {
+          "op": "scroll",
+          "selector": "footer",
+          "block": "center"
+        },
+        {
+          "op": "wait",
+          "ms": 1400
+        },
+        {
+          "op": "focus",
+          "selector": "footer a[aria-label]",
+          "wait": 600
+        }
+      ],
+      "action": [
+        {
+          "op": "key",
+          "key": "Tab"
+        }
+      ],
+      "roi": "footer nav",
+      "expect": {
+        "animated": true
+      },
+      "post": [
+        {
+          "op": "eval",
+          "label": "con el foco de teclado el subrayado se traza",
+          "expr": "(() => { const a = document.activeElement; const o = getComputedStyle(a, '::after'); return a.matches('footer .footer-link:focus-visible') && (matchMedia('(prefers-reduced-motion: reduce)').matches ? o.opacity === '1' : (o.scale === '1' || o.scale === '1 1')); })()",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "LP1-linea-avanza",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "wait",
+          "ms": 600
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "y": 2400,
+          "smooth": true
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200,
+      "post": [
+        {
+          "op": "eval",
+          "label": "el trazo sigue al scroll y el destino sigue vacío (reducido: fija)",
+          "expr": "(() => { const lp = document.querySelector('.route-progress'); if (!lp || getComputedStyle(lp).display !== 'flex') return 'sin línea'; const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches; const tr = getComputedStyle(lp.querySelector('.route-progress__track'), '::after'); const end = getComputedStyle(lp.querySelector('.route-progress__end')).backgroundColor; const max = document.documentElement.scrollHeight - innerHeight; const p = max > 0 ? scrollY / max : 0; if (reduced) return tr.content === 'none' && end === 'rgba(0, 0, 0, 0)' ? 'ok' : 'avanza con movimiento reducido'; const parts = tr.scale.split(' '); const s = parseFloat(parts[1] ?? parts[0]); if (Math.abs(s - p) > 0.02) return 'trazo ' + s.toFixed(3) + ' vs scroll ' + p.toFixed(3); const filled = end === 'rgb(242, 241, 238)'; if (filled !== false) return 'destino ' + end; return 'ok'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "LP2-linea-destino",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/nosotros"
+        },
+        {
+          "op": "wait",
+          "ms": 600
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "footer[data-site-chrome]",
+          "block": "end"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "al final de la página",
+          "expr": "Math.ceil(scrollY + innerHeight) >= document.documentElement.scrollHeight",
+          "equals": true
+        },
+        {
+          "op": "eval",
+          "label": "trazo completo y destino relleno (reducido: fija, destino vacío)",
+          "expr": "(() => { const lp = document.querySelector('.route-progress'); if (!lp || getComputedStyle(lp).display !== 'flex') return 'sin línea'; const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches; const tr = getComputedStyle(lp.querySelector('.route-progress__track'), '::after'); const end = getComputedStyle(lp.querySelector('.route-progress__end')).backgroundColor; const max = document.documentElement.scrollHeight - innerHeight; const p = max > 0 ? scrollY / max : 0; if (reduced) return tr.content === 'none' && end === 'rgba(0, 0, 0, 0)' ? 'ok' : 'avanza con movimiento reducido'; const parts = tr.scale.split(' '); const s = parseFloat(parts[1] ?? parts[0]); if (Math.abs(s - p) > 0.02) return 'trazo ' + s.toFixed(3) + ' vs scroll ' + p.toFixed(3); const filled = end === 'rgb(242, 241, 238)'; if (filled !== true) return 'destino ' + end; return 'ok'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "LP2b-linea-destino-portada",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "wait",
+          "ms": 600
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "footer[data-site-chrome]",
+          "block": "end"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "al final de la página",
+          "expr": "Math.ceil(scrollY + innerHeight) >= document.documentElement.scrollHeight",
+          "equals": true
+        },
+        {
+          "op": "eval",
+          "label": "trazo completo y destino relleno (reducido: fija, destino vacío)",
+          "expr": "(() => { const lp = document.querySelector('.route-progress'); if (!lp || getComputedStyle(lp).display !== 'flex') return 'sin línea'; const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches; const tr = getComputedStyle(lp.querySelector('.route-progress__track'), '::after'); const end = getComputedStyle(lp.querySelector('.route-progress__end')).backgroundColor; const max = document.documentElement.scrollHeight - innerHeight; const p = max > 0 ? scrollY / max : 0; if (reduced) return tr.content === 'none' && end === 'rgba(0, 0, 0, 0)' ? 'ok' : 'avanza con movimiento reducido'; const parts = tr.scale.split(' '); const s = parseFloat(parts[1] ?? parts[0]); if (Math.abs(s - p) > 0.02) return 'trazo ' + s.toFixed(3) + ' vs scroll ' + p.toFixed(3); const filled = end === 'rgb(242, 241, 238)'; if (filled !== true) return 'destino ' + end; return 'ok'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "LP7-linea-oculta-en-legales",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/privacidad"
+        },
+        {
+          "op": "wait",
+          "ms": 600
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "y": 900,
+          "smooth": true
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "en legales manda el índice: la línea de progreso no se muestra",
+          "expr": "getComputedStyle(document.querySelector('.route-progress')).display",
+          "equals": "none"
+        },
+        {
+          "op": "eval",
+          "label": "el punto del índice sí está",
+          "expr": "!!document.querySelector('[data-toc-dot][data-visible]')",
+          "equals": true
+        }
+      ]
+    },
+    {
+      "id": "LP3-linea-cambio-de-pagina",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "scroll",
+          "y": 2400,
+          "wait": 900
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "header nav a[href=\"/servicios\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200,
+      "post": [
+        {
+          "op": "eval",
+          "label": "página nueva arriba",
+          "expr": "[location.pathname, Math.round(scrollY)]",
+          "equals": [
+            "/servicios",
+            0
+          ]
+        },
+        {
+          "op": "eval",
+          "label": "el avance volvió a cero",
+          "expr": "(() => { const lp = document.querySelector('.route-progress'); if (!lp || getComputedStyle(lp).display !== 'flex') return 'sin línea'; const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches; const tr = getComputedStyle(lp.querySelector('.route-progress__track'), '::after'); const end = getComputedStyle(lp.querySelector('.route-progress__end')).backgroundColor; const max = document.documentElement.scrollHeight - innerHeight; const p = max > 0 ? scrollY / max : 0; if (reduced) return tr.content === 'none' && end === 'rgba(0, 0, 0, 0)' ? 'ok' : 'avanza con movimiento reducido'; const parts = tr.scale.split(' '); const s = parseFloat(parts[1] ?? parts[0]); if (Math.abs(s - p) > 0.02) return 'trazo ' + s.toFixed(3) + ' vs scroll ' + p.toFixed(3); const filled = end === 'rgb(242, 241, 238)'; if (filled !== false) return 'destino ' + end; return 'ok'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "LP4-linea-atras",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "scroll",
+          "y": 2400,
+          "wait": 900
+        },
+        {
+          "op": "eval",
+          "expr": "document.querySelector('a[href=\"/servicios\"]').click()"
+        },
+        {
+          "op": "wait",
+          "ms": 1800
+        }
+      ],
+      "action": [
+        {
+          "op": "eval",
+          "expr": "history.back()"
+        }
+      ],
+      "expect": {
+        "animated": true,
+        "maxScrollFrames": 1
+      },
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "ruta y scroll finales",
+          "expr": "[location.pathname, Math.round(scrollY)]",
+          "equals": [
+            "/",
+            2400
+          ]
+        },
+        {
+          "op": "eval",
+          "label": "el avance corresponde al scroll restaurado",
+          "expr": "(() => { const lp = document.querySelector('.route-progress'); if (!lp || getComputedStyle(lp).display !== 'flex') return 'sin línea'; const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches; const tr = getComputedStyle(lp.querySelector('.route-progress__track'), '::after'); const end = getComputedStyle(lp.querySelector('.route-progress__end')).backgroundColor; const max = document.documentElement.scrollHeight - innerHeight; const p = max > 0 ? scrollY / max : 0; if (reduced) return tr.content === 'none' && end === 'rgba(0, 0, 0, 0)' ? 'ok' : 'avanza con movimiento reducido'; const parts = tr.scale.split(' '); const s = parseFloat(parts[1] ?? parts[0]); if (Math.abs(s - p) > 0.02) return 'trazo ' + s.toFixed(3) + ' vs scroll ' + p.toFixed(3); const filled = end === 'rgb(242, 241, 238)'; if (filled !== false) return 'destino ' + end; return 'ok'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "LP5-linea-adelante",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "scroll",
+          "y": 2400,
+          "wait": 900
+        },
+        {
+          "op": "eval",
+          "expr": "document.querySelector('a[href=\"/servicios\"]').click()"
+        },
+        {
+          "op": "wait",
+          "ms": 1800
+        },
+        {
+          "op": "eval",
+          "expr": "history.back()"
+        },
+        {
+          "op": "wait",
+          "ms": 1800
+        }
+      ],
+      "action": [
+        {
+          "op": "eval",
+          "expr": "history.forward()"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2500,
+      "post": [
+        {
+          "op": "eval",
+          "label": "ruta final",
+          "expr": "location.pathname",
+          "equals": "/servicios"
+        },
+        {
+          "op": "eval",
+          "label": "el avance corresponde al scroll",
+          "expr": "(() => { const lp = document.querySelector('.route-progress'); if (!lp || getComputedStyle(lp).display !== 'flex') return 'sin línea'; const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches; const tr = getComputedStyle(lp.querySelector('.route-progress__track'), '::after'); const end = getComputedStyle(lp.querySelector('.route-progress__end')).backgroundColor; const max = document.documentElement.scrollHeight - innerHeight; const p = max > 0 ? scrollY / max : 0; if (reduced) return tr.content === 'none' && end === 'rgba(0, 0, 0, 0)' ? 'ok' : 'avanza con movimiento reducido'; const parts = tr.scale.split(' '); const s = parseFloat(parts[1] ?? parts[0]); if (Math.abs(s - p) > 0.02) return 'trazo ' + s.toFixed(3) + ' vs scroll ' + p.toFixed(3); const filled = end === 'rgb(242, 241, 238)'; if (filled !== false) return 'destino ' + end; return 'ok'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "LP6-linea-idioma",
+      "vp": [
+        "d"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/tarifas"
+        },
+        {
+          "op": "scroll",
+          "y": 1500,
+          "wait": 900
+        },
+        {
+          "op": "eval",
+          "expr": "window.__boot = 1"
+        }
+      ],
+      "action": [
+        {
+          "op": "click",
+          "selector": "header a[hreflang=\"en\"]"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2200,
+      "post": [
+        {
+          "op": "eval",
+          "label": "idioma y misma sesión JS (navegación de cliente)",
+          "expr": "[document.documentElement.lang.slice(0,2), window.__boot ?? null]",
+          "equals": [
+            "en",
+            1
+          ]
+        },
+        {
+          "op": "eval",
+          "label": "el avance corresponde al scroll",
+          "expr": "(() => { const lp = document.querySelector('.route-progress'); if (!lp || getComputedStyle(lp).display !== 'flex') return 'sin línea'; const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches; const tr = getComputedStyle(lp.querySelector('.route-progress__track'), '::after'); const end = getComputedStyle(lp.querySelector('.route-progress__end')).backgroundColor; const max = document.documentElement.scrollHeight - innerHeight; const p = max > 0 ? scrollY / max : 0; if (reduced) return tr.content === 'none' && end === 'rgba(0, 0, 0, 0)' ? 'ok' : 'avanza con movimiento reducido'; const parts = tr.scale.split(' '); const s = parseFloat(parts[1] ?? parts[0]); if (Math.abs(s - p) > 0.02) return 'trazo ' + s.toFixed(3) + ' vs scroll ' + p.toFixed(3); const filled = end === 'rgb(242, 241, 238)'; if (filled !== false) return 'destino ' + end; return 'ok'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S31-niveles-filas",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "reduced": "both",
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#niveles"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"niveles\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        },
+        {
+          "op": "eval",
+          "label": "auto, a bordo (bebida, dulce, salado) y botón alineados fila con fila",
+          "expr": "(() => { const cards = [...document.querySelectorAll('section[aria-labelledby=\"niveles\"] [data-react-card]')]; if (cards.length !== 3) return 'tarjetas: ' + cards.length; const rows = cards.map((c) => [c.querySelector('h4').previousElementSibling, c.querySelector('h4'), ...c.querySelectorAll('dl > div'), c.querySelector('a')]); if (rows.some((r) => r.length !== 6 || r.some((e) => !e))) return 'faltan filas'; if (cards.some((c) => c.querySelectorAll('dt').length !== 3)) return 'faltan datos'; if (innerWidth < 768) return 'ok'; const cols = innerWidth >= 1024 ? [0, 1, 2] : [0, 1]; for (let k = 0; k < 6; k++) { const tops = cols.map((i) => Math.round(rows[i][k].getBoundingClientRect().top)); if (Math.max(...tops) - Math.min(...tops) > 1) return 'fila ' + k + ' desalineada: ' + tops; } return 'ok'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "S31b-niveles-filas-en",
+      "vp": [
+        "d"
+      ],
+      "setup": [
+        {
+          "op": "goto",
+          "url": "/en"
+        },
+        {
+          "op": "eval",
+          "expr": "(window.__tr=[], document.addEventListener('transitionstart', e => { if (e.propertyName === 'opacity' && e.target.matches('[data-reveal]')) window.__tr.push(e.target); }), true)"
+        }
+      ],
+      "action": [
+        {
+          "op": "scroll",
+          "selector": "#niveles"
+        }
+      ],
+      "expect": {
+        "animated": true
+      },
+      "maxMs": 2000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "la sección se reveló con fundido y nada quedó a medias",
+          "expr": "(() => { const root = document.querySelector('section[aria-labelledby=\"niveles\"]'); if (!root) return 'sin raíz'; const shown = [...root.querySelectorAll('[data-reveal][data-shown]')]; if (root.matches('[data-reveal][data-shown]')) shown.push(root); if (!shown.length) return 'nada revelado'; const stuck = shown.filter((e) => getComputedStyle(e).opacity !== '1'); if (stuck.length) return 'a medias: ' + stuck.length; return (window.__tr || []).some((e) => root === e || root.contains(e)) ? 'ok' : 'sin transición'; })()",
+          "equals": "ok"
+        },
+        {
+          "op": "eval",
+          "label": "auto, a bordo (bebida, dulce, salado) y botón alineados fila con fila",
+          "expr": "(() => { const cards = [...document.querySelectorAll('section[aria-labelledby=\"niveles\"] [data-react-card]')]; if (cards.length !== 3) return 'tarjetas: ' + cards.length; const rows = cards.map((c) => [c.querySelector('h4').previousElementSibling, c.querySelector('h4'), ...c.querySelectorAll('dl > div'), c.querySelector('a')]); if (rows.some((r) => r.length !== 6 || r.some((e) => !e))) return 'faltan filas'; if (cards.some((c) => c.querySelectorAll('dt').length !== 3)) return 'faltan datos'; if (innerWidth < 768) return 'ok'; const cols = innerWidth >= 1024 ? [0, 1, 2] : [0, 1]; for (let k = 0; k < 6; k++) { const tops = cols.map((i) => Math.round(rows[i][k].getBoundingClientRect().top)); if (Math.max(...tops) - Math.min(...tops) > 1) return 'fila ' + k + ' desalineada: ' + tops; } return 'ok'; })()",
+          "equals": "ok"
+        }
+      ]
+    },
+    {
+      "id": "L11-carga-portada-sin-antetitulo",
+      "vp": [
+        "d",
+        "m"
+      ],
+      "setup": [
+        {
+          "op": "nocache"
+        },
+        {
+          "op": "goto",
+          "url": "data:text/html,<body style='background:%230b0b0c'>",
+          "wait": 300
+        }
+      ],
+      "action": [
+        {
+          "op": "goto",
+          "url": "/"
+        }
+      ],
+      "expect": {
+        "load": true
+      },
+      "settleMs": 700,
+      "maxMs": 4000,
+      "post": [
+        {
+          "op": "eval",
+          "label": "el título abre el hero y la entrada terminó entera",
+          "expr": "(() => { const h = document.getElementById('inicio-titulo'); return h.parentElement.firstElementChild === h && h.getAttribute('data-enter') === '1' && [...document.querySelectorAll('[data-enter]')].every((e) => getComputedStyle(e).opacity === '1'); })()",
+          "equals": true
+        }
+      ]
+    }
+  ]
+}

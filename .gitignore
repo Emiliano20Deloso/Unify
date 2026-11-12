@@ -42,3 +42,11 @@ next-env.d.ts
 
 dummy
 ignore
+
+!.env.example
+
+# copias de trabajo temporales (git worktrees de agentes)
+.claude/worktrees/
+
+# capturas de revisión visual (scripts/shot.mjs)
+.shots/

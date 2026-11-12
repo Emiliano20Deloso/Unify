@@ -1,0 +1,66 @@
+import { Fragment } from "react";
+import { QuoteWidget } from "@/components/quote";
+import { Container, Media } from "@/components/ui";
+import { photos } from "@/content";
+import type { Locale } from "@/i18n/config";
+import type { HomeDictionary, QuoteDictionary } from "@/i18n/types";
+
+interface HomeHeroProps {
+    lang: Locale;
+    t: HomeDictionary["hero"];
+    quote: QuoteDictionary;
+}
+
+/**
+ * Hero a sangre de la portada (maqueta B-Nocturno). Escritorio: texto arriba, bajo el menú, y el
+ * cotizador montado sobre el borde inferior de la foto. Móvil: texto al pie de la foto y el
+ * cotizador debajo. Entrada en secuencia con data-enter: foto → título → texto → cotizador. Sin antetítulo:
+ * el texto de abajo ya lo dice (t.eyebrow sigue en el diccionario).
+ */
+export function HomeHero({ lang, t, quote }: HomeHeroProps) {
+    return (
+        <section aria-labelledby="inicio-titulo" className="relative">
+            <div className="relative lg:h-[880px]">
+                {/* Móvil y tableta: la foto ocupa la parte de arriba y el texto de apoyo cae sobre el fondo. */}
+                <div className="absolute inset-x-0 top-0 h-[26.5rem] sm:h-[38rem] lg:h-full">
+                    <Media
+                        src={photos.homeHero}
+                        alt={t.imageAlt}
+                        fill
+                        radius="none"
+                        veil="both"
+                        fade="mobile"
+                        sizes="100vw"
+                        position="64% 60%"
+                        className="lg:[&_img]:![object-position:50%_60%]"
+                        preload
+                        enter
+                    />
+                </div>
+                {/* Móvil y tableta: el título cae donde antes iba el antetítulo, con aire sobre el auto. */}
+                <Container className="relative pt-[24rem] sm:pt-[32.5rem] lg:pt-[calc(var(--header-h)+4rem)]">
+                    <h1 id="inicio-titulo" data-enter="1" className="type-display max-w-4xl">
+                        {t.title.map((line, i) => (
+                            <Fragment key={line}>
+                                {i > 0 ? <br /> : null}
+                                {line}
+                            </Fragment>
+                        ))}
+                    </h1>
+                    <p data-enter="2" className="type-lead mt-5 max-w-[34rem] text-fg-subtle lg:text-fg-soft">{t.text}</p>
+                </Container>
+            </div>
+            <Container data-enter="3" className="relative z-10 mt-6 sm:mt-8 lg:-mt-[60px]">
+                <QuoteWidget lang={lang} dict={quote} />
+                <p className="type-label mt-4 text-center text-fg-subtle lg:mt-6 lg:pl-8 lg:text-left lg:text-sm">
+                    {t.trust.map((item, i) => (
+                        <Fragment key={item}>
+                            {i > 0 ? <span aria-hidden="true"> · </span> : null}
+                            <span className="whitespace-nowrap">{item}</span>
+                        </Fragment>
+                    ))}
+                </p>
+            </Container>
+        </section>
+    );
+}

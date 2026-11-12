@@ -1,158 +1,1519 @@
+@import "./tokens.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  .dark {
-    --background: 0 0% 0%; /* black */
-    --foreground: 180 10% 96%;
-    --card: 180 20% 5%;
-    --card-foreground: 180 10% 96%;
-    --popover: 180 20% 5%;
-    --popover-foreground: 180 10% 96%;
-    --primary: 180 97% 52%; /* #08fefe */
-    --primary-foreground: 0 0% 5%;
-    --secondary: 180 20% 10%;
-    --secondary-foreground: 180 10% 96%;
-    --muted: 180 20% 10%;
-    --muted-foreground: 180 8% 70%;
-    --accent: 180 97% 52%; /* #08fefe */
-    --accent-foreground: 0 0% 5%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 180 10% 20%;
-    --input: 180 10% 20%;
-    --ring: 180 97% 52%;
-    --chart-1: 180 97% 52%;
-    --chart-2: 180 80% 40%;
-    --chart-3: 180 60% 30%;
-    --chart-4: 180 40% 20%;
-    --chart-5: 180 20% 15%;
-    --radius: 0.5rem;
-    --sidebar-background: 180 20% 5%;
-    --sidebar-foreground: 180 10% 96%;
-    --sidebar-primary: 180 97% 52%;
-    --sidebar-primary-foreground: 0 0% 5%;
-    --sidebar-accent: 180 20% 10%;
-    --sidebar-accent-foreground: 180 10% 96%;
-    --sidebar-border: 180 10% 20%;
-    --sidebar-ring: 180 97% 52%;
-  }
-
-  :root {
-    --background: 0 0% 0%; /* black */
-    --foreground: 180 10% 96%;
-    --card: 180 20% 5%;
-    --card-foreground: 180 10% 96%;
-    --popover: 180 20% 5%;
-    --popover-foreground: 180 10% 96%;
-    --primary: 180 97% 52%; /* #08fefe */
-    --primary-foreground: 0 0% 5%;
-    --secondary: 180 20% 10%;
-    --secondary-foreground: 180 10% 96%;
-    --muted: 180 20% 10%;
-    --muted-foreground: 180 8% 70%;
-    --accent: 180 97% 52%;
-    --accent-foreground: 0 0% 5%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 180 10% 20%;
-    --input: 180 10% 20%;
-    --ring: 180 97% 52%;
-    --radius: 0.6rem;
-    --chart-1: 180 97% 52%;
-    --chart-2: 180 80% 40%;
-    --chart-3: 180 60% 30%;
-    --chart-4: 180 40% 20%;
-    --chart-5: 180 20% 15%;
-    --sidebar-background: 180 20% 5%;
-    --sidebar-foreground: 180 10% 96%;
-    --sidebar-primary: 180 97% 52%;
-    --sidebar-primary-foreground: 0 0% 5%;
-    --sidebar-accent: 180 20% 10%;
-    --sidebar-accent-foreground: 180 10% 96%;
-    --sidebar-border: 180 10% 20%;
-    --sidebar-ring: 180 97% 52%;
-  }
-}
-
-@media (min-width: 1024px) {
   html {
-    font-size: 18px;
+    background: rgb(var(--c-bg));
+    color: rgb(var(--c-fg));
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-bg font-sans text-fg antialiased;
+    font-size: var(--fs-body);
+    line-height: 1.6;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: var(--selection);
+    color: rgb(var(--c-white));
+  }
+
+  /* Foco visible en todo: un anillo del color del texto, separado del borde. */
+  :focus-visible {
+    outline: 2px solid rgb(var(--c-fg));
+    outline-offset: 3px;
+  }
+
+  /* El menú es fijo: las anclas no quedan debajo. */
+  [id] {
+    scroll-margin-top: calc(var(--header-h) + 1.5rem);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html:focus-within {
+      scroll-behavior: smooth;
+    }
   }
 }
 
-::-webkit-scrollbar {
-  width: 4px;
+/* Escala tipográfica: una clase por papel (familia, tamaño, interlineado y tracking juntos). */
+@layer components {
+  .type-display,
+  .type-title,
+  .type-heading,
+  .type-subheading {
+    font-family: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+    font-weight: 500;
+    font-stretch: 122%;
+    text-wrap: balance;
+  }
+  .type-display {
+    font-size: var(--fs-display);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+  }
+  .type-title {
+    font-size: var(--fs-title);
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+  }
+  .type-heading {
+    font-size: var(--fs-heading);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+  }
+  .type-subheading {
+    font-size: var(--fs-subheading);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    font-stretch: 118%;
+  }
+  .type-figure {
+    font-size: var(--fs-figure);
+    font-weight: 500;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+  .type-lead {
+    font-size: var(--fs-lead);
+    line-height: 1.6;
+  }
+  .type-body {
+    font-size: var(--fs-body);
+    line-height: 1.6;
+  }
+  .type-small {
+    font-size: var(--fs-small);
+    line-height: 1.6;
+  }
+  .type-label {
+    font-size: var(--fs-label);
+    font-weight: 500;
+    line-height: 1.4;
+  }
 }
 
-::-webkit-scrollbar-thumb {
-  background: hsl(var(--foreground)/0.1);
-  border-radius: 10px;
+@layer utilities {
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
 }
 
-::-webkit-scrollbar-track {
-  background: hsl(var(--background));
+/* ── La línea (RouteLine) ─────────────────────────────────────────────── */
+/* draw: el trazo se dibuja con el resorte layout y el punto de destino llega cuando el trazo
+   visualmente termina (duración visual del resorte), con fundido y escala 0.6 → 1. */
+.route-line[data-draw] .route-line__track {
+  transform: scaleX(0);
+  transition: transform var(--spring-layout-dur) var(--spring-layout) 120ms;
+}
+.route-line[data-draw][data-orientation="vertical"] .route-line__track {
+  transform: scaleY(0);
+}
+.route-line[data-draw] .route-line__end {
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity var(--dur-ui) var(--ease-out) calc(var(--dur-layout) + 40ms),
+    transform var(--spring-ui-dur) var(--spring-ui) calc(var(--dur-layout) + 40ms);
+}
+.route-line[data-draw][data-inview] .route-line__track {
+  transform: none;
+}
+.route-line[data-draw][data-inview] .route-line__end {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .route-line[data-draw] .route-line__track,
+  .route-line[data-draw] .route-line__end {
+    transform: none;
+    transition: opacity var(--dur-layout) var(--ease-out);
+  }
+  .route-line[data-draw] .route-line__track {
+    opacity: 0;
+  }
+  .route-line[data-draw][data-inview] .route-line__track {
+    opacity: 1;
+  }
 }
 
-img {
-  user-select: none;
+/* ── La línea como progreso (RouteProgress, layout de [lang]) ────────────── */
+/* Fija en el margen izquierdo, a medio margen del contenido, bajo el menú (z 40) y las hojas (z 50).
+   El trazo claro sigue al scroll del documento y el destino se rellena en los últimos 64 px. Solo en
+   escritorio ancho (≥ 1280: el margen libre mide ≥ 70 px) y donde hay animation-timeline; si no, no
+   existe. La curva es linear a propósito: el avance es la posición del scroll, no un tiempo. */
+.route-progress {
+  display: none;
+}
+@supports (animation-timeline: scroll()) {
+  @media (min-width: 1280px) {
+    .route-progress {
+      position: fixed;
+      z-index: 30;
+      top: calc(var(--header-h) + 1.5rem);
+      bottom: 1.5rem;
+      left: calc(max(var(--gutter), (100% - var(--container)) / 2) - var(--gutter) / 2 - 4px);
+      display: flex;
+      width: 8px;
+      flex-direction: column;
+      align-items: center;
+      pointer-events: none;
+    }
+  }
+}
+.route-progress__start,
+.route-progress__end {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 9999px;
+}
+.route-progress__start {
+  background-color: rgb(var(--c-brand-ink));
+}
+.route-progress__end {
+  border: 1.5px solid rgb(var(--c-fg));
+  animation: route-progress-end linear both;
+  animation-timeline: scroll(root block);
+  animation-range: calc(100% - 64px) 100%;
+}
+.route-progress__track {
+  position: relative;
+  width: 1px;
+  flex: 1;
+  background-color: rgb(var(--c-route));
+}
+.route-progress__track::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgb(var(--c-fg));
+  transform-origin: center top;
+  animation: route-progress-fill linear both;
+  animation-timeline: scroll(root block);
+}
+@keyframes route-progress-fill {
+  from {
+    scale: 1 0;
+  }
+  to {
+    scale: 1 1;
+  }
+}
+@keyframes route-progress-end {
+  from {
+    background-color: transparent;
+  }
+  to {
+    background-color: rgb(var(--c-fg));
+  }
+}
+/* Páginas legales: el índice ya marca por dónde va la lectura con su propio punto rojo. Dos líneas
+   verticales con dos puntos rojos a 30 px una de otra dirían lo mismo: ahí esta no se muestra. */
+html:has([data-toc-dot]) .route-progress {
+  display: none;
+}
+/* Movimiento reducido: queda la línea fija, sin trazo que avance ni destino que se rellene. */
+@media (prefers-reduced-motion: reduce) {
+  .route-progress__track::after {
+    content: none;
+  }
+  .route-progress__end {
+    animation: none;
+  }
+}
+
+/* ══ Movimiento v2 (design/MOVIMIENTO.md §B) ═══════════════════════════════
+   Atributos que escribe el script de arranque (src/lib/motion/boot.ts): html[data-motion],
+   html[data-fonts], html[data-scrolled], [data-shown], [data-instant], [data-loaded].
+   Todo lo que se oculta depende de html[data-motion]: sin JS o si el script falla, nada queda oculto.
+   Movimiento reducido: se quitan los desplazamientos y quedan los fundidos. */
+
+@keyframes m-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes m-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+/* Desplazamiento con las propiedades individuales translate/scale: se suman al transform del
+   elemento (p. ej. el centrado de un diálogo) en vez de sustituirlo. */
+@keyframes m-move-in {
+  from {
+    translate: var(--from-x, 0) var(--from-y, 0);
+    scale: var(--from-s, 1);
+  }
+}
+@keyframes m-move-out {
+  to {
+    translate: var(--to-x, 0) var(--to-y, 0);
+    scale: var(--to-s, 1);
+  }
+}
+
+/* ── Aparición al hacer scroll (Reveal / RevealGroup) ─────────────────── */
+[data-reveal] {
+  --reveal-delay: calc(var(--i, 0) * var(--stagger) + var(--d, 0ms));
+  transition:
+    opacity var(--dur-ui) var(--ease-out) var(--reveal-delay),
+    translate var(--spring-layout-dur) var(--spring-layout) var(--reveal-delay),
+    scale var(--spring-layout-dur) var(--spring-layout) var(--reveal-delay);
+}
+html[data-motion] [data-reveal]:not([data-shown]),
+html[data-motion] [data-reveal-group]:not([data-shown]) [data-reveal] {
+  opacity: 0;
+  translate: 0 14px;
+}
+html[data-motion] [data-reveal="media"]:not([data-shown]),
+html[data-motion] [data-reveal-group]:not([data-shown]) [data-reveal="media"] {
+  translate: none;
+  scale: 1.03;
+}
+html[data-motion] [data-reveal="title"]:not([data-shown]),
+html[data-motion] [data-reveal-group]:not([data-shown]) [data-reveal="title"] {
+  translate: 0 18px;
+}
+/* Ya estaba en pantalla en la primera pintura (recarga a media página): sin animación. */
+[data-reveal][data-instant],
+[data-reveal-group][data-instant] [data-reveal] {
+  transition: none;
+}
+
+/* ── Entrada de cabecera (data-enter): solo CSS, desde la primera pintura ── */
+/* 0 foto · 1 antetítulo y título · 2 texto · 3 botones o cotizador. Al cargar: 40 ms + n·70 ms.
+   Al llegar navegando (data-enter-late, lo pone el script de arranque) la secuencia espera a que la
+   página nueva sea visible en la transición: 150 ms + n·50 ms, con el resorte layout (asentada < 1 s).
+   Relleno "backwards": al terminar no queda ningún translate vivo en el ancestro (si quedara, sería el
+   bloque contenedor de sus descendientes fixed, p. ej. la barra móvil del cotizador). */
+@keyframes m-enter-rise {
+  from {
+    translate: 0 16px;
+  }
+}
+@keyframes m-enter-zoom {
+  from {
+    scale: 1.03;
+  }
+}
+[data-enter] {
+  --enter-base: 40ms;
+  --enter-step: 70ms;
+  --enter-n: 0;
+  --enter-rise: var(--spring-page);
+  --enter-rise-dur: var(--spring-page-dur);
+  --enter-delay: calc(var(--enter-base) + var(--enter-n) * var(--enter-step));
+  animation:
+    m-fade-in 450ms var(--ease-out) var(--enter-delay) backwards,
+    m-enter-rise var(--enter-rise-dur) var(--enter-rise) var(--enter-delay) backwards;
+}
+[data-enter][data-enter-late] {
+  --enter-base: 150ms;
+  --enter-step: 50ms;
+  --enter-rise: var(--spring-layout);
+  --enter-rise-dur: var(--spring-layout-dur);
+}
+[data-enter="1"] {
+  --enter-n: 1;
+}
+[data-enter="2"] {
+  --enter-n: 2;
+}
+[data-enter="3"] {
+  --enter-n: 3;
+}
+/* La foto no sube: se funde y su encuadre se asienta (dentro de su caja, sin desbordar). Lo mismo
+   para un bloque que contiene algo fixed (data-enter-still): solo fundido. */
+[data-enter="0"],
+[data-enter][data-enter-still] {
+  animation: m-fade-in 450ms var(--ease-out) var(--enter-delay) backwards;
+}
+[data-enter="0"] [data-media-frame] {
+  animation: m-enter-zoom var(--spring-layout-dur) var(--spring-layout) var(--enter-delay) backwards;
+}
+/* El título espera a las fuentes (máx. 700 ms) para que nunca se vea el reacomodo de font-stretch. */
+/* Contenido que se reacomoda entero al cambiar la fuente (data-enter-fonts): además de pausar su
+   entrada, el contenedor queda transparente hasta entonces; sus hijos siguen en su estado inicial
+   oculto al reanudarse, así que el cambio no se ve. */
+html[data-motion]:not([data-fonts]) [data-enter-fonts] {
+  opacity: 0;
+}
+html[data-motion]:not([data-fonts]) [data-enter="1"],
+html[data-motion]:not([data-fonts]) [data-enter-fonts] [data-enter],
+html[data-motion]:not([data-fonts]) [data-enter-fonts] [data-enter] [data-media-frame] {
+  animation-play-state: paused;
+}
+
+/* ── Fotos (Media): la nítida se funde sobre la versión borrosa ───────── */
+[data-media-sharp] {
+  transition: opacity 500ms var(--ease-out);
+}
+html[data-motion] [data-media]:not([data-loaded]) [data-media-sharp] {
+  opacity: 0;
+}
+/* Cuando ya se ve la nítida, la borrosa deja de pintarse (sin cambio visible: queda debajo). */
+[data-media][data-loaded] [data-media-blur] {
+  visibility: hidden;
+  transition: visibility 0s 600ms;
+}
+
+/* ── Menú: fondo al hacer scroll, pastilla de hover y punto de página ── */
+[data-site-header] {
+  transition:
+    background-color var(--dur-page-out) var(--ease),
+    border-color var(--dur-page-out) var(--ease);
+}
+html[data-scrolled] [data-site-header] {
+  background-color: rgb(var(--c-bg));
+  border-color: var(--line);
+}
+
+/* SlidingIndicator: un solo elemento que se desliza (--x, --w o --y los pone JS o se calculan). */
+.sliding-indicator {
+  translate: var(--x, 0) var(--y, 0);
+  width: var(--w, auto);
+  transition:
+    translate var(--spring-ui-dur) var(--spring-ui),
+    width var(--spring-ui-dur) var(--spring-ui),
+    opacity var(--dur-micro) var(--ease);
+}
+.sliding-indicator[data-snap] {
+  transition: opacity var(--dur-micro) var(--ease);
+}
+
+/* ── Icono de menú que se transforma en cerrar ────────────────────────── */
+/* Dos trazos que giran a X; con movimiento reducido, fundido cruzado entre los dos dibujos. */
+.menu-icon path {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.menu-icon .menu-icon__x {
+  opacity: 0;
+}
+[data-state="open"] > .menu-icon .menu-icon__a,
+.menu-icon[data-open] .menu-icon__a {
+  transform: translateY(3px) rotate(45deg);
+}
+[data-state="open"] > .menu-icon .menu-icon__b,
+.menu-icon[data-open] .menu-icon__b {
+  transform: translateY(-3px) rotate(-45deg);
+}
+.menu-icon .menu-icon__a,
+.menu-icon .menu-icon__b {
+  transition: transform var(--spring-ui-dur) var(--spring-ui);
+}
+/* Dentro de la hoja: el botón de cerrar nace como hamburguesa y se vuelve X; al cerrar, regresa. */
+@keyframes m-menu-a {
+  from {
+    transform: none;
+  }
+  to {
+    transform: translateY(3px) rotate(45deg);
+  }
+}
+@keyframes m-menu-b {
+  from {
+    transform: none;
+  }
+  to {
+    transform: translateY(-3px) rotate(-45deg);
+  }
+}
+.sheet-full[data-state="open"] .menu-icon .menu-icon__a {
+  animation: m-menu-a var(--spring-ui-dur) var(--spring-ui) 40ms both;
+}
+.sheet-full[data-state="open"] .menu-icon .menu-icon__b {
+  animation: m-menu-b var(--spring-ui-dur) var(--spring-ui) 40ms both;
+}
+.sheet-full[data-state="closed"] .menu-icon .menu-icon__a {
+  animation: m-menu-a var(--dur-exit) var(--ease-exit) reverse both;
+}
+.sheet-full[data-state="closed"] .menu-icon .menu-icon__b {
+  animation: m-menu-b var(--dur-exit) var(--ease-exit) reverse both;
+}
+
+/* ── Diálogos y hojas (Radix espera a animationend de una animación CSS) ── */
+.motion-overlay[data-state="open"] {
+  animation: m-fade-in var(--dur-ui) var(--ease-out) backwards;
+}
+.motion-overlay[data-state="closed"] {
+  animation: m-fade-out var(--dur-exit) var(--ease-exit) both;
+}
+/* Abrir: relleno "backwards" (el estado final es el natural; nada queda aplicado al terminar). */
+.motion-panel[data-state="open"] {
+  animation:
+    m-fade-in var(--dur-ui) var(--ease-out) backwards,
+    m-move-in var(--spring-ui-dur) var(--spring-ui) backwards;
+}
+/* Las dos animaciones de salida duran lo mismo: Radix desmonta con la primera que termina. */
+.motion-panel[data-state="closed"] {
+  animation:
+    m-fade-out var(--dur-exit) var(--ease-exit) both,
+    m-move-out var(--dur-exit) var(--ease-exit) both;
+}
+.dialog-center {
+  --from-s: 0.97;
+  --to-s: 0.97;
+  --to-y: 4px;
+}
+.sheet-side {
+  --from-x: 32px;
+  --to-x: 32px;
+}
+/* Menú: la fila de cabecera (logo y cerrar) solo se funde en su sitio, encima del menú fijo; el
+   desplazamiento lo lleva el cuerpo. */
+.sheet-full {
+  --from-y: 0px;
+  --to-y: 0px;
+}
+.sheet-full[data-state="open"] > [data-sheet-body] {
+  --from-y: -16px;
+  animation: m-move-in var(--spring-ui-dur) var(--spring-ui) backwards;
+}
+.sheet-full[data-state="closed"] > [data-sheet-body] {
+  --to-y: -8px;
+  animation: m-move-out var(--dur-exit) var(--ease-exit) both;
+}
+.sheet-bottom {
+  --from-y: 24px;
+  --to-y: 24px;
+}
+/* Contenido escalonado de una hoja (enlaces del menú): --i es su posición. */
+.motion-panel[data-state="open"] [data-stagger] {
+  --from-y: 10px;
+  animation:
+    m-fade-in var(--dur-ui) var(--ease-out) backwards,
+    m-move-in var(--spring-ui-dur) var(--spring-ui) backwards;
+  animation-delay: calc(60ms + var(--i, 0) * var(--stagger-tight));
+}
+
+/* ── Transiciones entre páginas (React ViewTransition) ───────────────── */
+/* Fundido con desplazamiento: la página que sale se desvanece y sube 10 px; la nueva entra con
+   fundido y su cabecera hace la secuencia data-enter. Total ≤ 600 ms. */
+::view-transition {
   pointer-events: none;
 }
+/* El documento no se anima entero: solo la página (PageTransition) y los elementos con nombre. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+/* El menú se queda quieto. */
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(site-header) {
+  display: none;
+}
+::view-transition-new(site-header) {
+  animation: none;
+}
+::view-transition-old(.page) {
+  animation: m-vt-out var(--dur-page-out) var(--ease-page-out) both;
+}
+::view-transition-new(.page) {
+  animation: m-fade-in var(--dur-page-in) var(--ease-out) var(--page-in-delay) both;
+}
+@keyframes m-vt-out {
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+/* El punto rojo viaja del enlace viejo al nuevo; a la portada (sin enlace activo) se desvanece y encoge. */
+::view-transition-group(nav-dot) {
+  animation-duration: var(--spring-layout-dur);
+  animation-timing-function: var(--spring-layout);
+  z-index: 101;
+}
+::view-transition-old(nav-dot):only-child {
+  animation: m-dot-out var(--dur-exit) var(--ease-exit) both;
+}
+::view-transition-new(nav-dot):only-child {
+  animation: m-dot-in var(--dur-ui) var(--ease-out) var(--page-in-delay) both;
+}
+@keyframes m-dot-out {
+  to {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+}
+@keyframes m-dot-in {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+}
+/* El pie vive en el layout: se desvanece y aparece con la página. */
+::view-transition-group(site-footer) {
+  animation: none;
+}
+::view-transition-old(site-footer) {
+  animation: m-vt-out var(--dur-page-out) var(--ease-page-out) both;
+}
+::view-transition-new(site-footer) {
+  animation: m-fade-in var(--dur-page-in) var(--ease-out) var(--page-in-delay) both;
+}
+/* La línea como progreso: vuelve a cero con un fundido (la vieja se va con su avance, la nueva entra
+   desde arriba de la página), sin desplazarse: es parte del marco. Encima de la página, bajo el menú. */
+::view-transition-group(route-progress) {
+  animation: none;
+  z-index: 99;
+}
+::view-transition-old(route-progress) {
+  animation: m-fade-out var(--dur-page-out) var(--ease-page-out) both;
+}
+::view-transition-new(route-progress) {
+  animation: m-fade-in var(--dur-page-in) var(--ease-out) var(--page-in-delay) both;
+}
+/* La hoja del menú se retira encima mientras la página cambia debajo (su propia salida, en vivo).
+   Va sobre el menú fijo: la hoja lo cubre mientras está abierta. */
+::view-transition-group(site-sheet) {
+  animation: none;
+  z-index: 110;
+}
+::view-transition-old(site-sheet) {
+  display: none;
+}
+::view-transition-new(site-sheet) {
+  animation: none;
+}
+/* Cambio de idioma: fundido de paso sin desplazamiento, también del menú (cambian sus textos). La
+   transición es propia (src/lib/motion/transition.ts): React no nombra la página y el contenido viaja
+   en root. */
+::view-transition-old(.page-fade),
+html:active-view-transition-type(locale)::view-transition-old(root),
+html:active-view-transition-type(locale)::view-transition-old(site-header),
+html:active-view-transition-type(locale)::view-transition-old(site-footer),
+html:active-view-transition-type(locale)::view-transition-old(site-sheet) {
+  display: block;
+  animation: m-fade-out var(--dur-page-out) var(--ease-page-out) both;
+}
+::view-transition-new(.page-fade),
+html:active-view-transition-type(locale)::view-transition-new(root),
+html:active-view-transition-type(locale)::view-transition-new(site-header),
+html:active-view-transition-type(locale)::view-transition-new(site-footer) {
+  animation: m-fade-in var(--dur-page-in) var(--ease-out) var(--page-in-delay) both;
+}
+/* Morph del panel del cotizador (QUOTE_PANEL_VT): solo con el tipo quote-panel. */
+/* La caja cambia de forma (barra → panel) y el contenido no se escala: cada imagen queda anclada arriba
+   a la izquierda, recortada por la caja, y se cruzan con un fundido. */
+::view-transition-group(.morph) {
+  animation-duration: var(--spring-page-dur);
+  animation-timing-function: var(--spring-page);
+  overflow: clip;
+  border-radius: var(--radius-card);
+  /* La página nueva solo existe en el estado nuevo y su grupo se apila al final: sin esto la tapa. */
+  z-index: 50;
+}
+::view-transition-old(.morph),
+::view-transition-new(.morph) {
+  width: auto;
+  height: auto;
+  object-fit: none;
+  object-position: left top;
+}
+::view-transition-old(.morph) {
+  animation: m-fade-out var(--dur-page-out) var(--ease-page-out) both;
+}
+::view-transition-new(.morph) {
+  animation: m-fade-in var(--dur-page-in) var(--ease-out) var(--page-in-delay) both;
+}
 
-.link {
+/* ══ Controles (botones, enlaces, niveles, contador, interruptor, campos, acordeón) ══════════
+   Color y borde: --dur-micro + --ease. Opacidad (deshabilitar): --dur-exit. Lo que se mueve o
+   cambia de tamaño: resortes. Todo con transiciones (se redirigen a media animación), salvo lo
+   que Radix necesita como keyframes (acordeón). */
+
+/* ── Foco: el anillo entra animado en todo lo enfocable ───────────────── */
+/* Es una animación y no una transición: vale aunque el elemento fije su propio transition. Pasa de
+   transparente a fg y se acerca de 6 px a su separación final. Especificidad 0: cualquier animación
+   propia del elemento manda. */
+@keyframes m-focus-in {
+  from {
+    outline-color: rgb(var(--c-fg) / 0);
+    outline-offset: 6px;
+  }
+}
+:where(:focus-visible) {
+  animation: m-focus-in var(--dur-micro) var(--ease-out);
+}
+
+/* Enlace de salto: siempre colocado, invisible hasta recibir el foco; entra y sale con fundido y
+   4 px (antes aparecía y desaparecía de golpe con sr-only). Sigue siendo legible por lectores. */
+body > a[href="#main"] {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  z-index: 50;
+  width: auto;
+  height: auto;
+  margin: 0;
+  clip: auto;
+  overflow: visible;
+  white-space: nowrap;
+  opacity: 0;
+  translate: 0 -4px;
+  pointer-events: none;
+  transition:
+    opacity var(--dur-exit) var(--ease-exit),
+    translate var(--dur-exit) var(--ease-exit);
+}
+body > a[href="#main"]:focus {
+  opacity: 1;
+  translate: none;
+  pointer-events: auto;
+  transition:
+    opacity var(--dur-ui) var(--ease-out),
+    translate var(--spring-ui-dur) var(--spring-ui);
+}
+
+/* ── Control base (.ctl): color, opacidad, presión y anillo con transición ── */
+/* El anillo existe siempre transparente: al perder el foco también se va con transición. La presión
+   usa la propiedad scale (se suma a cualquier transform): baja en 100 ms y regresa con resorte. */
+.ctl {
+  --press-dur: var(--spring-micro-dur);
+  --press-ease: var(--spring-micro);
+  outline: 2px solid rgb(var(--c-fg) / 0);
+  outline-offset: 6px;
+  transition-property: background-color, border-color, color, opacity, scale, outline-color, outline-offset;
+  transition-duration:
+    var(--dur-micro), var(--dur-micro), var(--dur-micro), var(--dur-exit), var(--press-dur), var(--dur-micro),
+    var(--dur-micro);
+  transition-timing-function: var(--ease), var(--ease), var(--ease), var(--ease), var(--press-ease), var(--ease-out), var(--ease-out);
+}
+.ctl:focus-visible,
+.ctl:has(> input:focus-visible) {
+  outline-color: rgb(var(--c-fg));
+  outline-offset: var(--ring-offset, 3px);
+}
+.ctl-press:active:not(:disabled, [aria-disabled="true"]) {
+  --press-dur: 100ms;
+  --press-ease: var(--ease-out);
+  scale: var(--press-scale, 0.97);
+}
+
+/* Enlace con flecha: el subrayado se dibuja de izquierda a derecha y la flecha avanza 2 px. */
+.ctl-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: calc(18px + 0.625rem); /* deja fuera la flecha (18 px) y el espacio (gap-2.5) */
+  top: calc(50% + 0.72em);
+  height: 1px;
+  background: currentColor;
+  scale: 0 1;
+  transform-origin: left center;
+  transition: scale var(--spring-ui-dur) var(--spring-ui);
+}
+.ctl-link__arrow {
+  transition: translate var(--spring-micro-dur) var(--spring-micro);
+}
+.ctl-link:focus-visible::after {
+  scale: 1 1;
+}
+.ctl-link:focus-visible .ctl-link__arrow {
+  translate: 2px 0;
+}
+@media (hover: hover) {
+  .ctl-link:hover::after {
+    scale: 1 1;
+  }
+  .ctl-link:hover .ctl-link__arrow {
+    translate: 2px 0;
+  }
+}
+
+/* ── Segmented: una pastilla que se desliza (columnas iguales, sin medir) ── */
+.segmented {
+  --seg-gap: 0.75rem;
   position: relative;
-  transition: color 0.3s ease-in-out;
+  display: grid;
+  gap: var(--seg-gap);
+  grid-template-columns: repeat(var(--seg-n), minmax(0, 1fr));
 }
-
-.link::after {
-  content: "";
+.segmented__pill {
   position: absolute;
-  bottom: -2px;
+  inset-block: 0;
   left: 0;
-  width: 0;
-  height: 1px;
-  background-color: hsl(var(--foreground));
-  transition: width 0.3s ease-in-out;
-  cursor: pointer;
-  border-radius: 10px;
+  /* 100 % en translate es el ancho de la propia pastilla (una columna). */
+  --w: calc((100% - (var(--seg-n) - 1) * var(--seg-gap)) / var(--seg-n));
+  --x: calc(var(--seg-i) * (100% + var(--seg-gap)));
+}
+.segmented__pill:not([data-visible]) {
+  opacity: 0;
+}
+/* "Elegido": montado en todas las opciones; solo cambian opacidad y 4 px. */
+.segmented__tag {
+  opacity: 0;
+  translate: 0 4px;
+  transition:
+    opacity var(--dur-exit) var(--ease-exit),
+    translate var(--spring-ui-dur) var(--spring-ui);
+}
+[data-checked] > * > .segmented__tag {
+  opacity: 1;
+  translate: none;
+  transition:
+    opacity var(--dur-ui) var(--ease-out) 60ms,
+    translate var(--spring-ui-dur) var(--spring-ui) 60ms;
 }
 
-.link:hover::after {
-  width: 100%;
+/* ── Interruptor (Switch) ──────────────────────────────────────────────── */
+.switch__track {
+  position: relative;
+  flex-shrink: 0;
+  width: 3rem;
+  height: 1.75rem;
+  border-radius: 9999px;
+  border: 1px solid var(--line-strong);
+  background-color: rgb(var(--c-elevated));
+  outline: 2px solid rgb(var(--c-fg) / 0);
+  outline-offset: 6px;
+  transition:
+    background-color var(--dur-micro) var(--ease),
+    border-color var(--dur-micro) var(--ease),
+    opacity var(--dur-exit) var(--ease),
+    outline-color var(--dur-micro) var(--ease-out),
+    outline-offset var(--dur-micro) var(--ease-out);
 }
-
-.companies::before {
-  content: "";
+.switch__thumb {
   position: absolute;
-  top: 0%;
-  left: 0;
-  height: 1px;
-  width: 100%;
-  color: rgb(48, 48, 48);
-  background: radial-gradient(50% 56400% at 50% 100%, rgb(34, 41, 57) 0%, rgba(169, 163, 194, 0) 100%);
+  left: 3px;
+  top: 3px;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 9999px;
+  background-color: rgb(var(--c-fg));
+  transition:
+    translate var(--spring-ui-dur) var(--spring-ui),
+    scale var(--spring-micro-dur) var(--spring-micro);
+}
+.switch__input:checked + .switch__track {
+  border-color: rgb(var(--c-brand));
+  background-color: rgb(var(--c-brand));
+}
+.switch__input:checked + .switch__track > .switch__thumb {
+  translate: 1.25rem 0;
+}
+.switch__input:focus-visible + .switch__track {
+  outline-color: rgb(var(--c-fg));
+  outline-offset: 3px;
+}
+.switch__input:disabled + .switch__track {
+  opacity: 0.4;
+}
+/* Al presionar, la perilla cede un poco (respuesta inmediata antes de soltar). */
+.switch:active > .switch__input:not(:disabled) + .switch__track > .switch__thumb {
+  scale: 0.9;
+  transition:
+    translate var(--spring-ui-dur) var(--spring-ui),
+    scale 100ms var(--ease-out);
 }
 
-.companies::after {
-  content: "";
+/* ── Acordeón ──────────────────────────────────────────────────────────── */
+/* El contenido siempre está montado (forceMount): con keyframes, Radix Presence se queda montado
+   (alto 0) si se cierra a media apertura. Aquí son transiciones, que se redirigen desde donde van:
+   el alto con grid-template-rows 0fr ↔ 1fr (sigue al contenido, sin medir), el fundido en el texto.
+   Van en hijos del nodo de Radix porque Radix pone transition-duration: 0s en línea al medir.
+   Cerrado: visibility hidden al terminar (fuera del árbol de accesibilidad y del Tab). */
+.accordion-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition:
+    grid-template-rows var(--spring-ui-dur) var(--spring-ui),
+    visibility 0s var(--spring-ui-dur);
+}
+[data-state="open"] > .accordion-panel {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition:
+    grid-template-rows var(--spring-layout-dur) var(--spring-layout),
+    visibility 0s;
+}
+.accordion-panel > div {
+  min-height: 0;
+  overflow: clip;
+  overflow-clip-margin: 6px;
+}
+.accordion-content__inner {
+  opacity: 0;
+  transition: opacity var(--dur-exit) var(--ease-exit);
+}
+[data-state="open"] > .accordion-panel .accordion-content__inner {
+  opacity: 1;
+  transition: opacity var(--dur-ui) var(--ease-out) 60ms;
+}
+.accordion-icon {
+  transition:
+    rotate var(--spring-ui-dur) var(--spring-ui),
+    color var(--dur-micro) var(--ease);
+}
+[data-state="open"] > .accordion-icon {
+  rotate: 45deg;
+}
+
+/* ── La línea: redibujo y latido (RouteLine redraw / pulse) ───────────── */
+.route-line__track {
+  transform-origin: left center;
+}
+.route-line[data-orientation="vertical"] .route-line__track {
+  transform-origin: center top;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ctl-press:active:not(:disabled, [aria-disabled="true"]) {
+    scale: none;
+  }
+  .ctl-link::after {
+    scale: 1 1;
+    opacity: 0;
+    transition: opacity var(--dur-micro) var(--ease);
+  }
+  .ctl-link:focus-visible::after {
+    opacity: 1;
+  }
+  .ctl-link__arrow {
+    transition: none;
+    translate: none !important;
+  }
+  @media (hover: hover) {
+    .ctl-link:hover::after {
+      opacity: 1;
+    }
+  }
+  body > a[href="#main"],
+  body > a[href="#main"]:focus {
+    translate: none;
+  }
+  /* Niveles: sin pastilla que viaja; la opción elegida cambia de fondo y borde con fundido. */
+  .segmented__pill {
+    display: none;
+  }
+  .segmented > label[data-checked] {
+    border-color: rgb(var(--c-fg));
+    background-color: rgb(var(--c-elevated));
+  }
+  .segmented__tag,
+  [data-checked] > * > .segmented__tag {
+    translate: none;
+  }
+  .switch__thumb {
+    transition: none;
+  }
+  /* Alto al instante; queda el fundido del texto (al cerrar, el alto cambia cuando ya no se ve). */
+  .accordion-panel,
+  [data-state="open"] > .accordion-panel {
+    grid-template-rows: 1fr;
+    transition: visibility 0s;
+  }
+  [data-state="closed"] > .accordion-panel {
+    max-height: 0;
+    transition:
+      max-height 0s var(--dur-exit),
+      visibility 0s var(--dur-exit);
+  }
+  .accordion-icon {
+    transition: color var(--dur-micro) var(--ease);
+  }
+}
+
+/* ══ Cotizador (src/components/quote) ══════════════════════════════════════
+   Hero y /tarifas. Lo que entra y sale por estado lo anima motion (Collapse, Swap, AutoHeight,
+   Presence); aquí van la lista de sugerencias, el borrador restaurado, la espera del precio y el
+   botón de reservar. */
+
+/* Borrador restaurado o enlace con o/d: los valores se pintan transparentes hasta que la isla los
+   aplica (html[data-quote-restore], lo quita useDraftRestored) y entonces se funden. */
+[data-draft-value] {
+  transition: opacity 240ms var(--ease-out);
+}
+html[data-quote-restore] [data-draft-value] {
+  opacity: 0;
+  transition: none;
+}
+
+/* Lista de sugerencias: siempre montada. Entra con fundido, 4 px y .98 → 1 desde arriba; sale más
+   rápido y queda fuera del árbol de accesibilidad (visibility con retraso). */
+.quote-popover {
+  transform-origin: top left;
+  transition:
+    opacity 180ms var(--ease-out),
+    translate var(--spring-ui-dur) var(--spring-ui),
+    scale var(--spring-ui-dur) var(--spring-ui),
+    visibility 0s;
+}
+.quote-popover[data-state="closed"] {
+  opacity: 0;
+  translate: 0 -4px;
+  scale: 0.98;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 140ms var(--ease-exit),
+    translate 140ms var(--ease-exit),
+    scale 140ms var(--ease-exit),
+    visibility 0s 140ms;
+}
+/* En pantalla chica el campo abre la hoja inferior: la lista en línea no existe (ni desborda). */
+@media (max-width: 767.98px) {
+  .quote-popover {
+    display: none;
+  }
+}
+/* Resaltado de la opción activa (SlidingIndicator vertical; el alto lo pone JS). */
+.quote-option-indicator {
+  height: 3rem;
+}
+.quote-option-indicator:not([data-visible]) {
+  opacity: 0;
+}
+
+/* Celda con contorno transparente: puede latir en rojo cuando falta (el anillo de foco lo pisa). */
+.quote-cell {
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  transition:
+    outline-color var(--dur-micro) var(--ease-out),
+    outline-offset var(--dur-micro) var(--ease-out);
+}
+
+/* Esperando el precio nuevo (aria-busy): las cifras y el desglose se atenúan al instante, como
+   respuesta a la acción, y vuelven cuando llega el precio (que rueda). */
+.quote-dim {
+  transition: opacity var(--dur-ui) var(--ease-out);
+}
+[aria-busy="true"] .quote-dim {
+  opacity: 0.5;
+  transition: opacity var(--dur-micro) var(--ease);
+}
+
+/* "Desde": se pliega cuando llega el precio real (que rueda desde el "Desde $X"). En columnas
+   estrechas va encima de la cifra y se pliega en alto; en las anchas, a su lado y en ancho. */
+.quote-detail {
+  display: flex;
+  align-items: baseline;
+}
+.quote-from {
+  display: inline-grid;
+  max-width: 6em;
+  margin-inline-end: 0.375rem;
+  overflow: clip;
+  white-space: nowrap;
+  transition:
+    max-width var(--spring-ui-dur) var(--spring-ui),
+    margin var(--spring-ui-dur) var(--spring-ui),
+    grid-template-rows var(--spring-ui-dur) var(--spring-ui),
+    opacity var(--dur-ui) var(--ease-out) 60ms;
+}
+.quote-from[data-hidden] {
+  max-width: 0;
+  margin-inline-end: 0;
+  opacity: 0;
+  transition:
+    max-width var(--spring-ui-dur) var(--spring-ui),
+    margin var(--spring-ui-dur) var(--spring-ui),
+    grid-template-rows var(--spring-ui-dur) var(--spring-ui),
+    opacity var(--dur-exit) var(--ease-exit);
+}
+@media (max-width: 639.98px) {
+  .quote-detail {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .quote-from {
+    display: grid;
+    grid-template-rows: 1fr;
+    max-width: none;
+    margin-inline-end: 0;
+  }
+  .quote-from > span {
+    min-height: 0;
+  }
+  .quote-from[data-hidden] {
+    grid-template-rows: 0fr;
+    max-width: none;
+  }
+}
+
+/* Reservar por WhatsApp: un solo enlace. Se atenúa con retraso (una actualización rápida del precio
+   no lo hace parpadear) y vuelve sin retraso. El 4.º tiempo de .ctl es el de la opacidad. */
+.quote-book[aria-disabled="true"] {
+  transition-delay: 0s, 0s, 0s, 800ms, 0s, 0s, 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quote-popover,
+  .quote-popover[data-state="closed"] {
+    translate: none;
+    scale: none;
+  }
+  .quote-from,
+  .quote-from[data-hidden] {
+    transition: opacity var(--dur-ui) var(--ease-out);
+  }
+}
+
+/* ══ Secciones y páginas (apariciones con variedad y reacciones al cursor) ══════════════════════
+   Las apariciones son Reveal/RevealGroup (arriba); aquí van los detalles de cada pieza. Reacciones:
+   las que mueven algo solo con hover real (@media (hover: hover)) o con el foco de teclado
+   (:focus-visible / :has(:focus-visible)), nunca cambian el layout (scale/translate) y con
+   movimiento reducido se vuelven fundidos de color u opacidad. */
+
+/* ── Foto que aparece (Reveal variant="media") ─────────────────────────── */
+/* La caja se funde (y la escala 1.03 del Reveal) y, además, el encuadre se asienta dentro del marco:
+   la foto se acerca desde 1.06 con el resorte de página. Una foto no entra como un párrafo. */
+[data-reveal="media"] [data-media-frame] {
+  transition: scale var(--spring-page-dur) var(--spring-page) var(--reveal-delay, 0ms);
+}
+html[data-motion] [data-reveal="media"]:not([data-shown]) [data-media-frame],
+html[data-motion] [data-reveal-group]:not([data-shown]) [data-reveal="media"] [data-media-frame] {
+  scale: 1.06;
+}
+[data-reveal="media"][data-instant] [data-media-frame] {
+  transition: none;
+}
+
+/* ── Banda de cifras: el filete se traza de izquierda a derecha ────────── */
+.stats-band__rule {
   position: absolute;
+  inset-inline: 0;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  height: 20px;
-  width: 70%;
-  border-radius: 100%;
-  filter: blur(6rem);
-  background: rgba(255, 49, 49, 0.15);
+  height: 1px;
+  background-color: var(--line);
+  transform-origin: left center;
+}
+html[data-motion] [data-reveal-group]:not([data-shown]) .stats-band__rule {
+  translate: none;
+  scale: 0 1;
 }
 
-.footer::before {
-  background: radial-gradient(50% 56400% at 50% 100%, rgb(34, 44, 57) 0%, rgba(169, 163, 194, 0) 100%);
-  top: 0;
+/* ── Tarjeta que reacciona (data-react-card): la foto se acerca dentro de su marco ── */
+[data-react-card] {
+  transition: border-color var(--dur-micro) var(--ease);
+}
+[data-react-card] [data-media-frame] {
+  transition: scale var(--spring-layout-dur) var(--spring-layout);
+}
+[data-react-card] [data-level-price] {
+  transition: color var(--dur-micro) var(--ease);
+}
+[data-react-card]:has(:focus-visible) {
+  border-color: var(--line-strong);
+}
+[data-react-card]:has(:focus-visible) [data-media-frame] {
+  scale: 1.04;
+}
+[data-react-card]:has(:focus-visible) [data-level-price] {
+  color: rgb(var(--c-fg));
+}
+
+/* ── Comparativa de niveles (servicios): la columna responde ───────────── */
+[data-level] h3 {
+  transition: color var(--dur-micro) var(--ease);
+}
+[data-level] [data-level-price] {
+  transition: translate var(--spring-ui-dur) var(--spring-ui);
+}
+[data-level]:has(:focus-visible) h3 {
+  color: rgb(var(--c-white));
+}
+/* El botón de la columna se adelanta a su propio hover: borde claro y fondo elevado (transición de .ctl). */
+[data-level]:has(:focus-visible) [data-level-cta] {
+  border-color: rgb(var(--c-fg));
+  background-color: rgb(var(--c-elevated));
+}
+[data-level]:has(:focus-visible) [data-level-price] {
+  translate: 0 -3px;
+}
+
+/* ── Rutas frecuentes: La línea se recorre en claro hasta el destino ───── */
+/* Un trazo claro crece del origen al destino encima del trazo gris; al llegar, el anillo de destino se
+   rellena. La distancia se aclara y la flecha avanza dentro de su círculo. */
+[data-route-row] .route-line__track {
+  position: relative;
+}
+[data-route-row] .route-line__track::after {
   content: "";
-  height: 1px;
-  left: 0;
   position: absolute;
-  width: 100%;
-  color: rgb(23, 23, 23);
+  inset: 0;
+  background-color: rgb(var(--c-fg));
+  scale: 0 1;
+  transform-origin: left center;
+  transition: scale var(--spring-layout-dur) var(--spring-layout);
+}
+[data-route-row] .route-line[data-orientation="vertical"] .route-line__track::after {
+  scale: 1 0;
+  transform-origin: center top;
+}
+[data-route-row] .route-line__end {
+  transition:
+    scale var(--spring-ui-dur) var(--spring-ui),
+    background-color var(--dur-micro) var(--ease);
+}
+[data-route-row] [data-route-km] {
+  transition: color var(--dur-micro) var(--ease);
+}
+[data-route-arrow],
+[data-quote-arrow] {
+  transition:
+    border-color var(--dur-micro) var(--ease),
+    background-color var(--dur-micro) var(--ease),
+    scale var(--spring-micro-dur) var(--spring-micro);
+}
+[data-route-arrow] > svg,
+[data-quote-arrow] > svg {
+  transition: translate var(--spring-ui-dur) var(--spring-ui);
+}
+/* Activo: foco de teclado (en hover, más abajo). */
+[data-route-row]:focus-visible .route-line[data-orientation] .route-line__track::after {
+  scale: 1 1;
+}
+[data-route-row]:focus-visible .route-line__end {
+  scale: 1.25;
+  background-color: rgb(var(--c-fg));
+  transition-delay: 120ms;
+}
+[data-route-row]:focus-visible [data-route-km] {
+  color: rgb(var(--c-fg));
+}
+[data-route-row]:focus-visible [data-route-arrow],
+[data-quote-kind]:focus-visible [data-quote-arrow] {
+  border-color: rgb(var(--c-fg));
+  background-color: rgb(var(--c-elevated));
+}
+[data-route-row]:focus-visible [data-route-arrow] > svg,
+[data-quote-kind]:focus-visible [data-quote-arrow] > svg {
+  translate: 4px 0;
+}
+/* Al tocar (pantallas táctiles incluidas): el círculo de la flecha cede un poco. */
+[data-route-row]:active [data-route-arrow],
+[data-quote-kind]:active [data-quote-arrow] {
+  scale: 0.94;
+  transition:
+    border-color var(--dur-micro) var(--ease),
+    background-color var(--dur-micro) var(--ease),
+    scale 100ms var(--ease-out);
+}
+
+/* ── Cotización a la medida: el filete superior se recorre en claro ───── */
+[data-quote-kind]::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: -1px;
+  height: 1px;
+  background-color: rgb(var(--c-fg));
+  scale: 0 1;
+  transform-origin: left center;
+  transition: scale var(--spring-layout-dur) var(--spring-layout);
+}
+[data-quote-kind]:focus-visible::before {
+  scale: 1 1;
+}
+
+/* ── Pie: enlaces con subrayado que se traza ───────────────────────────── */
+.footer-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(50% + 0.72em);
+  height: 1px;
+  background-color: currentColor;
+  scale: 0 1;
+  transform-origin: left center;
+  transition: scale var(--spring-ui-dur) var(--spring-ui);
+}
+.footer-link:focus-visible::after {
+  scale: 1 1;
+}
+
+/* ── Índice legal: un solo punto que se desliza (SlidingIndicator vertical) ── */
+/* El punto se centra sobre el trazo (borde izquierdo de 1 px de la lista). */
+.toc-dot {
+  position: absolute;
+  left: -3.5px;
+  top: 1.15rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background-color: rgb(var(--c-brand-ink));
+}
+.toc-dot:not([data-visible]) {
+  opacity: 0;
+}
+.toc-link {
+  transition:
+    color var(--dur-micro) var(--ease),
+    background-color var(--dur-micro) var(--ease);
+}
+
+/* ── 404: la línea interrumpida ────────────────────────────────────────── */
+/* Después de la secuencia de la cabecera (data-enter): el trazo sale del origen y se queda corto; el
+   destino aparece al final, suelto. Relleno backwards: al terminar no queda nada aplicado. */
+@keyframes m-scale-x-in {
+  from {
+    scale: 0 1;
+  }
+}
+@keyframes m-pop-in {
+  from {
+    scale: 0.6;
+  }
+}
+.broken-route {
+  --broken-delay: calc(var(--enter-delay, 40ms) + 260ms);
+}
+.broken-route__track {
+  transform-origin: left center;
+  animation: m-scale-x-in var(--spring-layout-dur) var(--spring-layout) var(--broken-delay) backwards;
+}
+.broken-route__end {
+  animation:
+    m-fade-in var(--dur-ui) var(--ease-out) calc(var(--broken-delay) + var(--dur-layout) + 80ms) backwards,
+    m-pop-in var(--spring-ui-dur) var(--spring-ui) calc(var(--broken-delay) + var(--dur-layout) + 80ms) backwards;
+}
+/* 404 global: toda la entrada espera a las fuentes (data-enter-fonts); la línea también. */
+html[data-motion]:not([data-fonts]) [data-enter-fonts] .broken-route > * {
+  animation-play-state: paused;
+}
+
+/* ── Hover real (no en pantallas táctiles) ─────────────────────────────── */
+@media (hover: hover) {
+  [data-react-card]:hover {
+    border-color: var(--line-strong);
+  }
+  [data-react-card]:hover [data-media-frame] {
+    scale: 1.04;
+  }
+  [data-react-card]:hover [data-level-price] {
+    color: rgb(var(--c-fg));
+  }
+  [data-level]:hover h3 {
+    color: rgb(var(--c-white));
+  }
+  [data-level]:hover [data-level-price] {
+    translate: 0 -3px;
+  }
+  [data-level]:hover [data-level-cta] {
+    border-color: rgb(var(--c-fg));
+    background-color: rgb(var(--c-elevated));
+  }
+  [data-route-row]:hover .route-line[data-orientation] .route-line__track::after {
+    scale: 1 1;
+  }
+  [data-route-row]:hover .route-line__end {
+    scale: 1.25;
+    background-color: rgb(var(--c-fg));
+    transition-delay: 120ms;
+  }
+  [data-route-row]:hover [data-route-km] {
+    color: rgb(var(--c-fg));
+  }
+  [data-route-row]:hover [data-route-arrow],
+  [data-quote-kind]:hover [data-quote-arrow] {
+    border-color: rgb(var(--c-fg));
+    background-color: rgb(var(--c-elevated));
+  }
+  [data-route-row]:hover [data-route-arrow] > svg,
+  [data-quote-kind]:hover [data-quote-arrow] > svg {
+    translate: 4px 0;
+  }
+  [data-quote-kind]:hover::before {
+    scale: 1 1;
+  }
+  .footer-link:hover::after {
+    scale: 1 1;
+  }
+}
+
+/* ── Movimiento reducido: sin escalas ni desplazamientos; quedan los fundidos ── */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal="media"] [data-media-frame],
+  [data-react-card] [data-media-frame],
+  [data-level] [data-level-price],
+  [data-route-arrow] > svg,
+  [data-quote-arrow] > svg {
+    transition: none;
+    scale: none !important;
+    translate: none !important;
+  }
+  /* La foto de la tarjeta no se acerca: se aclara un poco, con fundido. */
+  [data-react-card] [data-media-sharp] {
+    transition:
+      opacity 500ms var(--ease-out),
+      filter var(--dur-ui) var(--ease);
+  }
+  [data-react-card]:has(:focus-visible) [data-media-sharp] {
+    filter: brightness(1.12);
+  }
+  @media (hover: hover) {
+    [data-react-card]:hover [data-media-sharp] {
+      filter: brightness(1.12);
+    }
+  }
+  [data-route-arrow],
+  [data-quote-arrow],
+  [data-route-row]:active [data-route-arrow],
+  [data-quote-kind]:active [data-quote-arrow] {
+    scale: none;
+  }
+  /* Los trazos claros y el subrayado aparecen con fundido en vez de crecer. */
+  [data-route-row] .route-line__track::after,
+  [data-route-row] .route-line[data-orientation="vertical"] .route-line__track::after,
+  [data-quote-kind]::before,
+  .footer-link::after {
+    scale: none !important;
+    opacity: 0;
+    transition: opacity var(--dur-micro) var(--ease);
+  }
+  [data-route-row]:focus-visible .route-line[data-orientation] .route-line__track::after,
+  [data-quote-kind]:focus-visible::before,
+  .footer-link:focus-visible::after {
+    opacity: 1;
+  }
+  [data-route-row] .route-line__end {
+    scale: none !important;
+    transition: background-color var(--dur-micro) var(--ease);
+  }
+  @media (hover: hover) {
+    [data-route-row]:hover .route-line[data-orientation] .route-line__track::after,
+    [data-quote-kind]:hover::before,
+    .footer-link:hover::after {
+      opacity: 1;
+    }
+  }
+  .broken-route__track {
+    animation: m-fade-in var(--dur-ui) var(--ease-out) var(--broken-delay) backwards;
+  }
+  .broken-route__end {
+    animation: m-fade-in var(--dur-ui) var(--ease-out) calc(var(--broken-delay) + var(--dur-layout)) backwards;
+  }
+}
+
+@media print {
+  .route-line[data-draw] .route-line__track,
+  .route-line[data-draw] .route-line__end,
+  .broken-route > *,
+  .stats-band__rule,
+  [data-media-frame] {
+    opacity: 1 !important;
+    scale: none !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ── Movimiento reducido: quedan los fundidos ─────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html[data-motion] [data-reveal]:not([data-shown]),
+  html[data-motion] [data-reveal-group]:not([data-shown]) [data-reveal] {
+    translate: none;
+    scale: none;
+  }
+  [data-reveal] {
+    transition: opacity var(--dur-ui) var(--ease-out) var(--reveal-delay);
+  }
+  [data-enter],
+  [data-enter="0"] {
+    animation: m-fade-in var(--dur-ui) var(--ease-out) var(--enter-delay) backwards;
+  }
+  [data-enter="0"] [data-media-frame] {
+    animation: none;
+  }
+  .sliding-indicator {
+    transition: opacity var(--dur-micro) var(--ease);
+  }
+  .menu-icon .menu-icon__a,
+  .menu-icon .menu-icon__b,
+  .menu-icon .menu-icon__x {
+    transform: none !important;
+    animation: none !important;
+    transition: opacity var(--dur-micro) var(--ease);
+  }
+  [data-state="open"] > .menu-icon .menu-icon__a,
+  [data-state="open"] > .menu-icon .menu-icon__b,
+  .sheet-full[data-state="open"] .menu-icon .menu-icon__a,
+  .sheet-full[data-state="open"] .menu-icon .menu-icon__b {
+    opacity: 0;
+  }
+  [data-state="open"] > .menu-icon .menu-icon__x,
+  .sheet-full[data-state="open"] .menu-icon .menu-icon__x {
+    opacity: 1;
+  }
+  .motion-panel[data-state="open"],
+  .motion-panel[data-state="open"] [data-stagger] {
+    animation-name: m-fade-in;
+    animation-duration: var(--dur-ui);
+    animation-timing-function: var(--ease-out);
+  }
+  .motion-panel[data-state="closed"] {
+    animation: m-fade-out var(--dur-exit) var(--ease-exit) both;
+  }
+  .sheet-full > [data-sheet-body] {
+    animation: none !important;
+  }
+  ::view-transition-old(.page),
+  ::view-transition-old(site-footer) {
+    animation-name: m-fade-out;
+  }
+  /* Los grupos no cambian de posición ni de tamaño (la página, el punto, el morph): solo fundidos. */
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+  }
+  ::view-transition-old(nav-dot):only-child {
+    animation-name: m-fade-out;
+  }
+  ::view-transition-new(nav-dot):only-child {
+    animation-name: m-fade-in;
+  }
+}
+
+/* ── Impresión ───────────────────────────────────────────────────────── */
+/* Solo el contenido: sin menú fijo, pie, enlace de salto ni barras fijas; papel claro. */
+@media print {
+  [data-site-chrome] {
+    display: none !important;
+  }
+  html,
+  body {
+    background: Canvas !important;
+    color-scheme: light;
+  }
+  main {
+    padding-top: 0 !important;
+  }
+  /* Nada queda oculto por una aparición pendiente, una entrada o una foto sin fundir. */
+  [data-reveal],
+  [data-enter],
+  [data-enter] [data-media-frame],
+  [data-media-sharp] {
+    opacity: 1 !important;
+    translate: none !important;
+    scale: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
 }

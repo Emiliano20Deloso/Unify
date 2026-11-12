@@ -1,0 +1,142 @@
+/*
+ * Unify · tokens del sistema (dirección B · Nocturno). Único lugar del código con colores en hex.
+ * Los colores sólidos se guardan como canales RGB para que Tailwind admita opacidad (bg-bg/60).
+ * Mapeo a clases en tailwind.config.ts; guía de uso en design/SISTEMA.md.
+ */
+:root {
+  color-scheme: dark;
+
+  /* Color · superficies */
+  --c-bg: 11 11 12; /* #0B0B0C fondo */
+  --c-surface: 20 20 22; /* #141416 superficie */
+  --c-elevated: 28 28 31; /* #1C1C1F superficie elevada */
+
+  /* Color · texto (contraste sobre fondo: 17.4 / 15.4 / 13.4 / 7.8) */
+  --c-fg: 242 241 238; /* #F2F1EE texto */
+  --c-fg-soft: 228 226 221; /* #E4E2DD texto suave (lead sobre foto) */
+  --c-fg-muted: 214 212 207; /* #D6D4CF texto suave secundario */
+  --c-fg-subtle: 166 163 156; /* #A6A39C secundario, etiquetas */
+  --c-white: 255 255 255; /* #FFFFFF texto sobre rojo */
+
+  /* Color · marca */
+  --c-brand: 229 39 28; /* #E5271C botones (texto blanco 4.6:1) */
+  --c-brand-hover: 204 31 21; /* #CC1F15 hover/activo del botón: más contraste, no menos */
+  --c-brand-ink: 255 90 77; /* #FF5A4D acentos de texto pequeño, punto de origen (6.4:1) */
+  --c-route: 110 108 103; /* #6E6C67 trazo de La línea */
+
+  /* Líneas (valores completos, sin modificador de opacidad) */
+  --line: rgb(255 255 255 / 0.12);
+  --line-strong: rgb(255 255 255 / 0.28);
+
+  /* Velos de foto (para leer texto encima; único degradado permitido) */
+  --veil: 11 11 12;
+
+  /* Selección */
+  --selection: rgb(229 39 28 / 0.45);
+
+  /* Variables estilo shadcn (admin y Radix). Mismos valores, nombres de siempre. */
+  --background: var(--c-bg);
+  --foreground: var(--c-fg);
+  --card: var(--c-surface);
+  --card-foreground: var(--c-fg);
+  --popover: var(--c-elevated);
+  --popover-foreground: var(--c-fg);
+  --primary: var(--c-brand);
+  --primary-foreground: var(--c-white);
+  --secondary: var(--c-elevated);
+  --secondary-foreground: var(--c-fg);
+  --muted: var(--c-surface);
+  --muted-foreground: var(--c-fg-subtle);
+  --accent: var(--c-elevated);
+  --accent-foreground: var(--c-fg);
+  --destructive: var(--c-brand-ink);
+  --destructive-foreground: var(--c-bg);
+  --border: var(--line);
+  --input: var(--line-strong);
+  --ring: var(--c-fg);
+
+  /* Radios */
+  --radius-inner: 12px; /* botón dentro de la barra, campos anidados */
+  --radius-control: 14px; /* botones, campos, opciones */
+  --radius-card: 18px; /* tarjetas, barra del cotizador, diálogos */
+  --radius-media: 24px; /* fotos sueltas */
+  --radius: var(--radius-control);
+
+  /* La única sombra: profundidad de la barra del cotizador sobre la foto */
+  --shadow-bar: 0 24px 48px -24px rgb(0 0 0 / 0.6);
+
+  /* Maquetación: márgenes 20 px (390) → 80 px (1440); contenido máx. 1280 px */
+  --gutter: clamp(1.25rem, 5.714vw - 0.14rem, 5rem);
+  --container: 80rem;
+  --prose: 42rem;
+  --header-h: 64px;
+
+  /* Ritmo vertical de sección (390 → 1440) */
+  --section-sm: clamp(2.5rem, 1.94rem + 2.29vw, 4rem); /* 40 → 64 */
+  --section-md: clamp(4rem, 2.89rem + 4.57vw, 7rem); /* 64 → 112 */
+  --section-lg: clamp(5rem, 3.33rem + 6.86vw, 9.5rem); /* 80 → 152 */
+
+  /* Escala tipográfica fluida (390 → 1440) */
+  --fs-display: clamp(1.875rem, 0.806rem + 4.38vw, 4.75rem); /* 30 → 76 */
+  --fs-title: clamp(2rem, 1.536rem + 1.9vw, 3.25rem); /* 32 → 52 */
+  --fs-heading: clamp(1.5rem, 1.268rem + 0.95vw, 2.125rem); /* 24 → 34 */
+  --fs-subheading: clamp(1.25rem, 1.11rem + 0.571vw, 1.625rem); /* 20 → 26 */
+  --fs-figure: clamp(1.5rem, 1.36rem + 0.571vw, 1.875rem); /* 24 → 30 */
+  --fs-lead: clamp(1rem, 0.95rem + 0.19vw, 1.125rem); /* 16 → 18 */
+  --fs-body: 1rem; /* 16 */
+  --fs-small: 0.9375rem; /* 15 */
+  --fs-label: 0.8125rem; /* 13 */
+
+  /* Movimiento */
+  --dur-fast: 150ms; /* hover, presión */
+  --dur-base: 250ms; /* menús, diálogos, cambios de estado */
+  --dur-slow: 450ms; /* apariciones, morph del cotizador */
+  --dur-slower: 800ms; /* La línea dibujándose */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1); /* entradas */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); /* movimiento en pantalla */
+  --ease: cubic-bezier(0.25, 0.1, 0.25, 1); /* color en hover */
+
+  /* Movimiento v2 (design/MOVIMIENTO.md §B1). Opacidad: entra con --dur-ui + --ease-out, sale con
+     --dur-exit + --ease-exit. Transform y alto: resortes sin rebote (--spring-*), con su duración propia. */
+  --dur-micro: 160ms;
+  --dur-ui: 280ms;
+  --dur-exit: 200ms;
+  --dur-layout: 450ms;
+  /* Transición de página "de paso": la que sale baja de 20 % antes de que la nueva pase de 20 %. */
+  --dur-page-out: 200ms;
+  --dur-page-in: 300ms;
+  --page-in-delay: 150ms;
+  --ease-page-out: var(--ease); /* cae pronto: a 120 ms ya va por debajo de 25 % */
+  --stagger: 60ms;
+  --stagger-tight: 40ms;
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1); /* salidas: aceleran */
+  /* Respaldo sin linear(): curva de entrada con la duración visual. */
+  --spring-micro: var(--ease-out);
+  --spring-micro-dur: var(--dur-micro);
+  --spring-ui: var(--ease-out);
+  --spring-ui-dur: var(--dur-ui);
+  --spring-layout: var(--ease-out);
+  --spring-layout-dur: var(--dur-layout);
+  --spring-page: var(--ease-out);
+  --spring-page-dur: 550ms;
+}
+
+/* Resortes reales (motion, bounce 0): la duración CSS es el tiempo de asentamiento, mayor que el visual. */
+@supports (transition-timing-function: linear(0, 1)) {
+  :root {
+    --spring-micro: linear(0, 0.2794, 0.6159, 0.8186, 0.9198, 0.966, 0.986, 0.9943, 0.9977, 0.9991, 0.9997, 1);
+    --spring-micro-dur: 350ms;
+    --spring-ui: linear(0, 0.1236, 0.341, 0.5416, 0.6959, 0.8046, 0.8772, 0.9242, 0.9538, 0.9722, 0.9834, 0.9901, 0.9942, 0.9966, 0.998, 0.9988, 0.9993, 1);
+    --spring-ui-dur: 550ms;
+    --spring-layout: linear(0, 0.0507, 0.1614, 0.2915, 0.4192, 0.5342, 0.6326, 0.714, 0.7796, 0.8317, 0.8723, 0.9038, 0.9279, 0.9462, 0.96, 0.9704, 0.9781, 0.9839, 0.9882, 0.9913, 0.9937, 0.9954, 0.9966, 0.9975, 0.9982, 0.9987, 1);
+    --spring-layout-dur: 800ms;
+    --spring-page: linear(0, 0.0364, 0.1203, 0.2248, 0.3338, 0.438, 0.5327, 0.6159, 0.6872, 0.7472, 0.7971, 0.838, 0.8713, 0.8982, 0.9198, 0.937, 0.9507, 0.9615, 0.97, 0.9767, 0.9819, 0.986, 0.9892, 0.9916, 0.9935, 0.995, 0.9962, 0.9971, 0.9977, 0.9983, 0.9987, 1, 1);
+    --spring-page-dur: 1000ms;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --header-h: 88px;
+  }
+}

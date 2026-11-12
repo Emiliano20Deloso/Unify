@@ -1,0 +1,43 @@
+// Registro único de fotos del sitio: cada foto se usa en un solo hueco (lo comprueba tests/photos.test.ts).
+// Los componentes y el contenido toman las fotos de aquí; nadie más importa de "@/assets/images".
+import {
+    cargaMano,
+    estructuraSeguridad,
+    interiorAsientosDelanteros,
+    interiorAsientosTraseros,
+    interiorFrenteDia,
+    interiorPantallaTrasera,
+    interiorTechoCristal,
+    rutaAutopista,
+    rutaBosque,
+    rutaCosta,
+    rutaPuente,
+    teslaBlancoConcreto,
+    teslaGrisAnochecer,
+    teslaRojoCiudad,
+    teslaRojoLuces,
+    teslaRojoTunel,
+    teslaSilueta,
+    teslaTraseraAtardecer,
+} from "@/assets/images";
+
+export const photos = {
+    homeHero: teslaGrisAnochecer,
+    homeExperienceMain: interiorAsientosDelanteros,
+    homeExperienceDetail: interiorTechoCristal,
+    levelPractico: interiorFrenteDia,
+    levelSelect: interiorPantallaTrasera,
+    levelPremium: interiorAsientosTraseros,
+    homeCorporate: teslaRojoTunel,
+    homeFinalCta: teslaSilueta,
+    servicesHero: teslaRojoCiudad,
+    servicePoint: teslaRojoLuces,
+    serviceAirport: rutaPuente,
+    serviceCustom: rutaCosta,
+    servicesFinalCta: rutaBosque,
+    pricingCustomQuote: rutaAutopista,
+    aboutHero: teslaBlancoConcreto,
+    aboutTesla: teslaTraseraAtardecer,
+    aboutCare: estructuraSeguridad,
+    aboutEnvironment: cargaMano,
+} as const;

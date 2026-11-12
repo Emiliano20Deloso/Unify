@@ -1,29 +1,44 @@
-"use client"
+import * as React from "react";
+import { cn } from "@/lib";
 
-import * as React from "react"
-import * as SwitchPrimitives from "@radix-ui/react-switch"
+interface SwitchProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "role" | "children" | "onChange"> {
+    /** Recibe el estado nuevo (true = encendido). */
+    onCheckedChange?: (checked: boolean) => void;
+    onChange?: React.ChangeEventHandler<HTMLInputElement>;
+    /** Texto de la etiqueta (va a la izquierda; toda la fila es clicable). */
+    children: React.ReactNode;
+    /** Clases de la fila (label). */
+    className?: string;
+}
 
-import { cn } from "@/lib"
-
-const Switch = React.forwardRef<
-  React.ElementRef<typeof SwitchPrimitives.Root>,
-  React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root>
->(({ className, ...props }, ref) => (
-  <SwitchPrimitives.Root
-    className={cn(
-      "peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-input",
-      className
-    )}
-    {...props}
-    ref={ref}
-  >
-    <SwitchPrimitives.Thumb
-      className={cn(
-        "pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0"
-      )}
-    />
-  </SwitchPrimitives.Root>
-))
-Switch.displayName = SwitchPrimitives.Root.displayName
-
-export { Switch }
+/**
+ * Interruptor: `<Switch checked={x} onCheckedChange={setX}>Ida y vuelta</Switch>` (o `defaultChecked`
+ * sin estado). Es un checkbox nativo con role="switch" dentro de su etiqueta (fila de 44 px como
+ * mínimo). La perilla se desliza con el resorte ui y el color cambia en 160 ms (globals.css
+ * § Interruptor). Sin estado propio: sirve desde servidor o cliente.
+ */
+export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(({ onCheckedChange, onChange, children, className, ...props }, ref) => (
+    <label className={cn("switch flex min-h-11 cursor-pointer items-center justify-between gap-4 has-[:disabled]:cursor-not-allowed", className)}>
+        {children}
+        <input
+            ref={ref}
+            type="checkbox"
+            role="switch"
+            className="switch__input sr-only"
+            // Solo con manejadores (desde un Server Component no se puede pasar una función al DOM).
+            onChange={
+                onChange || onCheckedChange
+                    ? (e) => {
+                          onChange?.(e);
+                          onCheckedChange?.(e.target.checked);
+                      }
+                    : undefined
+            }
+            {...props}
+        />
+        <span aria-hidden="true" className="switch__track">
+            <span className="switch__thumb" />
+        </span>
+    </label>
+));
+Switch.displayName = "Switch";

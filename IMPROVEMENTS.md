@@ -4,6 +4,37 @@ Plan de modernización de la plataforma. Léelo antes de tocar código.
 
 ---
 
+## Rediseño 2026 (rama `rediseno-2026`) · qué cambió
+
+- **Sitio nuevo** con el sistema visual "Nocturno" (`design/SISTEMA.md`): portada, `/servicios`, `/tarifas`,
+  `/nosotros`, `/privacidad`, `/terminos` y 404, todas estáticas, en español (sin prefijo) e inglés (`/en`).
+- **Cotizador en línea** (`src/components/quote`): barra en el hero y calculadora completa en `/tarifas#cotizar`.
+  Muestra al momento el precio de los tres niveles con desglose y reserva por WhatsApp con el resumen.
+  - API: `POST /api/estimate` (precio) y `POST /api/places/autocomplete|details` (lugares). `POST /api/quote`
+    sigue existiendo (inserta en Supabase) pero el sitio público ya no lo llama.
+  - Distancia: Google Routes con `GOOGLE_MAPS_SERVER_KEY`; sin llave, aproximado por línea recta
+    (`src/lib/distance/approx.ts`). Lugares: catálogo propio (`src/lib/places/catalog.ts`) + Google Places.
+  - Motor de precios puro en `src/lib/pricing` (base + km, tarifa mínima, multiplicadores, extras) leyendo
+    `config/pricing.json`. Las rutas frecuentes y el ejemplo de `/tarifas` usan el mismo motor y la misma distancia.
+- **Contenido** en `src/content` (compartido) y `src/i18n/dictionaries` (por página). Textos legales en
+  `src/content/legal`. El sitio anterior (`legacy/`) se migró y se borró.
+- **Movimiento** (pasada de nov-2026): toda acción y todo cambio de estado va animado, sin cortes, brincos
+  ni flashazos: transición entre páginas (también atrás y adelante), entrada en secuencia de cada cabecera,
+  apariciones al hacer scroll, controles, los dos cotizadores, legales, pie y 404. Reglas de uso diario en
+  `design/SISTEMA.md` § Movimiento; arquitectura en `design/MOVIMIENTO.md`.
+- **Herramientas**: `/dev/ui` (muestrario) y `/dev/frame` (vista móvil/tableta) solo en desarrollo;
+  `scripts/shot.mjs` para capturas sin cabeza; `scripts/motion-audit.mjs` mide cuadro por cuadro cada
+  interacción (`scripts/motion/README.md`; 170 escenarios en `scripts/motion/escenarios.json`).
+
+### Pendiente del flujo de reservas
+
+- La reserva termina en WhatsApp: no se guarda la cotización del cotizador nuevo en Supabase ni hay
+  referencia `UF-…`. Decidir si `/api/estimate` (o un endpoint nuevo) registra la solicitud.
+- Etapas 3 a 11 de abajo (revisión en admin, envío de propuesta, aprobación, pago, reserva, recordatorios)
+  siguen pendientes. El panel `/admin` solo tiene login y tablero base.
+
+---
+
 ## Overview
 
 Unify es un servicio premium de transporte privado eléctrico. El objetivo de este proyecto es modernizar la infraestructura de reservas, que hoy se gestiona principalmente por WhatsApp, y migrarla a una plataforma digital centralizada.
@@ -51,21 +82,15 @@ Automated Reminders
 
 ### 2. Quote Request
 
-- **Status:** 🔄 Backend done · Frontend pendiente (rama `pricing_algo`)
-- **Qué:** El cliente completa un stepper de 3 pasos; el backend calcula distancia (Google Maps Distance Matrix), aplica el algoritmo de precio y guarda la solicitud con status `pending_review`.
-- **Backend implementado:**
-  - `POST /api/quote` — valida con zod, llama a Google Distance Matrix, calcula precio, inserta en Supabase. Fallback: si Maps falla, guarda sin precio con `needsManualQuote: true`.
-  - `src/lib/pricing.ts` — algoritmo configurable
-  - `src/lib/maps.ts` — wrapper Distance Matrix (server-only)
-  - `src/lib/validation.ts` — schema zod del request
-  - `src/lib/supabase.ts` — cliente service_role
+- **Status:** ✅ Cotizador público hecho (rediseño 2026) · ⏳ guardar la solicitud pendiente
+- **Qué:** El cliente cotiza en el hero o en `/tarifas#cotizar` y ve al momento el precio de los tres niveles; reserva por WhatsApp.
+- **Implementado:**
+  - `POST /api/estimate` — valida con zod (`src/lib/estimate/schema.ts`), resuelve distancia (`src/lib/distance`: Google Routes o aproximado) y precio (`src/lib/pricing`).
+  - `POST /api/places/autocomplete` y `/details` — Google Places (New), con catálogo propio primero (`src/lib/places/catalog.ts`).
+  - `POST /api/quote` — inserta en Supabase (`src/lib/validation.ts`, `src/lib/supabase.ts`); hoy el sitio no lo llama.
   - `config/pricing.json` — tarifas editables sin tocar código
   - `supabase/migrations/0001_quotes.sql` — tabla `quotes` + RLS
-- **Frontend pendiente:**
-  - `QuoteFormStepper.tsx` con 3 pasos (viaje / preferencias / contacto)
-  - Google Places Autocomplete en origen y destino
-  - Pantalla de confirmación mostrando precio preliminar o mensaje "cotización en revisión" si Maps falló
-  - Integración inline en el hero (reemplaza CTA WhatsApp)
+- **Pendiente:** capturar contacto y registrar la solicitud (`pending_review`) desde el cotizador nuevo.
 - **Owner:** Frontend + Backend
 
 #### Algoritmo de precio
@@ -227,11 +252,11 @@ El admin debe estar al tanto de dos eventos clave sin tener que refrescar: **nue
 
 ### Stack
 
-- **Frontend:** Next.js 15 (App Router) + React + TailwindCSS + Shadcn UI + Framer Motion
+- **Frontend:** Next.js 16 (App Router) + React 19 + Tailwind CSS 3 + Radix + motion
 - **Backend:** Next.js API Routes (Node runtime)
 - **DB:** PostgreSQL en Supabase
 - **Emails:** Resend + React Email templates
-- **Maps:** Google Maps Distance Matrix API (server-side) + Places Autocomplete (client-side)
+- **Maps:** Google Routes API + Places API (New), ambas desde el servidor (`GOOGLE_MAPS_SERVER_KEY`)
 - **Payments:** Conekta o MercadoPago (TBD)
 - **Scheduling:** node-cron o Trigger.dev (TBD)
 - **Auth:** Supabase Auth (TBD magic link vs password)
@@ -239,7 +264,9 @@ El admin debe estar al tanto de dos eventos clave sin tener que refrescar: **nue
 ### Endpoints
 
 ```
-POST   /api/quote                       → Quote Request (público)
+POST   /api/estimate                    → Precio de los tres niveles (público) [done]
+POST   /api/places/autocomplete|details → Lugares (público) [done]
+POST   /api/quote                       → Quote Request en Supabase (público) [done, sin uso en el sitio]
 GET    /api/admin/quotes                → Lista para panel operador (admin)
 GET    /api/admin/quotes/:id            → Detalle (admin)
 PATCH  /api/admin/quotes/:id/approve    → Aprueba + ajusta precio + envía email (admin)
@@ -320,56 +347,42 @@ Supabase (Postgres con RLS)
 
 ```
 /
+├── config/pricing.json                          # [done] tarifas
+├── design/SISTEMA.md                            # [done] sistema visual
 ├── src/
 │   ├── app/
-│   │   ├── page.tsx                             # Landing [done]
-│   │   ├── api/
-│   │   │   ├── quote/route.ts                   # POST /api/quote [done]
-│   │   │   ├── admin/quotes/route.ts            # GET lista [pending]
-│   │   │   ├── admin/quotes/[id]/approve/route.ts  # PATCH aprobar [pending]
-│   │   │   ├── admin/quotes/[id]/reject/route.ts   # PATCH rechazar [pending]
-│   │   │   ├── quote/public/[token]/route.ts    # GET/PATCH público [pending]
-│   │   │   └── webhook/payment/route.ts         # Webhook pasarela [pending]
-│   │   ├── cotizacion/[token]/page.tsx          # Customer Approval [pending]
-│   │   ├── pago/[quoteId]/page.tsx              # Payment [pending]
-│   │   └── admin/page.tsx                       # Admin Review [pending]
+│   │   ├── [lang]/                              # [done] sitio público ES/EN (estático)
+│   │   ├── api/estimate/route.ts                # [done] precio
+│   │   ├── api/places/{autocomplete,details}/   # [done] lugares
+│   │   ├── api/quote/route.ts                   # [done] inserta en Supabase
+│   │   ├── api/admin/quotes/…                   # [pending] lista, detalle, aprobar, rechazar
+│   │   ├── api/quote/public/[token]/route.ts    # [pending]
+│   │   ├── api/webhook/payment/route.ts         # [pending]
+│   │   ├── cotizacion/[token]/page.tsx          # [pending] Customer Approval
+│   │   ├── pago/[quoteId]/page.tsx              # [pending] Payment
+│   │   ├── admin/                               # [parcial] login + tablero base
+│   │   └── auth/callback/route.ts               # [done]
 │   ├── components/
-│   │   ├── propuesta.tsx                        # [done] Documento oficial reutilizable
-│   │   ├── marketing/
-│   │   │   ├── quote-form.tsx                   # [done] QuoteDialog + API wiring
-│   │   │   ├── place-autocomplete.tsx           # [done]
-│   │   │   └── (…resto landing)                 # [done]
-│   │   └── admin/                               # [pending]
-│   │       ├── QuoteList.tsx
-│   │       ├── QuoteDetail.tsx
-│   │       └── hooks/useAdminQuotesPolling.ts
+│   │   ├── propuesta.tsx                        # [done] documento oficial reutilizable
+│   │   ├── quote/                               # [done] cotizador
+│   │   ├── sections/ · site/ · ui/ · motion/    # [done] sitio público
+│   │   └── admin/                               # [pending] QuoteList, QuoteDetail, useAdminQuotesPolling
+│   ├── content/ · i18n/                         # [done] textos ES/EN
 │   └── lib/
-│       ├── pricing.ts         [done]
-│       ├── maps.ts            [done]
-│       ├── maps-loader.ts     [done]
-│       ├── validation.ts      [done]
-│       ├── supabase.ts        [done]
-│       ├── db-types.ts        [done]
-│       ├── email.ts           [pending]
-│       └── sign-token.ts      [pending]        # HMAC para links firmados
-├── config/
-│   └── pricing.json           [done]
+│       ├── pricing/ · distance/ · geo/ · places/ · google/ · estimate/ · quote/   # [done]
+│       ├── validation.ts · supabase*.ts · db-types.ts                             # [done]
+│       ├── email.ts                             # [parcial]
+│       └── sign-token.ts                        # [pending] HMAC para links firmados
 ├── supabase/migrations/
 │   ├── 0001_quotes.sql        [done]
 │   └── 0002_bookings.sql      [pending]
 ├── scripts/
-│   ├── test-pricing.ts        [done]
-│   ├── test-api-quote.ts      [done]
-│   └── test-supabase.ts       [done]
+│   ├── test-api-quote.ts · test-supabase.ts     [done]
+│   └── optimize-images.mjs · brand-assets.mjs · shot.mjs   [done]
+├── tests/                                       # [done] Vitest
 └── emails/                    [pending]
-    ├── NewQuoteAdmin.tsx                       # Notif admin de nueva solicitud
-    ├── QuoteSent.tsx                           # Propuesta al cliente (reusa propuesta.tsx)
-    ├── QuoteRejected.tsx                       # Cliente, admin rechazó
-    ├── PaymentReceipt.tsx                      # Cliente, recibo
-    ├── BookingConfirmed.tsx                    # Cliente, ride confirmado
-    ├── OperatorBookingAlert.tsx                # Admin, pago confirmado
-    ├── Reminder48h.tsx
-    └── ReviewRequest.tsx
+    ├── NewQuoteAdmin.tsx · QuoteSent.tsx · QuoteRejected.tsx · PaymentReceipt.tsx
+    └── BookingConfirmed.tsx · OperatorBookingAlert.tsx · Reminder48h.tsx · ReviewRequest.tsx
 ```
 
 ---
@@ -387,12 +400,10 @@ Supabase (Postgres con RLS)
 
 ## Tarea activa
 
-**✅ Fase 2 (Quote Request) terminada:**
-- Form `QuoteDialog` cableado al endpoint `POST /api/quote`
-- Success state simple ("gracias, un operador revisará") con referencia `UF-{YEAR}-{SHORTCODE}`
-- Translations ES+EN completas
-- Componente `propuesta.tsx` extraído, listo para admin + email
-- **Pendiente de config:** `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` está vacía en `.env.local` → mientras tanto todo cae en `needsManualQuote: true` (fallback diseñado funciona bien)
+**✅ Rediseño 2026 terminado** (ver sección inicial): sitio público nuevo y cotizador con precio al momento.
+- Componente `propuesta.tsx` extraído, listo para admin + email.
+- **Pendiente de config:** `GOOGLE_MAPS_SERVER_KEY` (solo servidor). Sin ella el cotizador usa distancia aproximada y solo el catálogo de lugares.
+- **Pendiente de decisión:** si el cotizador nuevo debe registrar la solicitud en Supabase antes de abrir WhatsApp.
 
 **Siguiente — Fase 3 (Admin Review).** En orden sugerido:
 

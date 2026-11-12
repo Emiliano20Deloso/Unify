@@ -13,6 +13,9 @@ export async function GET(request: NextRequest) {
     }
 
     const supabase = await getServerSupabase();
+    if (!supabase) {
+        return NextResponse.redirect(new URL("/admin/login?error=not_configured", url.origin));
+    }
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (error) {
